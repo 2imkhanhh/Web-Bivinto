@@ -41,7 +41,8 @@
     </header>
 
     <!-- Mobile Header -->
-    <header class="mobile-header d-flex d-xl-none justify-content-between align-items-center px-3 border-bottom flex-shrink-0">
+    <header
+        class="mobile-header d-flex d-xl-none justify-content-between align-items-center px-3 border-bottom flex-shrink-0">
         <div class="logo-area-mobile">
             <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo" class="img-fluid d-block">
         </div>
@@ -56,7 +57,8 @@
 
     <!-- Fullscreen Mobile Menu -->
     <div class="offcanvas offcanvas-end w-100 mobile-menu-offcanvas" tabindex="-1" id="mobileMenu">
-        <div class="d-flex justify-content-between align-items-center px-3 border-bottom flex-shrink-0 mobile-menu-header">
+        <div
+            class="d-flex justify-content-between align-items-center px-3 border-bottom flex-shrink-0 mobile-menu-header">
             <div class="logo-area-mobile">
                 <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo" class="img-fluid d-block">
             </div>
@@ -77,6 +79,68 @@
     <main>
         @yield('content')
     </main>
+
+    <!-- Footer -->
+    <footer class="footer text-white" style="padding-top: 4.5rem;">
+        <div class="container-fluid px-3 px-md-4 px-xl-5 pb-2">
+            <div class="row gx-5 gy-4 footer-content-row">
+                <!-- Column 1: Company Info -->
+                <div class="col-12 col-md-6 col-lg-3 d-flex flex-column gap-3 pe-lg-4">
+                    <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo" class="footer-logo filter-white">
+                    <div class="footer-contact d-flex flex-column gap-3">
+                        <div class="d-flex align-items-start gap-3">
+                            <i class="fa-solid fa-location-dot mt-1"></i>
+                            <span>Số 82 Phố Dịch Vọng Hậu, Phường Cầu Giấy, Thành Phố Hà Nội, Việt Nam</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="fa-solid fa-phone"></i>
+                            <span>+84 345 677 395</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="fa-regular fa-envelope"></i>
+                            <span>bivinto@gmai.com</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Categories -->
+                <div class="col-6 col-md-3 col-lg-2 ms-lg-auto">
+                    <h5 class="footer-title">DANH MỤC</h5>
+                    <ul class="list-unstyled footer-links d-flex flex-column gap-2">
+                        <li><a href="#">Về Bivinto</a></li>
+                        <li><a href="#">Sản Phẩm</a></li>
+                        <li><a href="#">Hợp Tác</a></li>
+                        <li><a href="#">Chính Sách</a></li>
+                        <li><a href="#">Blogs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Connect -->
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h5 class="footer-title">KẾT NỐI</h5>
+                    <ul class="list-unstyled footer-links d-flex flex-column gap-2">
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Zalo</a></li>
+                        <li><a href="#">Tiktok</a></li>
+                        <li><a href="#">Shopee</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Map -->
+                <div class="col-12 col-lg-4 mt-4 mt-lg-0 text-center text-lg-end">
+                    <iframe
+                        src="https://maps.google.com/maps?q=S%E1%BB%91%2082%20Ph%E1%BB%91%20D%E1%BB%8Bch%20V%E1%BB%8Dng%20H%E1%BA%ADu%2C%20C%E1%BA%A7u%20Gi%E1%BA%A5y%2C%20H%C3%A0%20N%E1%BB%99i&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                        class="footer-map edge-to-edge-mobile mt-2" style="border:0; width: 100%; max-width: 400px; height: 245px;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+
+            <div class="footer-bottom text-center">
+                <p class="mb-0">Copyright © Bivinto, Ltd. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

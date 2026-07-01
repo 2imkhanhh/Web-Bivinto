@@ -18,7 +18,7 @@
 
     <!-- About Section -->
     <section class="about-section pb-5 overflow-hidden">
-        <div class="container pt-4">
+        <div class="container">
             <div class="row gx-4 align-items-start mb-5">
                 <div class="col-md-6 mb-4 mb-md-0">
                     <h2 class="about-title">VỀ BIVINTO</h2>
@@ -57,9 +57,8 @@
             <p class="mb-0 section-subtitle">Bivinto Đồng Hành Cùng Đối Tác Và Khách Hàng</p>
         </div>
 
-        <div class="container">
-            <div class="col-12 col-lg-11 mx-auto">
-                <div class="row g-4">
+        <div class="container px-lg-5">
+            <div class="row g-4">
                 <!-- Column 1 -->
                 <div class="col-12 col-md-4">
                     <div class="card border-0 bg-transparent h-100">
@@ -84,7 +83,8 @@
                             class="card-img-top rounded-0 object-fit-cover business-card-img">
                         <div class="card-body px-0 pt-4 pb-0 d-flex flex-column">
                             <h5 class="card-title text-uppercase mb-2 business-card-title">NHẬP SỈ</h5>
-                            <p class="card-text small mb-4 business-card-desc">Chính sách hấp dẫn, nguồn hàng ổn định</p>
+                            <p class="card-text small mb-4 business-card-desc">Chính sách hấp dẫn, nguồn hàng ổn định
+                            </p>
                             <div class="mt-auto">
                                 <a href="#" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
                                     Xem Thêm <i class="fa-solid fa-chevron-right ms-2 btn-icon-sm"></i>
@@ -112,11 +112,12 @@
                 </div>
             </div>
         </div>
+        </div>
     </section>
 
     <!-- Featured Products Section -->
     <section class="featured-products-section py-5">
-        <div class="container-fluid px-3 px-lg-5 mb-5">
+        <div class="container-fluid px-3 px-md-4 px-xl-5">
             <!-- Header Area -->
             <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end mb-4">
                 <h2 class="fw-bold mb-3 mb-lg-0 section-title text-start pe-lg-5">DANH MỤC<br>SẢN PHẨM NỔI BẬT</h2>
@@ -165,6 +166,64 @@
                 <a href="#" class="btn btn-dark rounded-pill px-5 py-2 fw-medium btn-load-more">
                     <i class="fa-solid fa-plus me-2"></i> Xem Thêm
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blogs Section -->
+    <section class="blogs-section">
+        <div class="container-fluid px-3 px-md-4 px-xl-5">
+            <div class="blog-section-header d-flex justify-content-between align-items-center">
+                <h2 class="fw-bold mb-0 section-title">BLOGS</h2>
+                <a href="#" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
+                    Xem Thêm <i class="fa-solid fa-arrow-right ms-2 btn-icon-sm"></i>
+                </a>
+            </div>
+
+            <div class="row g-4">
+                <!-- Column 1 (Tall) -->
+                <div class="col-12 col-md-4">
+                    <div class="blog-card h-100 d-flex flex-column">
+                        <img src="{{ asset('images/product1.png') }}" alt="Behind The Suit" class="blog-img-tall">
+                        <h5 class="blog-title text-uppercase">BEHIND THE SUIT</h5>
+                        <p class="blog-desc">Meet four of the designers defining modern tailoring</p>
+                        <div class="mt-auto">
+                            <a href="#" class="blog-link">Chi Tiết</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2 (Two Shorts) -->
+                <div class="col-12 col-md-4 d-flex flex-column gap-4">
+                    <div class="blog-card flex-grow-1 d-flex flex-column">
+                        <img src="{{ asset('images/product1.png') }}" alt="Behind The Suit" class="blog-img-short">
+                        <h5 class="blog-title text-uppercase">BEHIND THE SUIT</h5>
+                        <p class="blog-desc">Meet four of the designers defining modern tailoring</p>
+                        <div class="mt-auto">
+                            <a href="#" class="blog-link">Chi Tiết</a>
+                        </div>
+                    </div>
+                    <div class="blog-card flex-grow-1 d-flex flex-column">
+                        <img src="{{ asset('images/product1.png') }}" alt="Behind The Suit" class="blog-img-short">
+                        <h5 class="blog-title text-uppercase">BEHIND THE SUIT</h5>
+                        <p class="blog-desc">Meet four of the designers defining modern tailoring</p>
+                        <div class="mt-auto">
+                            <a href="#" class="blog-link">Chi Tiết</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 3 (Tall) -->
+                <div class="col-12 col-md-4">
+                    <div class="blog-card h-100 d-flex flex-column">
+                        <img src="{{ asset('images/product1.png') }}" alt="Behind The Suit" class="blog-img-tall">
+                        <h5 class="blog-title text-uppercase">BEHIND THE SUIT</h5>
+                        <p class="blog-desc">Meet four of the designers defining modern tailoring</p>
+                        <div class="mt-auto">
+                            <a href="#" class="blog-link">Chi Tiết</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
