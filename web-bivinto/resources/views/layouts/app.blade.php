@@ -55,8 +55,8 @@
     </header>
 
     <!-- Fullscreen Mobile Menu -->
-    <div class="offcanvas offcanvas-end w-100" tabindex="-1" id="mobileMenu" style="background-color: #FFFDF8;">
-        <div class="d-flex justify-content-between align-items-center px-3 border-bottom flex-shrink-0" style="height: 70px;">
+    <div class="offcanvas offcanvas-end w-100 mobile-menu-offcanvas" tabindex="-1" id="mobileMenu">
+        <div class="d-flex justify-content-between align-items-center px-3 border-bottom flex-shrink-0 mobile-menu-header">
             <div class="logo-area-mobile">
                 <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo" class="img-fluid d-block">
             </div>
