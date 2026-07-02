@@ -35,12 +35,12 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" placeholder="Tìm kiếm">
         </div>
-        <div class="user-area d-flex align-items-center justify-content-center">
-            <a href="#"><i class="fa-regular fa-user"></i></a>
-        </div>
-        <div class="cart-area d-flex align-items-center justify-content-center">
-            <a href="#"><i class="fa-solid fa-bag-shopping"></i></a>
-        </div>
+        <a href="#" class="user-area d-flex align-items-center justify-content-center text-decoration-none">
+            <i class="fa-regular fa-user"></i>
+        </a>
+        <a href="/gio-hang" class="cart-area d-flex align-items-center justify-content-center text-decoration-none">
+            <i class="fa-solid fa-bag-shopping"></i>
+        </a>
     </header>
 
     <!-- Mobile Header -->
@@ -51,10 +51,10 @@
                 <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo" class="img-fluid d-block">
             </a>
         </div>
-        <div class="mobile-actions d-flex align-items-center gap-3">
-            <a href="#" class="text-dark"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href="#" class="text-dark"><i class="fa-solid fa-bag-shopping"></i></a>
-            <button class="btn border-0 p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+        <div class="mobile-actions d-flex align-items-center gap-2">
+            <a href="#" class="text-dark p-2"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href="/gio-hang" class="text-dark p-2"><i class="fa-solid fa-bag-shopping"></i></a>
+            <button class="btn border-0 p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
                 <i class="fa-solid fa-bars fs-4 text-dark"></i>
             </button>
         </div>

@@ -29,3 +29,7 @@ Route::get('/chinh-sach', function () {
 Route::get('/blogs', function () {
     return view('blogs');
 });
+
+Route::get('/gio-hang', function () {
+    return view('cart');
+});

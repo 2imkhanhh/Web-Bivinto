@@ -1,0 +1,132 @@
+/* Cart Page Styles */
+body {
+    background-color: #FFFDF8;
+}
+
+.cart-page {
+    background-color: #FFFDF8;
+    min-height: 70vh;
+}
+
+/* Typography */
+.section-title {
+    font-size: 2rem;
+    color: #100F0F;
+    letter-spacing: 1px;
+}
+
+.blogs-main-divider {
+    border-top: 1px solid #000000;
+    opacity: 1;
+    margin-top: 1rem;
+}
+
+/* Cart Items */
+.cart-item {
+    border-color: #E5E5E5 !important;
+}
+
+.cart-item-title {
+    color: #100F0F;
+}
+
+.quantity-pill {
+    border-color: #E0E0E0 !important;
+}
+
+.cart-delete-btn:hover {
+    color: #DC3545 !important;
+}
+
+.cart-delete-btn:hover .text-muted {
+    color: #DC3545 !important;
+}
+
+/* Right Column: Checkout */
+.checkout-title {
+    color: #100F0F;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Form Inputs */
+.custom-input {
+    background-color: transparent;
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: #100F0F;
+}
+
+.custom-input:focus {
+    background-color: #F5F5F5;
+    border-color: #100F0F;
+    box-shadow: none;
+}
+
+.custom-input::placeholder {
+    color: #999;
+}
+
+/* Radio button & Payment Box */
+.payment-box {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.payment-box:has(.custom-radio:checked) {
+    background-color: #F5F5F5 !important;
+}
+
+.custom-radio:focus {
+    box-shadow: none;
+    border-color: #E0E0E0;
+}
+
+.custom-radio:checked:focus {
+    border-color: #100F0F;
+}
+
+.custom-radio:checked {
+    background-color: #100F0F;
+    border-color: #100F0F;
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+    .cart-item-img-wrap img {
+        width: 90px !important;
+        height: 120px !important;
+    }
+    
+    .cart-item-info .cart-item-title {
+        font-size: 0.9rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    .cart-item-info .cart-item-variant {
+        font-size: 0.8rem !important;
+    }
+    
+    .cart-item-info .cart-item-price {
+        font-size: 0.9rem !important;
+    }
+    
+    .cart-item-info .quantity-pill {
+        width: 90px !important;
+        padding: 0.2rem 0.75rem !important;
+    }
+    
+    .cart-item-info .cart-delete-btn {
+        font-size: 0.8rem !important;
+    }
+    
+    .cart-item-total {
+        font-size: 0.9rem !important;
+    }
+}
