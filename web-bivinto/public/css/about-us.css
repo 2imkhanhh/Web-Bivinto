@@ -1,0 +1,201 @@
+/* About Us Page Styles */
+.about-hero {
+    background-color: #FFFDF8;
+    padding-top: 40px;
+    padding-bottom: 0;
+    text-align: center;
+}
+
+.about-hero-title {
+    font-family: 'Google Sans Flex', 'Be Vietnam Pro', sans-serif;
+    font-weight: 600;
+    font-size: 56px;
+    color: #100F0F;
+    margin-bottom: 1.2rem;
+    line-height: 106%;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.about-hero-image-wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+
+.about-hero-image {
+    width: 100%;
+    height: 800px;
+    object-fit: cover;
+    object-position: center 40%;
+    display: block;
+}
+
+/* Story Section */
+.about-story-section {
+    background-color: #FFFDF8;
+}
+
+.story-header-left {
+    padding: 3rem 5rem 2rem 5%;
+}
+
+.story-header-right {
+    padding: 3rem 5% 2rem 5rem;
+}
+
+.story-small-text {
+    font-size: 1.05rem;
+    color: #100F0F;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+.story-text-box {
+    padding: 6rem 10%;
+    background-color: #FFFDF8;
+}
+
+.story-grid-img {
+    aspect-ratio: 1 / 1;
+    /* Makes the image a perfect square */
+    height: auto;
+    object-position: center;
+    /* Crop evenly from top and bottom */
+}
+
+/* Meaning Section */
+.about-meaning-section {
+    background-color: #FFFDF8;
+    padding-top: 40px;
+    padding-bottom: 80px;
+}
+
+.meaning-divider {
+    width: 90%;
+    border-top: 1px solid #100F0F;
+    opacity: 0.3;
+    margin-bottom: 60px !important;
+}
+
+.meaning-content {
+    max-width: 800px;
+}
+
+.meaning-subtitle {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #100F0F;
+    line-height: 1.5;
+}
+
+.meaning-text,
+.meaning-list li {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #100F0F;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.meaning-list li {
+    margin-bottom: 0.3rem;
+}
+
+/* Belief Section */
+.about-belief-section {
+    background-color: #F5F5F5;
+}
+
+.belief-item {
+    padding: 1.5rem 0;
+}
+
+.belief-item:first-child {
+    padding-top: 0;
+}
+
+.belief-item:last-child {
+    padding-bottom: 0;
+}
+
+.belief-divider {
+    border-top: 1px solid #100F0F;
+    opacity: 0.2;
+    margin: 0;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1080px) {
+    .about-hero-title {
+        font-size: 36px;
+        margin-bottom: 8px;
+    }
+
+    .about-hero-image {
+        height: 450px;
+    }
+
+    .story-header-left {
+        padding: 4rem 3rem 4rem 5%;
+    }
+
+    .story-header-right {
+        padding: 4rem 5% 4rem 3rem;
+    }
+
+    .story-text-box {
+        padding: 4rem 5%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .about-hero-title {
+        font-size: 26px;
+        line-height: 1.2;
+        margin-bottom: 6px;
+    }
+
+    .about-hero-image {
+        height: 350px;
+    }
+
+    .story-header-left {
+        padding: 3rem 15px 0 15px;
+    }
+
+    .story-header-right {
+        padding: 0 15px 1rem 15px;
+    }
+
+    .story-small-text {
+        font-size: 13px;
+    }
+
+    /* .story-header-right .row {
+        margin-top: 1rem !important;
+    } */
+
+    .story-header-right .col-sm-6 {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-bottom: 1rem;
+    }
+
+    .story-text-box {
+        padding: 1.5rem 15px;
+    }
+
+    .meaning-subtitle {
+        font-size: 1rem;
+    }
+
+    .meaning-text,
+    .meaning-list li {
+        font-size: 0.9rem;
+    }
+
+    .meaning-divider {
+        width: 90%;
+        margin-bottom: 40px !important;
+    }
+}
