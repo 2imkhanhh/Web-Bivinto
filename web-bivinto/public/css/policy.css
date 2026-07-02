@@ -1,0 +1,105 @@
+body {
+    background-color: #FFFDF8;
+}
+
+.policy-page {
+    background-color: #FFFDF8;
+    min-height: 70vh;
+}
+
+.policy-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.policy-accordion {
+    --bs-accordion-bg: transparent;
+    --bs-accordion-border-color: #100F0F;
+    --bs-accordion-border-width: 1px;
+    --bs-accordion-border-radius: 0;
+    --bs-accordion-inner-border-radius: 0;
+    --bs-accordion-btn-padding-x: 1rem;
+    --bs-accordion-btn-padding-y: 1.5rem;
+    --bs-accordion-btn-color: #100F0F;
+    --bs-accordion-btn-bg: transparent;
+    --bs-accordion-btn-icon-width: 1rem;
+    --bs-accordion-btn-focus-border-color: transparent;
+    --bs-accordion-btn-focus-box-shadow: none;
+    --bs-accordion-active-color: #100F0F;
+    --bs-accordion-active-bg: transparent;
+}
+
+.policy-accordion .accordion-item {
+    border: none;
+    border-bottom: 1px solid #100F0F;
+    background-color: transparent;
+}
+
+.policy-accordion .accordion-item:first-of-type {
+    border-top: 1px solid #100F0F;
+}
+
+.policy-accordion .accordion-button {
+    font-size: 1.1rem;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.policy-accordion .accordion-button:not(.collapsed) {
+    box-shadow: none;
+}
+
+/* Customize accordion arrow to be just a simple chevron */
+.policy-accordion .accordion-button::after {
+    background-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.policy-accordion .accordion-body {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 2rem;
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: #100F0F !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    line-height: 1.6;
+}
+
+.policy-accordion-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.policy-list {
+    padding-left: 1.5rem;
+    margin-bottom: 0;
+}
+
+.policy-list li {
+    margin-bottom: 0.5rem;
+    list-style-type: disc;
+}
+
+.policy-list li::marker {
+    color: #100F0F;
+}
+
+@media (max-width: 767.98px) {
+    .policy-accordion .accordion-button {
+        font-size: 1rem;
+        padding-top: 1.25rem;
+        padding-bottom: 1.25rem;
+    }
+
+    .policy-list {
+        padding-left: 1.2rem;
+    }
+
+    .policy-accordion .accordion-body {
+        font-size: 0.9rem;
+    }
+}

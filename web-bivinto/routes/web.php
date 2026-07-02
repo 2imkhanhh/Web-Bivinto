@@ -21,3 +21,7 @@ Route::get('/chi-tiet-san-pham', function () {
 Route::get('/hop-tac', function () {
     return view('collaboration');
 });
+
+Route::get('/chinh-sach', function () {
+    return view('policy');
+});

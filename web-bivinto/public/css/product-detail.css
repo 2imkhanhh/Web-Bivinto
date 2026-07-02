@@ -418,25 +418,21 @@ body {
 }
 
 .accordion-body ul {
-    list-style-type: none;
-    padding-left: 0;
+    list-style-type: disc;
+    padding-left: 1.25rem;
     margin-bottom: 0;
 }
 
 .accordion-body li {
-    font-size: 0.8125rem;
-    color: #0B0B0B;
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: #100F0F;
     line-height: 1.6;
     margin-bottom: 0.5rem;
-    position: relative;
-    padding-left: 12px;
 }
 
-.accordion-body li::before {
-    content: "-";
-    position: absolute;
-    left: 0;
-    color: #444;
+.accordion-body li::marker {
+    color: #100F0F;
 }
 
 /* --- Similar Products Section --- */
