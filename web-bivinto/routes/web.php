@@ -25,3 +25,7 @@ Route::get('/hop-tac', function () {
 Route::get('/chinh-sach', function () {
     return view('policy');
 });
+
+Route::get('/blogs', function () {
+    return view('blogs');
+});
