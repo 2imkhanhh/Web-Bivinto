@@ -26,7 +26,7 @@
         </div>
         <div class="nav-area">
             <a href="/ve-chung-toi">VỀ BIVINTO</a>
-            <a href="#">SẢN PHẨM</a>
+            <a href="/san-pham">SẢN PHẨM</a>
             <a href="#">HỢP TÁC</a>
             <a href="#">CHÍNH SÁCH</a>
             <a href="#">BLOGS</a>
@@ -74,7 +74,7 @@
         <div class="offcanvas-body">
             <div class="nav flex-column font-google-sans">
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/ve-chung-toi">VỀ BIVINTO</a>
-                <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="#">SẢN PHẨM</a>
+                <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/san-pham">SẢN PHẨM</a>
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="#">HỢP TÁC</a>
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="#">CHÍNH SÁCH</a>
                 <a class="nav-link text-dark py-3 fw-semibold" href="#">BLOGS</a>
@@ -117,7 +117,7 @@
                     <h5 class="footer-title">DANH MỤC</h5>
                     <ul class="list-unstyled footer-links d-flex flex-column gap-2">
                         <li><a href="/ve-bivinto">Về Bivinto</a></li>
-                        <li><a href="#">Sản Phẩm</a></li>
+                        <li><a href="/san-pham">Sản Phẩm</a></li>
                         <li><a href="#">Hợp Tác</a></li>
                         <li><a href="#">Chính Sách</a></li>
                         <li><a href="#">Blogs</a></li>
