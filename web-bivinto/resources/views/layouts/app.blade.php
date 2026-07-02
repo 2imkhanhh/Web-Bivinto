@@ -27,7 +27,7 @@
         <div class="nav-area">
             <a href="/ve-chung-toi">VỀ BIVINTO</a>
             <a href="/san-pham">SẢN PHẨM</a>
-            <a href="#">HỢP TÁC</a>
+            <a href="/hop-tac">HỢP TÁC</a>
             <a href="#">CHÍNH SÁCH</a>
             <a href="#">BLOGS</a>
         </div>
@@ -75,7 +75,7 @@
             <div class="nav flex-column font-google-sans">
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/ve-chung-toi">VỀ BIVINTO</a>
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/san-pham">SẢN PHẨM</a>
-                <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="#">HỢP TÁC</a>
+                <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/hop-tac">HỢP TÁC</a>
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="#">CHÍNH SÁCH</a>
                 <a class="nav-link text-dark py-3 fw-semibold" href="#">BLOGS</a>
             </div>

@@ -17,3 +17,7 @@ Route::get('/san-pham', function () {
 Route::get('/chi-tiet-san-pham', function () {
     return view('product-detail');
 });
+
+Route::get('/hop-tac', function () {
+    return view('collaboration');
+});
