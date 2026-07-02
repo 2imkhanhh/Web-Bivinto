@@ -13,3 +13,7 @@ Route::get('/ve-chung-toi', function () {
 Route::get('/san-pham', function () {
     return view('products');
 });
+
+Route::get('/chi-tiet-san-pham', function () {
+    return view('product-detail');
+});

@@ -165,7 +165,7 @@
                         <h3 class="product-title text-truncate mb-1">{{ $product['title'] }}</h3>
                         <p class="product-price fw-bold mb-3">{{ $product['price'] }}</p>
                         <div>
-                            <a href="#" class="btn btn-outline-dark rounded-pill px-3 py-1 fw-medium">Xem Chi Tiết <i
+                            <a href="/chi-tiet-san-pham" class="btn btn-outline-dark rounded-pill px-3 py-1 fw-medium">Xem Chi Tiết <i
                                     class="fa-solid fa-chevron-right ms-1 btn-icon-xs"></i></a>
                         </div>
                     </div>
