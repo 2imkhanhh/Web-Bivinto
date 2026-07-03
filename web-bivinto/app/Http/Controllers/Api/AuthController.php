@@ -161,4 +161,49 @@ class AuthController extends Controller
 
         return response()->json($user);
     }
+
+    public function updateProfile(Request $request)
+    {
+        $user = auth('api')->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|regex:/^0[0-9]{9}$/',
+            'current_password' => 'nullable|string',
+            'new_password' => 'nullable|string|min:6',
+        ], [
+            'name.required' => 'Họ tên không được để trống.',
+            'phone.required' => 'Số điện thoại không được để trống.',
+            'phone.regex' => 'Số điện thoại không hợp lệ (phải bắt đầu bằng 0 và có 10 số).',
+            'new_password.min' => 'Mật khẩu mới phải có ít nhất 6 ký tự.'
+        ]);
+
+        // Cập nhật thông tin cơ bản
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+
+        // Cập nhật mật khẩu nếu có
+        if ($request->filled('new_password')) {
+            if (!$request->filled('current_password')) {
+                return response()->json(['error' => 'Vui lòng nhập mật khẩu hiện tại để đổi mật khẩu mới.'], 400);
+            }
+
+            if (!\Illuminate\Support\Facades\Hash::check($request->current_password, $user->password)) {
+                return response()->json(['error' => 'Mật khẩu hiện tại không chính xác.'], 400);
+            }
+
+            $user->password = \Illuminate\Support\Facades\Hash::make($request->new_password);
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Cập nhật hồ sơ thành công',
+            'user' => $user
+        ]);
+    }
 }

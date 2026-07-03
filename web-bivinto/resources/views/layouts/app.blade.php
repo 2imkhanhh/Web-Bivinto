@@ -35,9 +35,23 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" placeholder="Tìm kiếm">
         </div>
+        @if(auth('api')->check() && !auth('api')->user()->isAdmin())
+        <div class="user-area d-flex align-items-center justify-content-center dropdown hover-dropdown">
+            <a href="#" class="text-decoration-none d-flex align-items-center justify-content-center w-100 h-100">
+                <i class="fa-regular fa-user"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end rounded-0 border-0 shadow mt-2">
+                <li><a class="dropdown-item" href="/ho-so">Tài khoản của tôi</a></li>
+                <li><a class="dropdown-item" href="#">Đơn mua</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#" onclick="logout(event)">Đăng xuất</a></li>
+            </ul>
+        </div>
+        @else
         <a href="/tai-khoan" class="user-area d-flex align-items-center justify-content-center text-decoration-none">
             <i class="fa-regular fa-user"></i>
         </a>
+        @endif
         <a href="/gio-hang" class="cart-area d-flex align-items-center justify-content-center text-decoration-none">
             <i class="fa-solid fa-bag-shopping"></i>
         </a>
@@ -73,11 +87,29 @@
         </div>
         <div class="offcanvas-body">
             <div class="nav flex-column font-google-sans">
+                @if(auth('api')->check() && !auth('api')->user()->isAdmin())
+                    <div class="d-flex align-items-center gap-3 py-3 border-bottom">
+                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold">{{ auth('api')->user()->name }}</div>
+                            <div class="text-muted small">{{ auth('api')->user()->email }}</div>
+                        </div>
+                    </div>
+                    <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/ho-so">TÀI KHOẢN CỦA TÔI</a>
+                    <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="#">ĐƠN MUA</a>
+                @else
+                    <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/tai-khoan">ĐĂNG NHẬP / ĐĂNG KÝ</a>
+                @endif
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/ve-chung-toi">VỀ BIVINTO</a>
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/san-pham">SẢN PHẨM</a>
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/hop-tac">HỢP TÁC</a>
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/chinh-sach">CHÍNH SÁCH</a>
                 <a class="nav-link text-dark py-3 fw-semibold" href="/blogs">BLOGS</a>
+                @if(auth('api')->check() && !auth('api')->user()->isAdmin())
+                    <a class="nav-link text-danger border-top py-3 fw-semibold" href="#" onclick="logout(event)">ĐĂNG XUẤT</a>
+                @endif
             </div>
         </div>
     </div>
@@ -208,6 +240,38 @@
             });
         };
 
+        // Hàm Đăng xuất
+        window.logout = async function(e) {
+            if (e) e.preventDefault();
+            
+            // Xóa Cookie
+            document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            
+            const token = localStorage.getItem('refresh_token');
+            
+            // Xóa Local Storage
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('user');
+            
+            // Gọi API logout để xóa token trên DB
+            if (token) {
+                try {
+                    await fetch('/api/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ refresh_token: token })
+                    });
+                } catch (err) {}
+            }
+
+            // Reload trang hoặc về trang đăng nhập
+            window.location.href = '/tai-khoan';
+        };
+
 
         document.addEventListener("DOMContentLoaded", function() {
             const headers = document.querySelectorAll("header");
@@ -231,6 +295,41 @@
                 }
 
                 lastScrollY = currentScrollY;
+            });
+
+            // Global Password Toggle
+            const toggleIcons = document.querySelectorAll('.toggle-password');
+            toggleIcons.forEach(icon => {
+                icon.style.display = 'none'; // Hide by default
+                const input = icon.previousElementSibling;
+                if (input && input.tagName === 'INPUT') {
+                    input.addEventListener('focus', () => {
+                        icon.style.display = 'block';
+                    });
+                    
+                    input.addEventListener('blur', () => {
+                        setTimeout(() => {
+                            // If we didn't just click the icon to refocus, hide it
+                            if (document.activeElement !== input) {
+                                icon.style.display = 'none';
+                            }
+                        }, 150);
+                    });
+
+                    icon.addEventListener('click', function(e) {
+                        e.preventDefault(); // Prevent focus loss if possible
+                        if (input.type === 'password') {
+                            input.type = 'text';
+                            icon.classList.remove('fa-eye');
+                            icon.classList.add('fa-eye-slash');
+                        } else {
+                            input.type = 'password';
+                            icon.classList.remove('fa-eye-slash');
+                            icon.classList.add('fa-eye');
+                        }
+                        input.focus(); // Keep focus on input
+                    });
+                }
             });
         });
     </script>

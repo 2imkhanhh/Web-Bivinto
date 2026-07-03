@@ -38,6 +38,10 @@ Route::get('/tai-khoan', function () {
     return view('auth');
 });
 
+Route::get('/ho-so', function () {
+    return view('profile');
+});
+
 Route::get('/admin', function () {
     return view('admin.dashboard');
 })->middleware('admin');

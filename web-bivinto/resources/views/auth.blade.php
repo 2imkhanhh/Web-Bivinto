@@ -26,8 +26,9 @@
                         <div class="mb-3 w-100">
                             <input type="tel" class="form-control custom-input" id="reg_phone" placeholder="Số điện thoại*" required>
                         </div>
-                        <div class="mb-4 w-100">
+                        <div class="mb-4 w-100 position-relative">
                             <input type="password" class="form-control custom-input" id="reg_password" placeholder="Mật khẩu*" required>
+                            <i class="fa-regular fa-eye toggle-password" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #616161;"></i>
                         </div>
 
                         <button type="submit" class="btn btn-dark w-100 rounded-pill btn-auth fw-medium">Tạo Tài Khoản</button>
@@ -45,8 +46,9 @@
                         <div class="mb-3 w-100">
                             <input type="email" class="form-control custom-input" id="login_email" placeholder="Email hoặc số điện thoại*" required>
                         </div>
-                        <div class="mb-3 w-100">
+                        <div class="mb-3 w-100 position-relative">
                             <input type="password" class="form-control custom-input" id="login_password" placeholder="Mật khẩu*" required>
+                            <i class="fa-regular fa-eye toggle-password" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #616161;"></i>
                         </div>
                         
                         <div class="d-flex justify-content-between align-items-center mb-4 w-100">
