@@ -51,11 +51,7 @@
                             <i class="fa-regular fa-eye toggle-password" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #616161;"></i>
                         </div>
                         
-                        <div class="d-flex justify-content-between align-items-center mb-4 w-100">
-                            <div class="form-check text-start">
-                                <input type="checkbox" class="form-check-input border-secondary" id="rememberMe">
-                                <label class="form-check-label text-muted" for="rememberMe" style="font-size: 0.9rem;">Ghi nhớ</label>
-                            </div>
+                        <div class="d-flex justify-content-end align-items-center mb-4 w-100">
                             <a href="#" class="text-muted text-decoration-none" style="font-size: 0.9rem;">Quên mật khẩu?</a>
                         </div>
 
