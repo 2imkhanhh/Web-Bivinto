@@ -63,3 +63,9 @@ body {
 .content-area {
     padding: 25px;
 }
+
+/* Remove blue border and shadow on focus */
+.form-control:focus, .form-select:focus, .form-check-input:focus {
+    box-shadow: none;
+    border-color: #ced4da; /* Keep standard border color or use dark */
+}

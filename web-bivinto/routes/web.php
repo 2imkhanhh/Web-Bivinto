@@ -1,38 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\CategoryController;
 
-Route::get('/', function () {
-    return view('home');
-});
+use App\Http\Controllers\PageController;
 
-Route::get('/ve-chung-toi', function () {
-    return view('about-us');
-});
-
-Route::get('/san-pham', function () {
-    return view('products');
-});
-
-Route::get('/chi-tiet-san-pham', function () {
-    return view('product-detail');
-});
-
-Route::get('/hop-tac', function () {
-    return view('collaboration');
-});
-
-Route::get('/chinh-sach', function () {
-    return view('policy');
-});
-
-Route::get('/blogs', function () {
-    return view('blogs');
-});
-
-Route::get('/gio-hang', function () {
-    return view('cart');
-});
+Route::get('/', [PageController::class, 'home']);
+Route::get('/ve-chung-toi', [PageController::class, 'aboutUs']);
+Route::get('/san-pham', [PageController::class, 'products']);
+Route::get('/chi-tiet-san-pham', [PageController::class, 'productDetail']);
+Route::get('/hop-tac', [PageController::class, 'collaboration']);
+Route::get('/chinh-sach', [PageController::class, 'policy']);
+Route::get('/blogs', [PageController::class, 'blogs']);
+Route::get('/gio-hang', [PageController::class, 'cart']);
 
 Route::get('/tai-khoan', function () {
     return view('auth');
@@ -42,6 +22,10 @@ Route::get('/ho-so', function () {
     return view('profile');
 });
 
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-})->middleware('admin');
+Route::prefix('admin')->middleware('admin')->group(function () {
+    Route::get('/', function () {
+        return view('admin.dashboard');
+    });
+    
+    Route::resource('categories', CategoryController::class);
+});

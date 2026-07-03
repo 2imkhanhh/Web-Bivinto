@@ -123,20 +123,16 @@
                 <h2 class="fw-bold mb-3 mb-lg-0 section-title text-start pe-lg-5">DANH MỤC<br>SẢN PHẨM NỔI BẬT</h2>
 
                 <!-- Custom Tabs -->
-                <ul
-                    class="nav custom-product-tabs flex-nowrap overflow-x-auto overflow-y-hidden text-nowrap pb-0 justify-content-between">
-                    <li class="nav-item flex-fill text-center">
-                        <a class="nav-link active fw-medium px-0 text-muted" href="#">ÁO</a>
-                    </li>
-                    <li class="nav-item flex-fill text-center">
-                        <a class="nav-link fw-medium px-0 text-muted" href="#">QUẦN</a>
-                    </li>
-                    <li class="nav-item flex-fill text-center">
-                        <a class="nav-link fw-medium px-0 text-muted" href="#">PHỤ KIỆN</a>
-                    </li>
-                    <li class="nav-item flex-fill text-center">
-                        <a class="nav-link fw-medium px-0 text-muted" href="#">BỘ SƯU TẬP</a>
-                    </li>
+                <ul class="nav custom-product-tabs flex-nowrap overflow-x-auto overflow-y-hidden text-nowrap pb-0 justify-content-between">
+                    @forelse($categories as $index => $category)
+                        <li class="nav-item flex-fill text-center">
+                            <a class="nav-link {{ $index === 0 ? 'active' : '' }} fw-medium px-0 text-muted" href="#">{{ mb_strtoupper($category->name, 'UTF-8') }}</a>
+                        </li>
+                    @empty
+                        <li class="nav-item flex-fill text-center">
+                            <a class="nav-link active fw-medium px-0 text-muted" href="#">CHƯA CÓ DANH MỤC</a>
+                        </li>
+                    @endforelse
                 </ul>
             </div>
 

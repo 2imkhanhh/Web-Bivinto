@@ -756,3 +756,9 @@ header {
 .swal2-icon, .swal2-icon * {
     animation: none !important;
 }
+
+/* Remove default bootstrap blue focus ring */
+.form-control:focus, .form-select:focus, .form-check-input:focus {
+    box-shadow: none;
+    border-color: #000; /* Thay vì viền xanh, đổi thành viền đen mỏng */
+}

@@ -115,10 +115,11 @@
         <!-- Filter Bar -->
         <div class="d-flex justify-content-between align-items-center filter-bar-container">
             <div class="category-links">
-                <a href="#" class="active">ÁO</a>
-                <a href="#">Quần</a>
-                <a href="#">Phụ Kiện</a>
-                <a href="#">Bộ Sưu Tập</a>
+                @forelse($categories as $index => $category)
+                    <a href="#" class="{{ $index === 0 ? 'active' : '' }}">{{ $category->name }}</a>
+                @empty
+                    <a href="#" class="active">CHƯA CÓ DANH MỤC</a>
+                @endforelse
             </div>
             <div class="filter-dropdowns">
                 <button class="filter-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

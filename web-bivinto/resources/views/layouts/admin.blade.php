@@ -29,7 +29,7 @@
         </div>
         <ul class="nav flex-column mt-3">
             <li class="nav-item">
-                <a class="nav-link active" href="/admin">
+                <a class="nav-link {{ request()->is('admin') ? 'active' : '' }}" href="/admin">
                     <i class="fa-solid fa-gauge"></i> Tổng quan
                 </a>
             </li>
@@ -39,7 +39,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link {{ request()->is('admin/categories*') ? 'active' : '' }}" href="/admin/categories">
                     <i class="fa-solid fa-list"></i> Danh mục
                 </a>
             </li>
