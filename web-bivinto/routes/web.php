@@ -33,3 +33,7 @@ Route::get('/blogs', function () {
 Route::get('/gio-hang', function () {
     return view('cart');
 });
+
+Route::get('/tai-khoan', function () {
+    return view('auth');
+});

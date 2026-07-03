@@ -35,11 +35,11 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" placeholder="Tìm kiếm">
         </div>
-        <a href="#" class="user-area d-flex align-items-center justify-content-center text-decoration-none">
+        <a href="/tai-khoan" class="user-area d-flex align-items-center justify-content-center text-decoration-none">
             <i class="fa-regular fa-user"></i>
         </a>
         <a href="/gio-hang" class="cart-area d-flex align-items-center justify-content-center text-decoration-none">
-            <i class="fa-solid fa-bag-shopping"></i>
+            <i class="fa-regular fa-bag-shopping"></i>
         </a>
     </header>
 
@@ -154,7 +154,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const headers = document.querySelectorAll("header");
@@ -181,7 +181,7 @@
             });
         });
     </script>
-    
+
     @stack('scripts')
 </body>
 
