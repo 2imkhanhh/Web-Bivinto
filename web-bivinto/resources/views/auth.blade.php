@@ -126,7 +126,7 @@
                     const data = await response.json();
 
                     if (response.ok) {
-                        alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                        showToast('Đăng ký thành công! Vui lòng đăng nhập.', 'success');
                         // Switch to login panel
                         authContainer.classList.remove("right-panel-active");
                         registerForm.reset();
@@ -140,11 +140,11 @@
                         } else {
                             errorMsg += data.error || 'Đã có lỗi xảy ra.';
                         }
-                        alert(errorMsg);
+                        showToast(errorMsg, 'error');
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('Lỗi kết nối máy chủ!');
+                    showToast('Lỗi kết nối máy chủ!', 'error');
                 }
             });
         }
@@ -171,8 +171,6 @@
                     const data = await response.json();
 
                     if (response.ok) {
-                        alert('Đăng nhập thành công!');
-                        
                         // Save tokens to localStorage
                         localStorage.setItem('access_token', data.access_token);
                         localStorage.setItem('refresh_token', data.refresh_token);
@@ -181,11 +179,11 @@
                         // Redirect to home page or user dashboard
                         window.location.href = '/';
                     } else {
-                        alert(data.error || 'Email hoặc mật khẩu không đúng!');
+                        showToast(data.error || 'Email hoặc mật khẩu không đúng!', 'error');
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('Lỗi kết nối máy chủ!');
+                    showToast('Lỗi kết nối máy chủ!', 'error');
                 }
             });
         }

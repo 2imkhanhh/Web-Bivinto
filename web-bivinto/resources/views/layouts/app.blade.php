@@ -155,7 +155,60 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
+        // --- Cấu hình chung cho Toast ---
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+
+        // Hàm hiển thị Toast (Tự ẩn)
+        window.showToast = function(message, type = 'success') {
+            return Toast.fire({
+                icon: type,
+                title: message
+            });
+        };
+
+        // Hàm hiển thị Dialog Xác Nhận (Có nút Đồng ý / Hủy)
+        window.showConfirm = function(title, text = '', confirmButtonText = 'Đồng ý', cancelButtonText = 'Hủy') {
+            return Swal.fire({
+                title: title,
+                text: text,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#100F0F',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: confirmButtonText,
+                cancelButtonText: cancelButtonText,
+                reverseButtons: true
+            }).then((result) => {
+                return result.isConfirmed;
+            });
+        };
+
+        // Hàm hiển thị Dialog Thông Báo (Chỉ có nút OK)
+        window.showAlert = function(title, text = '', icon = 'info') {
+            return Swal.fire({
+                title: title,
+                text: text,
+                icon: icon,
+                confirmButtonColor: '#100F0F',
+                confirmButtonText: 'OK'
+            });
+        };
+
+
         document.addEventListener("DOMContentLoaded", function() {
             const headers = document.querySelectorAll("header");
             let lastScrollY = window.scrollY;
