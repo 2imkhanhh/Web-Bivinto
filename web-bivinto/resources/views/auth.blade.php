@@ -176,8 +176,15 @@
                         localStorage.setItem('refresh_token', data.refresh_token);
                         localStorage.setItem('user', JSON.stringify(data.user));
 
-                        // Redirect to home page or user dashboard
-                        window.location.href = '/';
+                        // Set cookie for backend web routes auth
+                        document.cookie = "access_token=" + data.access_token + "; path=/; max-age=3600";
+
+                        // Redirect based on role
+                        if (data.user && data.user.role === 'admin') {
+                            window.location.href = '/admin';
+                        } else {
+                            window.location.href = '/';
+                        }
                     } else {
                         showToast(data.error || 'Email hoặc mật khẩu không đúng!', 'error');
                     }
