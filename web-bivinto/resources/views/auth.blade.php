@@ -13,7 +13,7 @@
             <!-- Sign Up Form (Left Panel in code, but z-indexed) -->
             <div class="form-container sign-up-container">
                 <div class="form-content">
-                    <form action="#" method="POST">
+                    <form id="registerForm" action="#" method="POST">
                         <h1 class="auth-title">ĐĂNG KÝ</h1>
                         <p class="auth-subtitle mb-4">Trở thành thành viên của Bivinto.</p>
 
@@ -38,7 +38,7 @@
             <!-- Sign In Form (Right Panel in code) -->
             <div class="form-container sign-in-container">
                 <div class="form-content">
-                    <form action="#" method="POST">
+                    <form id="loginForm" action="#" method="POST">
                         <h1 class="auth-title">ĐĂNG NHẬP</h1>
                         <p class="auth-subtitle mb-4">Chào mừng bạn quay lại với Bivinto.</p>
 
@@ -99,6 +99,94 @@
 
             signInButton.addEventListener('click', () => {
                 authContainer.classList.remove("right-panel-active");
+            });
+        }
+
+        // --- Handle Register ---
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) {
+            registerForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('reg_name').value;
+                const email = document.getElementById('reg_email').value;
+                const phone = document.getElementById('reg_phone').value;
+                const password = document.getElementById('reg_password').value;
+
+                try {
+                    const response = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ name, email, phone, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                        // Switch to login panel
+                        authContainer.classList.remove("right-panel-active");
+                        registerForm.reset();
+                    } else {
+                        // Show validation errors
+                        let errorMsg = 'Lỗi đăng ký:\n';
+                        if (data.error && typeof data.error === 'object') {
+                            for (let key in data.error) {
+                                errorMsg += `- ${data.error[key][0]}\n`;
+                            }
+                        } else {
+                            errorMsg += data.error || 'Đã có lỗi xảy ra.';
+                        }
+                        alert(errorMsg);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Lỗi kết nối máy chủ!');
+                }
+            });
+        }
+
+        // --- Handle Login ---
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('login_email').value;
+                const password = document.getElementById('login_password').value;
+
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        alert('Đăng nhập thành công!');
+                        
+                        // Save tokens to localStorage
+                        localStorage.setItem('access_token', data.access_token);
+                        localStorage.setItem('refresh_token', data.refresh_token);
+                        localStorage.setItem('user', JSON.stringify(data.user));
+
+                        // Redirect to home page or user dashboard
+                        window.location.href = '/';
+                    } else {
+                        alert(data.error || 'Email hoặc mật khẩu không đúng!');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Lỗi kết nối máy chủ!');
+                }
             });
         }
     });

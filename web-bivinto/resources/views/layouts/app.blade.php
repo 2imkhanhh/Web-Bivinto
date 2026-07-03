@@ -39,7 +39,7 @@
             <i class="fa-regular fa-user"></i>
         </a>
         <a href="/gio-hang" class="cart-area d-flex align-items-center justify-content-center text-decoration-none">
-            <i class="fa-regular fa-bag-shopping"></i>
+            <i class="fa-solid fa-bag-shopping"></i>
         </a>
     </header>
 
