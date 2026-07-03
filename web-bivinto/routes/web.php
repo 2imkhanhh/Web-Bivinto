@@ -37,3 +37,7 @@ Route::get('/gio-hang', function () {
 Route::get('/tai-khoan', function () {
     return view('auth');
 });
+
+Route::get('/admin', function () {
+    return view('admin.dashboard');
+});

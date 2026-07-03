@@ -1,0 +1,22 @@
+/* Thẻ cơ bản */
+.card {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+}
