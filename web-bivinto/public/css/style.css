@@ -8,7 +8,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     background-color: #ffffff;
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 .font-google-sans {
@@ -20,6 +20,8 @@ body {
     height: 80px;
     border-bottom: 1px solid #e5e5e5;
     background-color: #FFFDF8;
+    transition: all 0.3s ease-in-out;
+    z-index: 1020;
 }
 
 .custom-header>div {
@@ -123,6 +125,24 @@ body {
 .mobile-header {
     height: 70px;
     background-color: #FFFDF8;
+    transition: all 0.3s ease-in-out;
+    z-index: 1020;
+}
+
+/* --- Scrolled Header Effect --- */
+header {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.header-shadow {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    background-color: rgba(255, 253, 248, 0.95) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.header-hidden {
+    transform: translateY(-100%);
 }
 
 /* --- Hero Section --- */

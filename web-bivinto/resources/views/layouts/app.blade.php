@@ -17,7 +17,7 @@
 <body>
 
     <!-- Desktop Header -->
-    <header class="custom-header d-none d-xl-flex">
+    <header class="custom-header d-none d-xl-flex sticky-top">
         <div class="logo-area">
             <!-- Placeholder logo, replace with actual logo -->
             <a href="/">
@@ -45,7 +45,7 @@
 
     <!-- Mobile Header -->
     <header
-        class="mobile-header d-flex d-xl-none justify-content-between align-items-center px-3 border-bottom flex-shrink-0">
+        class="mobile-header d-flex d-xl-none justify-content-between align-items-center px-3 border-bottom flex-shrink-0 sticky-top">
         <div class="logo-area-mobile">
             <a href="/">
                 <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo" class="img-fluid d-block">
@@ -154,6 +154,34 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const headers = document.querySelectorAll("header");
+            let lastScrollY = window.scrollY;
+
+            window.addEventListener("scroll", function() {
+                const currentScrollY = window.scrollY;
+
+                // Add shadow if not at the top
+                if (currentScrollY > 10) {
+                    headers.forEach(header => header.classList.add("header-shadow"));
+                } else {
+                    headers.forEach(header => header.classList.remove("header-shadow"));
+                }
+
+                // Hide on scroll down, show on scroll up
+                if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                    headers.forEach(header => header.classList.add("header-hidden"));
+                } else {
+                    headers.forEach(header => header.classList.remove("header-hidden"));
+                }
+
+                lastScrollY = currentScrollY;
+            });
+        });
+    </script>
+    
     @stack('scripts')
 </body>
 
