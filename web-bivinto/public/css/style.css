@@ -751,3 +751,8 @@ header {
     background-color: #f8f9fa;
     color: inherit;
 }
+
+/* Tắt hiệu ứng delay của icon SweetAlert2 (Toast) */
+.swal2-icon, .swal2-icon * {
+    animation: none !important;
+}
