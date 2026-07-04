@@ -17,7 +17,13 @@ class PageController extends Controller
             ->take(6)
             ->get();
             
-        return view('home', compact('categories'));
+        $featuredProducts = \App\Models\Product::with(['images'])
+            ->where('is_featured', true)
+            ->where('status', 'active')
+            ->orderBy('id', 'desc')
+            ->get();
+            
+        return view('home', compact('categories', 'featuredProducts'));
     }
 
     public function aboutUs()

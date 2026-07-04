@@ -1,5 +1,6 @@
 <template>
   <Layout title="Quản lý Sản phẩm">
+
     <Head title="Sản phẩm" />
     <div class="card shadow-sm border-0">
       <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
@@ -27,15 +28,18 @@
                 <td class="px-4 text-muted">{{ index + 1 }}</td>
                 <td>
                   <div class="d-flex align-items-center">
-                    <img v-if="product.images && product.images.length > 0" :src="'/storage/' + getPrimaryImage(product)"
-                      :alt="product.name" class="rounded me-3 object-fit-cover" style="width: 48px; height: 48px;">
-                    <div v-else class="bg-light rounded me-3 d-flex align-items-center justify-content-center text-muted"
+                    <img v-if="product.images && product.images.length > 0"
+                      :src="'/storage/' + getPrimaryImage(product)" :alt="product.name"
+                      class="rounded me-3 object-fit-cover" style="width: 48px; height: 48px; object-position: top;">
+                    <div v-else
+                      class="bg-light rounded me-3 d-flex align-items-center justify-content-center text-muted"
                       style="width: 48px; height: 48px;">
                       <i class="fa-regular fa-image"></i>
                     </div>
                     <div>
                       <div class="fw-medium text-dark">{{ product.name }}</div>
-                      <small class="text-muted">{{ product.colors?.length || 0 }} màu sắc, {{ countSizes(product) }} sizes</small>
+                      <small class="text-muted">{{ product.colors?.length || 0 }} màu sắc, {{ countSizes(product) }}
+                        sizes</small>
                     </div>
                   </div>
                 </td>
@@ -46,7 +50,8 @@
                   <i v-else class="fa-regular fa-star text-muted"></i>
                 </td>
                 <td class="text-center">
-                  <span v-if="product.status === 'active'" class="badge bg-success-subtle text-success px-2 py-1 rounded-pill">Hoạt động</span>
+                  <span v-if="product.status === 'active'"
+                    class="badge bg-success-subtle text-success px-2 py-1 rounded-pill">Hoạt động</span>
                   <span v-else class="badge bg-danger-subtle text-danger px-2 py-1 rounded-pill">Đang ẩn</span>
                 </td>
                 <td class="text-center">
@@ -89,12 +94,14 @@
                   <div class="card-body">
                     <div class="mb-3">
                       <label class="form-label fw-medium">Tên sản phẩm <span class="text-danger">*</span></label>
-                      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.name }" v-model="form.name" required placeholder="Ví dụ: Áo thun nam">
+                      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.name }"
+                        v-model="form.name" required placeholder="Ví dụ: Áo thun nam">
                       <div class="invalid-feedback" v-if="form.errors.name">{{ form.errors.name }}</div>
                     </div>
                     <div class="mb-3">
                       <label class="form-label fw-medium">Danh mục <span class="text-danger">*</span></label>
-                      <select class="form-select" :class="{ 'is-invalid': form.errors.category_id }" v-model="form.category_id" required>
+                      <select class="form-select" :class="{ 'is-invalid': form.errors.category_id }"
+                        v-model="form.category_id" required>
                         <option value="">-- Chọn danh mục --</option>
                         <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                       </select>
@@ -102,12 +109,14 @@
                     </div>
                     <div class="mb-3">
                       <label class="form-label fw-medium">Giá bán (VNĐ) <span class="text-danger">*</span></label>
-                      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.price }" v-model="displayPrice" required placeholder="0">
+                      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.price }"
+                        v-model="displayPrice" required placeholder="0">
                       <div class="invalid-feedback" v-if="form.errors.price">{{ form.errors.price }}</div>
                     </div>
                     <div class="mb-3">
                       <label class="form-label fw-medium">Mô tả chi tiết</label>
-                      <textarea class="form-control" v-model="form.description" rows="4" placeholder="Nhập mô tả sản phẩm..."></textarea>
+                      <textarea class="form-control" v-model="form.description" rows="4"
+                        placeholder="Nhập mô tả sản phẩm..."></textarea>
                     </div>
                     <div class="row">
                       <div class="col-6 mb-3">
@@ -120,7 +129,8 @@
                       <div class="col-6 mb-3">
                         <label class="form-label fw-medium invisible">Nổi bật</label>
                         <div class="form-check mt-1">
-                          <input class="form-check-input" type="checkbox" id="is_featured" v-model="form.is_featured" :true-value="1" :false-value="0">
+                          <input class="form-check-input" type="checkbox" id="is_featured" v-model="form.is_featured"
+                            :true-value="1" :false-value="0">
                           <label class="form-check-label fw-medium" for="is_featured">Sản phẩm nổi bật</label>
                         </div>
                       </div>
@@ -141,46 +151,70 @@
                 <div v-for="(color, cIdx) in form.colors" :key="cIdx" class="card shadow-sm border-0 mb-3 color-block">
                   <div class="card-header bg-white d-flex justify-content-between align-items-center py-2">
                     <div class="d-flex align-items-center gap-2">
-                      <input type="color" class="form-control form-control-color p-1" style="width: 35px; height: 35px;" v-model="color.code">
-                      <input type="text" class="form-control form-control-sm fw-bold border-0 bg-light" placeholder="Tên màu (VD: Đen)" v-model="color.name" required>
+                      <input type="color" class="form-control form-control-color p-1" style="width: 35px; height: 35px;"
+                        v-model="color.code">
+                      <input type="text" class="form-control form-control-sm fw-bold border-0 bg-light"
+                        placeholder="Tên màu" v-model="color.name" required>
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-danger border-0" @click="removeColor(cIdx)"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-danger border-0" @click="removeColor(cIdx)"><i
+                        class="fa-solid fa-xmark"></i></button>
                   </div>
                   <div class="card-body p-3">
                     <div class="row">
                       <!-- Cột Ảnh -->
                       <div class="col-md-5 border-end pe-3">
-                        <label class="form-label small text-muted fw-medium mb-1"><i class="fa-regular fa-image me-1"></i> Ảnh màu này</label>
-                        <input type="file" class="form-control form-control-sm mb-2" multiple accept="image/*" @change="handleFileUpload($event, cIdx)">
+                        <label class="form-label small text-muted fw-medium mb-1"><i
+                            class="fa-regular fa-image me-1"></i> Ảnh màu này</label>
+                        <input type="file" class="form-control form-control-sm mb-2" multiple accept="image/*"
+                          @change="handleFileUpload($event, cIdx)" :key="'file-' + fileInputKey">
                         <div class="d-flex flex-wrap gap-2 mt-2">
                           <!-- Existing Images (from server) -->
-                          <div v-for="(path, eIdx) in color.existing_images" :key="'e'+eIdx" class="position-relative existing-image">
-                            <img :src="'/storage/' + path" class="rounded border object-fit-cover" style="width: 45px; height: 45px;">
+                          <div v-for="(path, eIdx) in color.existing_images" :key="'e' + eIdx"
+                            class="position-relative existing-image">
+                            <img :src="'/storage/' + path" class="rounded border object-fit-cover"
+                              style="width: 45px; height: 45px; object-position: top;">
                             <div class="position-absolute top-0 start-0" style="padding: 2px;">
-                              <input type="radio" name="primary_image" class="form-check-input m-0" :value="`existing_${cIdx}_${eIdx}`" v-model="form.primary_image_key" title="Chọn làm ảnh chính" style="cursor: pointer;">
+                              <input type="radio" name="primary_image" class="form-check-input m-0"
+                                :value="`existing_${cIdx}_${eIdx}`" v-model="form.primary_image_key"
+                                title="Chọn làm ảnh chính" style="cursor: pointer;">
                             </div>
+                            <button type="button" class="btn btn-danger p-0 position-absolute top-0 end-0 rounded-circle d-flex align-items-center justify-content-center" style="width: 14px; height: 14px; transform: translate(30%, -30%);" @click="removeExistingImage(cIdx, eIdx)">
+                              <i class="fa-solid fa-xmark" style="font-size: 9px;"></i>
+                            </button>
                           </div>
                           <!-- New Images (preview) -->
-                          <div v-for="(preview, pIdx) in color.preview_images" :key="'p'+pIdx" class="position-relative">
-                            <img :src="preview" class="rounded border object-fit-cover" style="width: 45px; height: 45px;">
+                          <div v-for="(preview, pIdx) in color.preview_images" :key="'p' + pIdx"
+                            class="position-relative">
+                            <img :src="preview" class="rounded border object-fit-cover"
+                              style="width: 45px; height: 45px; object-position: top;">
                             <div class="position-absolute top-0 start-0" style="padding: 2px;">
-                              <input type="radio" name="primary_image" class="form-check-input m-0" :value="`new_${cIdx}_${pIdx}`" v-model="form.primary_image_key" title="Chọn làm ảnh chính" style="cursor: pointer;">
+                              <input type="radio" name="primary_image" class="form-check-input m-0"
+                                :value="`new_${cIdx}_${pIdx}`" v-model="form.primary_image_key"
+                                title="Chọn làm ảnh chính" style="cursor: pointer;">
                             </div>
+                            <button type="button" class="btn btn-danger p-0 position-absolute top-0 end-0 rounded-circle d-flex align-items-center justify-content-center" style="width: 14px; height: 14px; transform: translate(30%, -30%);" @click="removePreviewImage(cIdx, pIdx)">
+                              <i class="fa-solid fa-xmark" style="font-size: 9px;"></i>
+                            </button>
                           </div>
                         </div>
                       </div>
-                      
+
                       <!-- Cột Size -->
                       <div class="col-md-7 ps-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                          <label class="form-label small text-muted fw-medium mb-0"><i class="fa-solid fa-ruler me-1"></i> Kích thước & Tồn kho</label>
-                          <button type="button" class="btn btn-sm btn-light text-primary py-0 px-2" @click="addSize(cIdx)"><i class="fa-solid fa-plus"></i> Size</button>
+                          <label class="form-label small text-muted fw-medium mb-0"><i
+                              class="fa-solid fa-ruler me-1"></i> Kích thước & Tồn kho</label>
+                          <button type="button" class="btn btn-sm btn-light text-primary py-0 px-2"
+                            @click="addSize(cIdx)"><i class="fa-solid fa-plus"></i> Size</button>
                         </div>
                         <div class="sizes-container">
                           <div v-for="(size, sIdx) in color.sizes" :key="sIdx" class="d-flex gap-2 mb-2 size-row">
-                            <input type="text" class="form-control form-control-sm" placeholder="Tên Size" v-model="size.name" required>
-                            <input type="number" class="form-control form-control-sm" placeholder="Tồn kho" v-model="size.stock" min="0" required>
-                            <button type="button" class="btn btn-sm btn-light text-danger" @click="removeSize(cIdx, sIdx)"><i class="fa-solid fa-trash-can"></i></button>
+                            <input type="text" class="form-control form-control-sm" placeholder="Tên Size"
+                              v-model="size.name" required>
+                            <input type="number" class="form-control form-control-sm" placeholder="Tồn kho"
+                              v-model="size.stock" min="0" required>
+                            <button type="button" class="btn btn-sm btn-light text-danger"
+                              @click="removeSize(cIdx, sIdx)"><i class="fa-solid fa-trash-can"></i></button>
                           </div>
                         </div>
                       </div>
@@ -219,6 +253,7 @@ const modalRef = ref(null);
 let bootstrapModal = null;
 const isEditing = ref(false);
 const editingId = ref(null);
+const fileInputKey = ref(0);
 
 const form = useForm({
   name: '',
@@ -266,23 +301,32 @@ const getPrimaryImage = (product) => {
 const openCreateModal = () => {
   isEditing.value = false;
   editingId.value = null;
+  fileInputKey.value++;
   form.reset();
   form.clearErrors();
+  
+  form.name = '';
+  form.category_id = '';
+  form.price = 0;
+  form.description = '';
+  form.status = 'active';
+  form.is_featured = 0;
   form.primary_image_key = null;
   form._method = 'POST';
-  
+
   form.colors = [];
   addColor(); // Add default color
-  
+
   bootstrapModal.show();
 };
 
 const openEditModal = async (id) => {
   isEditing.value = true;
   editingId.value = id;
+  fileInputKey.value++;
   form.clearErrors();
   form._method = 'PUT'; // Inertia needs _method for File uploads on PUT requests
-  
+
   try {
     const response = await fetch(`/admin/products/${id}`, {
       headers: {
@@ -290,14 +334,14 @@ const openEditModal = async (id) => {
       }
     });
     const data = await response.json();
-    
+
     form.name = data.name;
     form.category_id = data.category_id;
     form.price = data.price;
     form.description = data.description || '';
     form.status = data.status;
     form.is_featured = data.is_featured;
-    
+
     let primaryKeyFound = null;
     form.colors = [];
     if (data.colors && data.colors.length > 0) {
@@ -311,14 +355,14 @@ const openEditModal = async (id) => {
             }
           });
         }
-        
+
         let sizes = [];
         if (color.sizes && color.sizes.length > 0) {
           sizes = color.sizes.map(s => ({ name: s.size_name, stock: s.stock }));
         } else {
           sizes = [{ name: '', stock: '' }];
         }
-        
+
         form.colors.push({
           name: color.color_name,
           code: color.color_code,
@@ -331,9 +375,9 @@ const openEditModal = async (id) => {
     } else {
       addColor();
     }
-    
+
     form.primary_image_key = primaryKeyFound;
-    
+
     bootstrapModal.show();
   } catch (error) {
     window.showToast('Không lấy được thông tin sản phẩm', 'error');
@@ -369,17 +413,34 @@ const removeSize = (cIdx, sIdx) => {
   form.colors[cIdx].sizes.splice(sIdx, 1);
 };
 
+const removeExistingImage = (cIdx, eIdx) => {
+  const removedKey = `existing_${cIdx}_${eIdx}`;
+  form.colors[cIdx].existing_images.splice(eIdx, 1);
+  if (form.primary_image_key === removedKey) {
+    form.primary_image_key = null;
+  }
+};
+
+const removePreviewImage = (cIdx, pIdx) => {
+  const removedKey = `new_${cIdx}_${pIdx}`;
+  form.colors[cIdx].preview_images.splice(pIdx, 1);
+  form.colors[cIdx].images.splice(pIdx, 1);
+  if (form.primary_image_key === removedKey) {
+    form.primary_image_key = null;
+  }
+};
+
 const handleFileUpload = (event, cIdx) => {
   const files = event.target.files;
   const color = form.colors[cIdx];
-  
+
   if (files.length > 0) {
     const startIdx = color.preview_images.length;
     Array.from(files).forEach((file, pIdx) => {
       color.images.push(file);
       color.preview_images.push(URL.createObjectURL(file));
       if (!form.primary_image_key) {
-         form.primary_image_key = `new_${cIdx}_${startIdx + pIdx}`;
+        form.primary_image_key = `new_${cIdx}_${startIdx + pIdx}`;
       }
     });
   }
@@ -387,7 +448,7 @@ const handleFileUpload = (event, cIdx) => {
 
 const submitForm = () => {
   if (form.colors.length === 0) return;
-  
+
   // Validation client-side for sizes
   let hasError = false;
   for (const color of form.colors) {
@@ -400,7 +461,7 @@ const submitForm = () => {
   if (hasError) return;
 
   const url = isEditing.value ? `/admin/products/${editingId.value}` : '/admin/products';
-  
+
   form.post(url, {
     forceFormData: true,
     onSuccess: () => {

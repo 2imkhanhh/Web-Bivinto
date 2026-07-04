@@ -126,7 +126,7 @@
                 <ul class="nav custom-product-tabs flex-nowrap overflow-x-auto overflow-y-hidden text-nowrap pb-0 justify-content-between">
                     @forelse($categories as $index => $category)
                         <li class="nav-item flex-fill text-center">
-                            <a class="nav-link {{ $index === 0 ? 'active' : '' }} fw-medium px-0 text-muted" href="#">{{ mb_strtoupper($category->name, 'UTF-8') }}</a>
+                            <a class="nav-link category-tab {{ $index === 0 ? 'active' : '' }} fw-medium px-0 text-muted" data-id="{{ $category->id }}" href="#">{{ mb_strtoupper($category->name, 'UTF-8') }}</a>
                         </li>
                     @empty
                         <li class="nav-item flex-fill text-center">
@@ -138,15 +138,20 @@
 
             <!-- Product Grid -->
             <div class="row gx-1 gy-5">
-                @for ($i = 0; $i < 16; $i++)
-                    <div class="col-6 col-md-4 col-lg-3">
+                @forelse ($featuredProducts as $product)
+                    @php
+                        $primaryImage = $product->images->where('is_primary', true)->first();
+                        $imagePath = $primaryImage ? $primaryImage->image_path : ($product->images->first() ? $product->images->first()->image_path : null);
+                        $imageUrl = $imagePath ? asset('storage/' . $imagePath) : asset('images/product1.png');
+                    @endphp
+                    <div class="col-6 col-md-4 col-lg-3 product-item" data-category-id="{{ $product->category_id }}">
                         <div class="product-card h-100 d-flex flex-column">
                             <div class="product-img-wrapper mb-3">
-                                <img src="{{ asset('images/product' . (($i % 4) + 1) . '.png') }}" alt="Áo Sơ Mi"
+                                <img src="{{ $imageUrl }}" alt="{{ $product->name }}"
                                     class="img-fluid w-100 object-fit-cover product-img">
                             </div>
-                            <h3 class="product-title text-truncate mb-1">Áo Sơ Mi Cộc Tay Cổ Đức</h3>
-                            <p class="product-price fw-bold mb-3">850.000đ</p>
+                            <h3 class="product-title text-truncate mb-1">{{ $product->name }}</h3>
+                            <p class="product-price fw-bold mb-3">{{ number_format($product->price, 0, ',', '.') }}đ</p>
                             <div class="mt-auto">
                                 <a href="/chi-tiet-san-pham" class="btn btn-outline-dark rounded-pill px-3 py-1 fw-medium">
                                     Xem Chi Tiết <i class="fa-solid fa-chevron-right ms-1 btn-icon-xs"></i>
@@ -154,7 +159,11 @@
                             </div>
                         </div>
                     </div>
-                @endfor
+                @empty
+                    <div class="col-12 text-center text-muted py-5">
+                        <p>Chưa có sản phẩm nổi bật nào.</p>
+                    </div>
+                @endforelse
             </div>
 
             <!-- Load More Button -->
@@ -224,3 +233,43 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabs = document.querySelectorAll('.category-tab');
+        const products = document.querySelectorAll('.product-item');
+        
+        function filterProducts(categoryId) {
+            let count = 0;
+            products.forEach(product => {
+                if (product.dataset.categoryId === categoryId) {
+                    product.style.display = 'block';
+                    count++;
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+            
+            // Optional: Hide/Show a "No products" message if count === 0
+        }
+
+        // Initialize with the first tab
+        if (tabs.length > 0) {
+            filterProducts(tabs[0].dataset.id);
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function (e) {
+                e.preventDefault();
+                // Remove active class from all
+                tabs.forEach(t => t.classList.remove('active'));
+                // Add to clicked
+                this.classList.add('active');
+                
+                filterProducts(this.dataset.id);
+            });
+        });
+    });
+</script>
+@endpush
