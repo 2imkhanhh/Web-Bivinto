@@ -24,7 +24,7 @@ Route::get('/ho-so', function () {
 
 Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/', function () {
-        return view('admin.dashboard');
+        return Inertia\Inertia::render('Admin/Dashboard');
     });
     
     Route::resource('categories', CategoryController::class);

@@ -17,7 +17,10 @@ class CategoryController extends Controller
         // Lấy danh mục cha 
         $parentCategories = Category::whereNull('parent_id')->get();
 
-        return view('admin.categories', compact('categories', 'parentCategories'));
+        return \Inertia\Inertia::render('Admin/Categories', [
+            'categories' => $categories,
+            'parentCategories' => $parentCategories
+        ]);
     }
 
     public function store(Request $request)
@@ -51,11 +54,7 @@ class CategoryController extends Controller
             'display_order' => $request->input('display_order', 0),
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Thêm danh mục thành công!',
-            'category' => $category->load('parent')
-        ]);
+        return redirect()->back();
     }
 
     public function edit(Category $category)
@@ -74,7 +73,7 @@ class CategoryController extends Controller
         ]);
 
         if ($request->parent_id == $category->id) {
-            return response()->json(['success' => false, 'message' => 'Danh mục cha không hợp lệ.'], 400);
+            return redirect()->back()->withErrors(['parent_id' => 'Danh mục cha không hợp lệ.']);
         }
 
         $slug = Str::slug($request->name);
@@ -97,24 +96,17 @@ class CategoryController extends Controller
             'display_order' => $request->input('display_order', 0),
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Cập nhật danh mục thành công!',
-            'category' => $category->load('parent')
-        ]);
+        return redirect()->back();
     }
 
     public function destroy(Category $category)
     {
         if ($category->children()->count() > 0) {
-            return response()->json(['success' => false, 'message' => 'Không thể xóa vì còn danh mục con.'], 400);
+            return redirect()->back()->withErrors(['error' => 'Không thể xóa vì còn danh mục con.']);
         }
 
         $category->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Xóa danh mục thành công!'
-        ]);
+        return redirect()->back();
     }
 }

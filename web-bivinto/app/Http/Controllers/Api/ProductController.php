@@ -15,9 +15,12 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['category', 'colors.sizes', 'colors.images'])->orderBy('id', 'desc')->get();
+        $products = Product::with(['category', 'colors.sizes', 'colors.images', 'images'])->orderBy('id', 'desc')->get();
         $categories = Category::where('status', 'active')->get();
-        return view('admin.products', compact('products', 'categories'));
+        return \Inertia\Inertia::render('Admin/Products', [
+            'products' => $products,
+            'categories' => $categories
+        ]);
     }
 
     public function store(Request $request)
@@ -68,10 +71,11 @@ class ProductController extends Controller
                     if ($request->hasFile("colors.{$index}.images")) {
                         foreach ($request->file("colors.{$index}.images") as $imgIndex => $file) {
                             $path = $file->store('products', 'public');
+                            $isPrimary = ($request->primary_image_key === "new_{$index}_{$imgIndex}");
                             $color->images()->create([
                                 'product_id' => $product->id, // also link directly to product
                                 'image_path' => $path,
-                                'is_primary' => $imgIndex === 0 // first image is primary
+                                'is_primary' => $isPrimary
                             ]);
                         }
                     }
@@ -79,23 +83,17 @@ class ProductController extends Controller
             }
 
             DB::commit();
-            return response()->json([
-                'success' => true,
-                'message' => 'Thêm sản phẩm thành công!'
-            ]);
+            return redirect()->back();
         } catch (\Throwable $e) {
             DB::rollBack();
             Log::error($e);
-            return response()->json([
-                'success' => false,
-                'message' => 'Lỗi: ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine()
-            ], 500);
+            return redirect()->back()->withErrors(['error' => 'Lỗi: ' . $e->getMessage()]);
         }
     }
 
     public function show(Product $product)
     {
-        return response()->json($product->load(['colors.sizes', 'colors.images']));
+        return response()->json($product->load(['colors.sizes', 'colors.images', 'images']));
     }
 
     public function update(Request $request, Product $product)
@@ -167,19 +165,23 @@ class ProductController extends Controller
                     if ($request->hasFile("colors.{$index}.images")) {
                         foreach ($request->file("colors.{$index}.images") as $imgIndex => $file) {
                             $path = $file->store('products', 'public');
+                            $isPrimary = ($request->primary_image_key === "new_{$index}_{$imgIndex}");
                             $color->images()->create([
                                 'product_id' => $product->id,
                                 'image_path' => $path,
-                                'is_primary' => $imgIndex === 0
+                                'is_primary' => $isPrimary
                             ]);
                         }
-                    } else if (isset($colorData['existing_images'])) {
+                    }
+                    
+                    if (isset($colorData['existing_images'])) {
                         // User might send back existing image paths
                         foreach ($colorData['existing_images'] as $imgIndex => $path) {
+                            $isPrimary = ($request->primary_image_key === "existing_{$index}_{$imgIndex}");
                             $color->images()->create([
                                 'product_id' => $product->id,
                                 'image_path' => $path,
-                                'is_primary' => $imgIndex === 0
+                                'is_primary' => $isPrimary
                             ]);
                         }
                     }
@@ -187,17 +189,11 @@ class ProductController extends Controller
             }
 
             DB::commit();
-            return response()->json([
-                'success' => true,
-                'message' => 'Cập nhật sản phẩm thành công!'
-            ]);
+            return redirect()->back();
         } catch (\Throwable $e) {
             DB::rollBack();
             Log::error($e);
-            return response()->json([
-                'success' => false,
-                'message' => 'Lỗi: ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine()
-            ], 500);
+            return redirect()->back()->withErrors(['error' => 'Lỗi: ' . $e->getMessage()]);
         }
     }
 
@@ -208,9 +204,9 @@ class ProductController extends Controller
                 Storage::disk('public')->delete($image->image_path);
             }
             $product->delete();
-            return response()->json(['success' => true, 'message' => 'Xóa sản phẩm thành công!']);
+            return redirect()->back();
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Lỗi xóa sản phẩm.'], 500);
+            return redirect()->back()->withErrors(['error' => 'Lỗi xóa sản phẩm.']);
         }
     }
 }
