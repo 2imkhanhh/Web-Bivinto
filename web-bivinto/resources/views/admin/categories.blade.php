@@ -16,10 +16,9 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th class="border-0 px-4" width="5%">#</th>
+                            <th class="border-0 px-4" width="5%">STT</th>
                             <th class="border-0">Tên danh mục</th>
                             <th class="border-0 text-center">Nổi bật</th>
-                            <th class="border-0 text-center">Thứ tự</th>
                             <th class="border-0">Danh mục cha</th>
                             <th class="border-0">Trạng thái</th>
                             <th class="border-0 text-center" width="15%">Hành động</th>
@@ -28,7 +27,7 @@
                     <tbody>
                         @forelse($categories as $category)
                             <tr id="row-{{ $category->id }}">
-                                <td class="px-4 text-muted">{{ $category->id }}</td>
+                                <td class="px-4 text-muted">{{ $category->display_order }}</td>
                                 <td class="fw-medium text-dark">{{ $category->name }}</td>
                                 <td class="text-center">
                                     @if ($category->is_featured)
@@ -37,7 +36,6 @@
                                         <i class="fa-regular fa-star text-muted"></i>
                                     @endif
                                 </td>
-                                <td class="text-center">{{ $category->display_order }}</td>
                                 <td>
                                     @if ($category->parent)
                                         <span class="badge bg-secondary">{{ $category->parent->name }}</span>

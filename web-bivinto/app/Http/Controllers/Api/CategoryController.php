@@ -12,8 +12,8 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        // Lấy tất cả danh mục 
-        $categories = Category::with('parent')->orderBy('id', 'asc')->get();
+        // Lấy tất cả danh mục sắp xếp theo thứ tự hiển thị (STT)
+        $categories = Category::with('parent')->orderBy('display_order', 'asc')->get();
         // Lấy danh mục cha 
         $parentCategories = Category::whereNull('parent_id')->get();
 
