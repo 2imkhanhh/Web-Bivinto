@@ -28,4 +28,5 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     });
     
     Route::resource('categories', CategoryController::class);
+    Route::resource('products', App\Http\Controllers\Api\ProductController::class);
 });

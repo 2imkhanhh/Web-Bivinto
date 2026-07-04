@@ -142,7 +142,6 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const categoryModal = new bootstrap.Modal(document.getElementById('categoryModal'));
         const form = document.getElementById('categoryForm');
@@ -232,16 +231,8 @@
                     categoryModal.hide();
 
                     // Show toast
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'success',
-                        title: result.message,
-                        showConfirmButton: false,
-                        timer: 2000
-                    }).then(() => {
-                        window.location.reload();
-                    });
+                    showToast(result.message, 'success');
+                    setTimeout(() => window.location.reload(), 1500);
 
                 } else if (response.status === 422) {
                     // Validation error
@@ -254,10 +245,11 @@
                         }
                     }
                 } else {
-                    Swal.fire('Lỗi', result.message || 'Có lỗi xảy ra.', 'error');
+                    showToast(result.message || 'Đã có lỗi xảy ra', 'error');
                 }
             } catch (error) {
-                Swal.fire('Lỗi', 'Mất kết nối máy chủ.', 'error');
+                console.error(error);
+                showToast('Không thể kết nối đến máy chủ', 'error');
             } finally {
                 btnSubmit.disabled = false;
                 btnSubmit.textContent = 'Lưu lại';
@@ -289,21 +281,13 @@
                         const data = await response.json();
 
                         if (response.ok && data.success) {
-                            Swal.fire({
-                                toast: true,
-                                position: 'top-end',
-                                icon: 'success',
-                                title: data.message,
-                                showConfirmButton: false,
-                                timer: 2000
-                            }).then(() => {
-                                window.location.reload();
-                            });
+                            showToast(data.message, 'success');
+                            setTimeout(() => window.location.reload(), 1500);
                         } else {
-                            Swal.fire('Lỗi', data.message || 'Không thể xóa.', 'error');
+                            showToast(data.message || 'Không thể xóa danh mục', 'error');
                         }
                     } catch (error) {
-                        Swal.fire('Lỗi', 'Mất kết nối máy chủ.', 'error');
+                        showToast('Không thể kết nối đến máy chủ', 'error');
                     }
                 }
             });
