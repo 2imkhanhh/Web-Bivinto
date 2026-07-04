@@ -169,13 +169,8 @@
                     const data = await response.json();
 
                     if (response.ok) {
-                        // Save tokens to localStorage
-                        localStorage.setItem('access_token', data.access_token);
-                        localStorage.setItem('refresh_token', data.refresh_token);
+                        // Save user profile to localStorage
                         localStorage.setItem('user', JSON.stringify(data.user));
-
-                        // Set cookie for backend web routes auth
-                        document.cookie = "access_token=" + data.access_token + "; path=/; max-age=3600";
 
                         // Redirect based on role
                         if (data.user && data.user.role === 'admin') {

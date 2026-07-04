@@ -38,8 +38,8 @@ class JwtGuard implements Guard
         }
 
         $token = $this->request->bearerToken();
-        if (!$token && isset($_COOKIE['access_token'])) {
-            $token = $_COOKIE['access_token'];
+        if (!$token) {
+            $token = $this->request->cookie('access_token');
         }
         if ($token) {
             try {

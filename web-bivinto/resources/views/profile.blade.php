@@ -120,10 +120,9 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Kiểm tra đăng nhập
-        const token = localStorage.getItem('access_token');
         const userData = localStorage.getItem('user');
         
-        if (!token || !userData) {
+        if (!userData) {
             window.location.href = '/tai-khoan';
             return;
         }
@@ -157,14 +156,11 @@
             }
 
             try {
-                const token = localStorage.getItem('access_token');
-                
                 const response = await fetch('/api/profile', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer ' + token
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
                         name: name,

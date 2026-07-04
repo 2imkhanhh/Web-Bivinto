@@ -244,31 +244,22 @@
         window.logout = async function(e) {
             if (e) e.preventDefault();
             
-            // Xóa Cookie
-            document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            
-            const token = localStorage.getItem('refresh_token');
-            
-            // Xóa Local Storage
+            // Gọi API logout để xóa cookie token trên Server
+            try {
+                await fetch('/api/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+            } catch (err) {}
+
+            // Xóa thông tin user và dọn dẹp các token cũ (nếu còn sót lại từ bản trước) khỏi Local Storage
+            localStorage.removeItem('user');
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
-            localStorage.removeItem('user');
             
-            // Gọi API logout để xóa token trên DB
-            if (token) {
-                try {
-                    await fetch('/api/logout', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({ refresh_token: token })
-                    });
-                } catch (err) {}
-            }
-
-            // Reload trang hoặc về trang đăng nhập
             window.location.href = '/tai-khoan';
         };
 

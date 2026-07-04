@@ -99,21 +99,19 @@ class AuthController extends Controller
         $refreshToken = $this->generateRefreshToken($user);
 
         return response()->json([
-            'access_token' => $accessToken,
-            'refresh_token' => $refreshToken,
-            'token_type' => 'bearer',
-            'expires_in' => 3600,
+            'message' => 'Đăng nhập thành công',
             'user' => $user
-        ]);
+        ])->cookie('access_token', $accessToken, 60, '/', null, false, true)
+          ->cookie('refresh_token', $refreshToken, 60 * 24 * 30, '/', null, false, true);
     }
 
     public function refresh(Request $request)
     {
-        $request->validate([
-            'refresh_token' => 'required'
-        ]);
+        $refreshTokenStr = $request->cookie('refresh_token');
 
-        $refreshTokenStr = $request->refresh_token;
+        if (!$refreshTokenStr) {
+            return response()->json(['error' => 'Không tìm thấy refresh token.'], 401);
+        }
 
         $token = RefreshToken::where('token', $refreshTokenStr)
             ->where('expires_at', '>', Carbon::now())
@@ -133,22 +131,22 @@ class AuthController extends Controller
         $newRefreshToken = $this->generateRefreshToken($user);
 
         return response()->json([
-            'access_token' => $newAccessToken,
-            'refresh_token' => $newRefreshToken,
-            'token_type' => 'bearer',
-            'expires_in' => 3600
-        ]);
+            'message' => 'Làm mới token thành công'
+        ])->cookie('access_token', $newAccessToken, 60, '/', null, false, true)
+          ->cookie('refresh_token', $newRefreshToken, 60 * 24 * 30, '/', null, false, true);
     }
 
     public function logout(Request $request)
     {
-        $request->validate([
-            'refresh_token' => 'required'
-        ]);
+        $refreshToken = $request->cookie('refresh_token');
 
-        RefreshToken::where('token', $request->refresh_token)->delete();
+        if ($refreshToken) {
+            RefreshToken::where('token', $refreshToken)->delete();
+        }
 
-        return response()->json(['message' => 'Đăng xuất thành công']);
+        return response()->json(['message' => 'Đăng xuất thành công'])
+            ->withoutCookie('access_token')
+            ->withoutCookie('refresh_token');
     }
 
     public function me(Request $request)
