@@ -41,9 +41,22 @@ class PageController extends Controller
         return view('products', compact('categories'));
     }
 
-    public function productDetail()
+    public function productDetail($slug)
     {
-        return view('product-detail');
+        $product = \App\Models\Product::with(['colors.sizes', 'colors.images', 'category'])
+            ->where('slug', $slug)
+            ->where('status', 'active')
+            ->firstOrFail();
+
+        // Similar products from same category
+        $similarProducts = \App\Models\Product::with(['images'])
+            ->where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->where('status', 'active')
+            ->take(8)
+            ->get();
+
+        return view('product-detail', compact('product', 'similarProducts'));
     }
 
     public function collaboration()

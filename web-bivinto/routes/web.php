@@ -8,7 +8,7 @@ use App\Http\Controllers\PageController;
 Route::get('/', [PageController::class, 'home']);
 Route::get('/ve-chung-toi', [PageController::class, 'aboutUs']);
 Route::get('/san-pham', [PageController::class, 'products']);
-Route::get('/chi-tiet-san-pham', [PageController::class, 'productDetail']);
+Route::get('/chi-tiet-san-pham/{slug}', [PageController::class, 'productDetail']);
 Route::get('/hop-tac', [PageController::class, 'collaboration']);
 Route::get('/chinh-sach', [PageController::class, 'policy']);
 Route::get('/blogs', [PageController::class, 'blogs']);
