@@ -2,13 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/refresh', [AuthController::class, 'refresh']);
-Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::middleware(['auth:api'])->group(function () {
-    Route::get('/me', [AuthController::class, 'me']);
-    Route::put('/profile', [AuthController::class, 'updateProfile']);
+// Các API route yêu cầu session thay vì JWT (cho user profile v.v)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/me', function(Request $request) {
+        return response()->json($request->user());
+    });
+    // Add updateProfile here if needed, or move to web routes.
 });

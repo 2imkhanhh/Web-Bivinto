@@ -10,6 +10,7 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Custom CSS -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js', 'public/css/style.css'])
     @stack('styles')
 </head>
@@ -35,7 +36,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" placeholder="Tìm kiếm">
         </div>
-        @if(auth('api')->check() && !auth('api')->user()->isAdmin())
+        @if(auth()->check() && !auth()->user()->isAdmin())
         <div class="user-area d-flex align-items-center justify-content-center dropdown hover-dropdown">
             <a href="#" class="text-decoration-none d-flex align-items-center justify-content-center w-100 h-100">
                 <i class="fa-regular fa-user"></i>
@@ -87,14 +88,14 @@
         </div>
         <div class="offcanvas-body">
             <div class="nav flex-column font-google-sans">
-                @if(auth('api')->check() && !auth('api')->user()->isAdmin())
+                @if(auth()->check() && !auth()->user()->isAdmin())
                     <div class="d-flex align-items-center gap-3 py-3 border-bottom">
                         <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                             <i class="fa-solid fa-user"></i>
                         </div>
                         <div>
-                            <div class="fw-bold">{{ auth('api')->user()->name }}</div>
-                            <div class="text-muted small">{{ auth('api')->user()->email }}</div>
+                            <div class="fw-bold">{{ auth()->user()->name }}</div>
+                            <div class="text-muted small">{{ auth()->user()->email }}</div>
                         </div>
                     </div>
                     <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/ho-so">TÀI KHOẢN CỦA TÔI</a>
@@ -107,7 +108,7 @@
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/hop-tac">HỢP TÁC</a>
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/chinh-sach">CHÍNH SÁCH</a>
                 <a class="nav-link text-dark py-3 fw-semibold" href="/blogs">BLOGS</a>
-                @if(auth('api')->check() && !auth('api')->user()->isAdmin())
+                @if(auth()->check() && !auth()->user()->isAdmin())
                     <a class="nav-link text-danger border-top py-3 fw-semibold" href="#" onclick="logout(event)">ĐĂNG XUẤT</a>
                 @endif
             </div>
@@ -244,18 +245,18 @@
         window.logout = async function(e) {
             if (e) e.preventDefault();
             
-            // Gọi API logout để xóa cookie token trên Server
             try {
-                await fetch('/api/logout', {
+                await fetch('/logout', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 });
             } catch (err) {}
 
-            // Xóa thông tin user và dọn dẹp các token cũ (nếu còn sót lại từ bản trước) khỏi Local Storage
+            // Dọn dẹp local storage nếu còn
             localStorage.removeItem('user');
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');

@@ -112,11 +112,12 @@
                 const password = document.getElementById('reg_password').value;
 
                 try {
-                    const response = await fetch('/api/register', {
+                    const response = await fetch('/register', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Accept': 'application/json'
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         },
                         body: JSON.stringify({ name, email, phone, password })
                     });
@@ -157,11 +158,12 @@
                 const password = document.getElementById('login_password').value;
 
                 try {
-                    const response = await fetch('/api/login', {
+                    const response = await fetch('/login', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Accept': 'application/json'
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         },
                         body: JSON.stringify({ email, password })
                     });
@@ -169,9 +171,6 @@
                     const data = await response.json();
 
                     if (response.ok) {
-                        // Save user profile to localStorage
-                        localStorage.setItem('user', JSON.stringify(data.user));
-
                         // Redirect based on role
                         if (data.user && data.user.role === 'admin') {
                             window.location.href = '/admin';

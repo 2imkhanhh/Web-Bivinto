@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Admin\CategoryController;
 
 use App\Http\Controllers\PageController;
 
@@ -22,11 +22,15 @@ Route::get('/ho-so', function () {
     return view('profile');
 });
 
+Route::post('/register', [App\Http\Controllers\AuthController::class, 'register']);
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
+Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
+
 Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/', function () {
         return Inertia\Inertia::render('Admin/Dashboard');
     });
     
     Route::resource('categories', CategoryController::class);
-    Route::resource('products', App\Http\Controllers\Api\ProductController::class);
+    Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
 });
