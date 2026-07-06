@@ -24,8 +24,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(product, index) in products" :key="product.id">
-                <td class="px-4 text-muted">{{ index + 1 }}</td>
+              <tr v-for="(product, index) in products.data" :key="product.id">
+                <td class="px-4 text-muted">{{ (products.current_page - 1) * products.per_page + index + 1 }}</td>
                 <td>
                   <div class="d-flex align-items-center">
                     <img v-if="product.images && product.images.length > 0"
@@ -63,7 +63,7 @@
                   </button>
                 </td>
               </tr>
-              <tr v-if="products.length === 0">
+              <tr v-if="products.data.length === 0">
                 <td colspan="7" class="text-center py-5 text-muted">
                   <i class="fa-solid fa-box-open fs-1 mb-3 text-light"></i><br>
                   Chưa có sản phẩm nào.
@@ -72,6 +72,41 @@
             </tbody>
           </table>
         </div>
+      </div>
+      <div class="card-footer bg-white border-0 py-3 d-flex justify-content-between align-items-center"
+        v-if="products.total > 0">
+        <div class="text-muted small">
+          Hiển thị từ {{ products.from }} đến {{ products.to }} trong tổng số {{ products.total }} sản phẩm
+        </div>
+        <nav aria-label="Page navigation" class="d-flex align-items-center gap-2">
+          <!-- Nút Trước -->
+          <Link v-if="products.links[0].url" :href="products.links[0].url" class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
+            <i class="fa-solid fa-chevron-left fa-xs"></i> Trước
+          </Link>
+          <button v-else class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium" disabled>
+            <i class="fa-solid fa-chevron-left fa-xs"></i> Trước
+          </button>
+
+          <!-- Các trang số -->
+          <ul class="pagination pagination-sm mb-0 d-flex gap-1">
+            <template v-for="(link, index) in products.links.slice(1, -1)" :key="index">
+              <li class="page-item" :class="{ active: link.active }">
+                <Link v-if="link.url" :href="link.url" class="page-link border-0 rounded shadow-sm px-3 fw-medium"
+                  :class="{ 'bg-dark text-white': link.active, 'bg-light text-dark': !link.active }" v-html="link.label">
+                </Link>
+                <span v-else class="page-link border-0 rounded text-muted shadow-sm bg-light px-3 fw-medium" v-html="link.label"></span>
+              </li>
+            </template>
+          </ul>
+
+          <!-- Nút Sau -->
+          <Link v-if="products.links[products.links.length - 1].url" :href="products.links[products.links.length - 1].url" class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
+            Sau <i class="fa-solid fa-chevron-right fa-xs"></i>
+          </Link>
+          <button v-else class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium" disabled>
+            Sau <i class="fa-solid fa-chevron-right fa-xs"></i>
+          </button>
+        </nav>
       </div>
     </div>
 
@@ -241,11 +276,11 @@
 
 <script setup>
 import Layout from './Layout.vue';
-import { Head, useForm, router } from '@inertiajs/vue3';
+import { Head, Link, useForm, router } from '@inertiajs/vue3';
 import { ref, onMounted, computed } from 'vue';
 
 const props = defineProps({
-  products: Array,
+  products: Object,
   categories: Array,
 });
 

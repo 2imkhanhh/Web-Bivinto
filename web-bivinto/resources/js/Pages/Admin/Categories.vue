@@ -22,8 +22,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="category in categories" :key="category.id">
-                <td class="px-4 text-muted">{{ category.display_order }}</td>
+              <tr v-for="(category, index) in categories.data" :key="category.id">
+                <td class="px-4 text-muted">{{ (categories.current_page - 1) * categories.per_page + index + 1 }}</td>
                 <td class="fw-medium text-dark">{{ category.name }}</td>
                 <td class="text-center">
                   <i v-if="category.is_featured" class="fa-solid fa-star text-warning"></i>
@@ -46,7 +46,7 @@
                   </button>
                 </td>
               </tr>
-              <tr v-if="categories.length === 0">
+              <tr v-if="categories.data.length === 0">
                 <td colspan="6" class="text-center py-4 text-muted">
                   Chưa có danh mục nào.
                 </td>
@@ -54,6 +54,41 @@
             </tbody>
           </table>
         </div>
+      </div>
+      <div class="card-footer bg-white border-0 py-3 d-flex justify-content-between align-items-center"
+        v-if="categories.total > 0">
+        <div class="text-muted small">
+          Hiển thị từ {{ categories.from }} đến {{ categories.to }} trong tổng số {{ categories.total }} danh mục
+        </div>
+        <nav aria-label="Page navigation" class="d-flex align-items-center gap-2">
+          <!-- Nút Trước -->
+          <Link v-if="categories.links[0].url" :href="categories.links[0].url" class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
+            <i class="fa-solid fa-chevron-left fa-xs"></i> Trước
+          </Link>
+          <button v-else class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium" disabled>
+            <i class="fa-solid fa-chevron-left fa-xs"></i> Trước
+          </button>
+
+          <!-- Các trang số -->
+          <ul class="pagination pagination-sm mb-0 d-flex gap-1">
+            <template v-for="(link, index) in categories.links.slice(1, -1)" :key="index">
+              <li class="page-item" :class="{ active: link.active }">
+                <Link v-if="link.url" :href="link.url" class="page-link border-0 rounded shadow-sm px-3 fw-medium"
+                  :class="{ 'bg-dark text-white': link.active, 'bg-light text-dark': !link.active }" v-html="link.label">
+                </Link>
+                <span v-else class="page-link border-0 rounded text-muted shadow-sm bg-light px-3 fw-medium" v-html="link.label"></span>
+              </li>
+            </template>
+          </ul>
+
+          <!-- Nút Sau -->
+          <Link v-if="categories.links[categories.links.length - 1].url" :href="categories.links[categories.links.length - 1].url" class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
+            Sau <i class="fa-solid fa-chevron-right fa-xs"></i>
+          </Link>
+          <button v-else class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium" disabled>
+            Sau <i class="fa-solid fa-chevron-right fa-xs"></i>
+          </button>
+        </nav>
       </div>
     </div>
 
@@ -123,11 +158,11 @@
 
 <script setup>
 import Layout from './Layout.vue';
-import { Head, useForm, router } from '@inertiajs/vue3';
+import { Head, Link, useForm, router } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
 
 const props = defineProps({
-  categories: Array,
+  categories: Object,
   parentCategories: Array,
 });
 

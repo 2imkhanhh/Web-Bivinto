@@ -28,7 +28,7 @@ class InventoryController extends Controller
                 $q->where('name', 'like', "%{$search}%");
             })
             ->orderBy('id', 'desc')
-            ->paginate(20)
+            ->paginate(15)
             ->withQueryString();
 
         foreach ($products as $product) {

@@ -65,16 +65,34 @@
         <div class="text-muted small">
           Hiển thị từ {{ products.from }} đến {{ products.to }} trong tổng số {{ products.total }} sản phẩm
         </div>
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" class="d-flex align-items-center gap-2">
+          <!-- Nút Trước -->
+          <Link v-if="products.links[0].url" :href="products.links[0].url" class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
+            <i class="fa-solid fa-chevron-left fa-xs"></i> Trước
+          </Link>
+          <button v-else class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium" disabled>
+            <i class="fa-solid fa-chevron-left fa-xs"></i> Trước
+          </button>
+
+          <!-- Các trang số -->
           <ul class="pagination pagination-sm mb-0 d-flex gap-1">
-            <li class="page-item" :class="{ disabled: !link.url, active: link.active }"
-              v-for="(link, index) in products.links" :key="index">
-              <Link v-if="link.url" :href="link.url" class="page-link border-0 rounded text-dark shadow-sm"
-                :class="{ 'bg-dark text-white': link.active, 'bg-light': !link.active }" v-html="link.label">
-              </Link>
-              <span v-else class="page-link border-0 rounded text-muted shadow-sm bg-light" v-html="link.label"></span>
-            </li>
+            <template v-for="(link, index) in products.links.slice(1, -1)" :key="index">
+              <li class="page-item" :class="{ active: link.active }">
+                <Link v-if="link.url" :href="link.url" class="page-link border-0 rounded shadow-sm px-3 fw-medium"
+                  :class="{ 'bg-dark text-white': link.active, 'bg-light text-dark': !link.active }" v-html="link.label">
+                </Link>
+                <span v-else class="page-link border-0 rounded text-muted shadow-sm bg-light px-3 fw-medium" v-html="link.label"></span>
+              </li>
+            </template>
           </ul>
+
+          <!-- Nút Sau -->
+          <Link v-if="products.links[products.links.length - 1].url" :href="products.links[products.links.length - 1].url" class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
+            Sau <i class="fa-solid fa-chevron-right fa-xs"></i>
+          </Link>
+          <button v-else class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium" disabled>
+            Sau <i class="fa-solid fa-chevron-right fa-xs"></i>
+          </button>
         </nav>
       </div>
     </div>
@@ -105,6 +123,7 @@ export default {
         router.get('/admin/inventory', { search: this.searchQuery }, { preserveState: true });
       }, 400);
     },
+
     getPrimaryImage(product) {
       if (!product.images || product.images.length === 0) return '';
       const primary = product.images.find(img => img.is_primary);
