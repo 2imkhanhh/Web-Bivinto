@@ -70,6 +70,10 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Đăng xuất thành công']);
+        if ($request->header('X-Inertia')) {
+            return \Inertia\Inertia::location('/tai-khoan');
+        }
+
+        return redirect('/tai-khoan');
     }
 }

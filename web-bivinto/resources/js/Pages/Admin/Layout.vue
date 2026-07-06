@@ -83,22 +83,15 @@ defineProps({
     }
 });
 
-const logout = async () => {
-    // Tạm thời gọi API logout cũ (vì chúng ta vẫn giữ auth API hiện tại theo như user setup)
-    // Nếu chuyển sang session auth hoàn toàn thì dùng router.post('/logout')
-    try {
-        await fetch('/api/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        });
-    } catch (err) {}
-    localStorage.removeItem('user');
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    window.location.href = '/tai-khoan';
+const logout = () => {
+    router.post('/logout', {}, {
+        onFinish: () => {
+            // Dọn dẹp local storage cũ nếu còn sót lại
+            localStorage.removeItem('user');
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+        }
+    });
 };
 
 // Global Toast logic
