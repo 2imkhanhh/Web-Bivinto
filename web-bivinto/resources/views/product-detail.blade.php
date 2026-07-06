@@ -69,7 +69,7 @@
                         <button class="btn-add-cart" id="btn-add-cart-action">
                             <i class="fa-solid fa-plus"></i> Thêm Vào Giỏ Hàng
                         </button>
-                        <button class="btn-buy-now">
+                        <button type="button" class="btn-buy-now" id="btn-buy-now-action">
                             Mua Ngay
                         </button>
                     </div>
@@ -413,46 +413,48 @@
                 panel.style.maxHeight = panel.scrollHeight + "px";
             });
 
-            // Handle Add to Cart
-            const btnAddCart = document.getElementById('btn-add-cart-action');
-            if (btnAddCart) {
-                btnAddCart.addEventListener('click', async function() {
-                    const quantity = parseInt(document.getElementById('quantity-input').value);
-                    const colorId = selectedColor ? selectedColor.id : null;
-                    const sizeId = selectedSize ? selectedSize.id : null;
+            // Function handle add to cart and optionally redirect
+            async function handleAddToCart(redirect = false) {
+                const quantity = parseInt(document.getElementById('quantity-input').value);
+                const colorId = selectedColor ? selectedColor.id : null;
+                const sizeId = selectedSize ? selectedSize.id : null;
 
-                    // Nếu sản phẩm có phân loại màu sắc/kích cỡ thì phải bắt buộc chọn
-                    if (product.colors && product.colors.length > 0 && !colorId) {
-                        return showToast('Vui lòng chọn màu sắc', 'warning');
+                // Nếu sản phẩm có phân loại màu sắc/kích cỡ thì phải bắt buộc chọn
+                if (product.colors && product.colors.length > 0 && !colorId) {
+                    return showToast('Vui lòng chọn màu sắc', 'warning');
+                }
+                if (selectedColor && selectedColor.sizes && selectedColor.sizes.length > 0 && !sizeId) {
+                    return showToast('Vui lòng chọn kích cỡ', 'warning');
+                }
+
+                try {
+                    const response = await fetch('/cart/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            product_id: product.id,
+                            product_color_id: colorId,
+                            product_size_id: sizeId,
+                            quantity: quantity
+                        })
+                    });
+
+                    if (response.status === 401) {
+                        showToast('Vui lòng đăng nhập để thực hiện', 'warning');
+                        return;
                     }
-                    if (selectedColor && selectedColor.sizes && selectedColor.sizes.length > 0 && !sizeId) {
-                        return showToast('Vui lòng chọn kích cỡ', 'warning');
-                    }
 
-                    try {
-                        const response = await fetch('/cart/add', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                            },
-                            body: JSON.stringify({
-                                product_id: product.id,
-                                product_color_id: colorId,
-                                product_size_id: sizeId,
-                                quantity: quantity
-                            })
-                        });
+                    const data = await response.json();
 
-                        if (response.status === 401) {
-                            showToast('Vui lòng đăng nhập để thêm vào giỏ hàng', 'warning');
-                            return;
-                        }
-
-                        const data = await response.json();
-
-                        if (response.ok) {
+                    if (response.ok) {
+                        if (redirect) {
+                            // Mua ngay thì chuyển thẳng sang trang thanh toán
+                            window.location.href = '/thanh-toan';
+                        } else {
                             showToast(data.message || 'Thêm vào giỏ hàng thành công!', 'success');
                             
                             // Cập nhật con số trên biểu tượng giỏ hàng ở thanh Menu
@@ -464,14 +466,25 @@
                                     badge.classList.add('d-flex');
                                 });
                             }
-                            
-                        } else {
-                            showToast(data.error || 'Đã có lỗi xảy ra', 'error');
                         }
-                    } catch (error) {
-                        showToast('Lỗi kết nối máy chủ', 'error');
+                    } else {
+                        showToast(data.error || 'Đã có lỗi xảy ra', 'error');
                     }
-                });
+                } catch (error) {
+                    showToast('Lỗi kết nối máy chủ', 'error');
+                }
+            }
+
+            // Handle Add to Cart
+            const btnAddCart = document.getElementById('btn-add-cart-action');
+            if (btnAddCart) {
+                btnAddCart.addEventListener('click', () => handleAddToCart(false));
+            }
+            
+            // Handle Buy Now
+            const btnBuyNow = document.getElementById('btn-buy-now-action');
+            if (btnBuyNow) {
+                btnBuyNow.addEventListener('click', () => handleAddToCart(true));
             }
         });
     </script>

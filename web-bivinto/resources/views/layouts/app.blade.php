@@ -55,7 +55,7 @@
             <i class="bx bx-user fs-5"></i>
         </a>
         @endif
-        <a href="/gio-hang" class="cart-area d-flex align-items-center justify-content-center text-decoration-none">
+        <a href="/thanh-toan" class="cart-area d-flex align-items-center justify-content-center text-decoration-none">
             <div class="position-relative d-inline-flex align-items-center justify-content-center">
                 <i class="bx bx-cart fs-5"></i>
                 @auth
@@ -80,7 +80,7 @@
         </div>
         <div class="mobile-actions d-flex align-items-center gap-2">
             <a href="#" class="text-dark p-2"><i class="bx bx-search fs-5"></i></a>
-            <a href="/gio-hang" class="text-dark p-2">
+            <a href="/thanh-toan" class="text-dark p-2">
                 <div class="position-relative d-inline-flex align-items-center justify-content-center">
                     <i class="bx bx-cart fs-5"></i>
                     @auth
