@@ -76,7 +76,7 @@
         .totals {
             margin-top: 15px;
             width: 50%;
-            float: right;
+            margin-left: auto;
         }
         .totals table th, .totals table td {
             border-bottom: none;
@@ -88,7 +88,6 @@
             font-weight: bold;
         }
         .footer {
-            clear: both;
             margin-top: 30px;
             text-align: center;
             font-size: 12px;
@@ -106,15 +105,20 @@
             width: 45%;
         }
         @page {
-            size: auto;
+            size: A4 portrait;
             margin: 10mm;
         }
         @media print {
+            body {
+                padding: 0;
+            }
             .invoice-box {
                 border: none;
                 box-shadow: none;
                 margin: 0;
                 padding: 0;
+                max-width: 100%;
+                width: 100%;
             }
             .no-print {
                 display: none;
