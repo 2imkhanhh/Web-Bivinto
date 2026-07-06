@@ -50,4 +50,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     
     Route::get('/orders/{id}/print', [App\Http\Controllers\Admin\OrderController::class, 'print']);
     Route::resource('orders', App\Http\Controllers\Admin\OrderController::class)->only(['index', 'show', 'update']);
+    
+    Route::get('/inventory', [App\Http\Controllers\Admin\InventoryController::class, 'index']);
+    Route::get('/inventory/history/{productSizeId}', [App\Http\Controllers\Admin\InventoryController::class, 'history']);
+    Route::get('/inventory/{id}', [App\Http\Controllers\Admin\InventoryController::class, 'show']);
+    Route::put('/inventory/update', [App\Http\Controllers\Admin\InventoryController::class, 'update']);
 });

@@ -1,27 +1,28 @@
 <template>
   <Layout title="Quản lý Đơn hàng">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h4 class="m-0">Danh sách đơn hàng</h4>
-      <div>
-        <select class="form-select d-inline-block w-auto" v-model="filterStatus" @change="filterOrders">
-          <option value="all">Tất cả trạng thái</option>
-          <option value="pending">Chờ xác nhận</option>
-          <option value="confirmed">Đã xác nhận (Chờ lấy hàng)</option>
-          <option value="shipping">Đang giao hàng</option>
-          <option value="completed">Hoàn thành</option>
-          <option value="cancelled">Đã hủy</option>
-        </select>
-      </div>
-    </div>
+    <Head title="Đơn hàng" />
 
     <!-- Success Message -->
-    <div v-if="$page.props.flash && $page.props.flash.success" class="alert alert-success alert-dismissible fade show"
+    <div v-if="$page.props.flash && $page.props.flash.success" class="alert alert-success alert-dismissible fade show mb-3"
       role="alert">
       {{ $page.props.flash.success }}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
     <div class="card shadow-sm border-0">
+      <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="m-0 font-weight-bold text-dark">Danh sách Đơn hàng</h5>
+        <div>
+          <select class="form-select d-inline-block w-auto form-select-sm" v-model="filterStatus" @change="filterOrders">
+            <option value="all">Tất cả trạng thái</option>
+            <option value="pending">Chờ xác nhận</option>
+            <option value="confirmed">Đã xác nhận (Chờ lấy hàng)</option>
+            <option value="shipping">Đang giao hàng</option>
+            <option value="completed">Hoàn thành</option>
+            <option value="cancelled">Đã hủy</option>
+          </select>
+        </div>
+      </div>
       <div class="card-body p-0">
         <div class="table-responsive">
           <table class="table table-hover mb-0 align-middle">
@@ -86,13 +87,14 @@
 </template>
 
 <script>
-import { Link, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import Layout from './Layout.vue';
 
 export default {
   components: {
     Layout,
     Link,
+    Head,
   },
   props: {
     orders: Object,

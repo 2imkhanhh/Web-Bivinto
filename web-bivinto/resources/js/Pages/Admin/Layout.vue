@@ -27,6 +27,11 @@
           </Link>
         </li>
         <li class="nav-item">
+          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/inventory') }" href="/admin/inventory">
+            <i class="fa-solid fa-warehouse"></i> Kho hàng
+          </Link>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="#">
             <i class="fa-solid fa-users"></i> Khách hàng
           </a>

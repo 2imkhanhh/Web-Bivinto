@@ -16,4 +16,9 @@ class ProductSize extends Model
     {
         return $this->belongsTo(ProductColor::class, 'product_color_id');
     }
+
+    public function stockHistories()
+    {
+        return $this->hasMany(StockHistory::class);
+    }
 }
