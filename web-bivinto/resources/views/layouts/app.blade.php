@@ -182,9 +182,9 @@
                 <div class="col-6 col-md-3 col-lg-2 ms-lg-auto">
                     <h5 class="footer-title">DANH MỤC</h5>
                     <ul class="list-unstyled footer-links d-flex flex-column gap-2">
-                        <li><a href="/ve-bivinto">Về Bivinto</a></li>
+                        <li><a href="/ve-chung-toi">Về Bivinto</a></li>
                         <li><a href="/san-pham">Sản Phẩm</a></li>
-                        <li><a href="#">Hợp Tác</a></li>
+                        <li><a href="/hop-tac">Hợp Tác</a></li>
                         <li><a href="/chinh-sach">Chính Sách</a></li>
                         <li><a href="/blogs">Blogs</a></li>
                     </ul>

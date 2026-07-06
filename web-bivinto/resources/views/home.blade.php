@@ -10,8 +10,8 @@
             <h1>MẶC ĐÚNG GU<br>COOL ĐÚNG CHẤT</h1>
             <p>Đồng hành cùng đàn ông việt trên hành trình xây dựng phong thái tự tin và chinh phục mục tiêu</p>
             <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
-                <a href="#" class="btn btn-black rounded-pill">Khám Phá Sản Phẩm</a>
-                <a href="#" class="btn btn-gray rounded-pill">Liên Hệ Hợp Tác</a>
+                <a href="/san-pham" class="btn btn-black rounded-pill">Khám Phá Sản Phẩm</a>
+                <a href="/hop-tac" class="btn btn-gray rounded-pill">Liên Hệ Hợp Tác</a>
             </div>
         </div>
     </section>
@@ -29,7 +29,7 @@
                         Bivinto được sinh ra từ khát vọng giúp đàn ông Việt dễ dàng tiếp cận thời trang chất lượng, xây dựng
                         phong thái tự tin và trưởng thành hơn mỗi ngày.
                     </p>
-                    <a href="#" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
+                    <a href="/ve-chung-toi" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
                         Xem Thêm <i class="fa-solid fa-chevron-right ms-2 btn-icon-sm"></i>
                     </a>
                 </div>
@@ -68,7 +68,7 @@
                             <h5 class="card-title text-uppercase mb-2 business-card-title">GIA CÔNG THỜI TRANG</h5>
                             <p class="card-text small mb-4 business-card-desc">Thiết kế, sản xuất, OEM/ ODM</p>
                             <div class="mt-auto">
-                                <a href="#" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
+                                <a href="/hop-tac" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
                                     Xem Thêm <i class="fa-solid fa-chevron-right ms-2 btn-icon-sm"></i>
                                 </a>
                             </div>
@@ -86,7 +86,7 @@
                             <p class="card-text small mb-4 business-card-desc">Chính sách hấp dẫn, nguồn hàng ổn định
                             </p>
                             <div class="mt-auto">
-                                <a href="#" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
+                                <a href="/hop-tac" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
                                     Xem Thêm <i class="fa-solid fa-chevron-right ms-2 btn-icon-sm"></i>
                                 </a>
                             </div>
@@ -103,7 +103,7 @@
                             <h5 class="card-title text-uppercase mb-2 business-card-title">BÁN LẺ</h5>
                             <p class="card-text small mb-4 business-card-desc">Thời trang hiện đại, chất lượng cao</p>
                             <div class="mt-auto">
-                                <a href="#" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
+                                <a href="/hop-tac" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
                                     Xem Thêm <i class="fa-solid fa-chevron-right ms-2 btn-icon-sm"></i>
                                 </a>
                             </div>
@@ -180,7 +180,7 @@
         <div class="container-fluid px-3 px-md-4 px-xl-5">
             <div class="blog-section-header d-flex justify-content-between align-items-center">
                 <h2 class="fw-bold mb-0 section-title">BLOGS</h2>
-                <a href="#" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
+                <a href="/blogs" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
                     Xem Thêm <i class="fa-solid fa-arrow-right ms-2 btn-icon-sm"></i>
                 </a>
             </div>

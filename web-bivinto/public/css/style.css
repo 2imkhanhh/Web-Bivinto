@@ -190,9 +190,14 @@ header {
     padding: 14px 32px;
 }
 
-.btn-black:hover {
-    background-color: #333;
-    color: #fff;
+.btn-black:hover,
+.btn-black:active,
+.btn-black:focus,
+.btn-black:active:focus {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-color: #333 !important;
+    box-shadow: none !important;
 }
 
 .btn-gray {
@@ -204,9 +209,14 @@ header {
     padding: 14px 32px;
 }
 
-.btn-gray:hover {
-    background-color: #a0a0a0;
-    color: #fff;
+.btn-gray:hover,
+.btn-gray:active,
+.btn-gray:focus,
+.btn-gray:active:focus {
+    background-color: #a0a0a0 !important;
+    color: #fff !important;
+    border-color: #a0a0a0 !important;
+    box-shadow: none !important;
 }
 
 /* --- About Section --- */
