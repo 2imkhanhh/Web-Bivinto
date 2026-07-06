@@ -76,6 +76,10 @@ class PageController extends Controller
 
     public function cart()
     {
-        return view('cart');
+        $cartItems = \App\Models\Cart::with(['product', 'color', 'size'])
+            ->where('user_id', auth()->id())
+            ->get();
+            
+        return view('cart', compact('cartItems'));
     }
 }

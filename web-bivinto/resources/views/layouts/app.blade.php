@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- Custom CSS -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js', 'public/css/style.css'])
@@ -33,13 +35,13 @@
             <a href="/blogs">BLOGS</a>
         </div>
         <div class="search-area d-flex align-items-center">
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i class="bx bx-search fs-5"></i>
             <input type="text" placeholder="Tìm kiếm">
         </div>
         @if(auth()->check() && !auth()->user()->isAdmin())
         <div class="user-area d-flex align-items-center justify-content-center dropdown hover-dropdown">
             <a href="#" class="text-decoration-none d-flex align-items-center justify-content-center w-100 h-100">
-                <i class="fa-regular fa-user"></i>
+                <i class="bx bx-user fs-5"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-end rounded-0 border-0 shadow mt-2">
                 <li><a class="dropdown-item" href="/ho-so">Tài khoản của tôi</a></li>
@@ -50,11 +52,21 @@
         </div>
         @else
         <a href="/tai-khoan" class="user-area d-flex align-items-center justify-content-center text-decoration-none">
-            <i class="fa-regular fa-user"></i>
+            <i class="bx bx-user fs-5"></i>
         </a>
         @endif
         <a href="/gio-hang" class="cart-area d-flex align-items-center justify-content-center text-decoration-none">
-            <i class="fa-solid fa-bag-shopping"></i>
+            <div class="position-relative d-inline-flex align-items-center justify-content-center">
+                <i class="bx bx-cart fs-5"></i>
+                @auth
+                    @php
+                        $cartCount = \App\Models\Cart::where('user_id', auth()->id())->sum('quantity');
+                    @endphp
+                    <span class="position-absolute top-0 start-100 translate-middle badge bg-danger align-items-center justify-content-center {{ $cartCount > 0 ? 'd-flex' : 'd-none' }}" style="width: 15px; height: 15px; border-radius: 50%; font-size: 0.55rem; padding: 0;">
+                        {{ $cartCount > 99 ? '99+' : $cartCount }}
+                    </span>
+                @endauth
+            </div>
         </a>
     </header>
 
@@ -67,10 +79,19 @@
             </a>
         </div>
         <div class="mobile-actions d-flex align-items-center gap-2">
-            <a href="#" class="text-dark p-2"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href="/gio-hang" class="text-dark p-2"><i class="fa-solid fa-bag-shopping"></i></a>
+            <a href="#" class="text-dark p-2"><i class="bx bx-search fs-5"></i></a>
+            <a href="/gio-hang" class="text-dark p-2">
+                <div class="position-relative d-inline-flex align-items-center justify-content-center">
+                    <i class="bx bx-cart fs-5"></i>
+                    @auth
+                        <span class="position-absolute top-0 start-100 translate-middle badge bg-danger align-items-center justify-content-center {{ $cartCount > 0 ? 'd-flex' : 'd-none' }}" style="width: 14px; height: 14px; border-radius: 50%; font-size: 0.5rem; padding: 0;">
+                            {{ $cartCount > 99 ? '99+' : $cartCount }}
+                        </span>
+                    @endauth
+                </div>
+            </a>
             <button class="btn border-0 p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
-                <i class="fa-solid fa-bars fs-4 text-dark"></i>
+                <i class="bx bx-menu fs-4 text-dark"></i>
             </button>
         </div>
     </header>

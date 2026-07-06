@@ -66,7 +66,7 @@
                                 <button class="quantity-btn" onclick="adjustQuantity(1)">+</button>
                             </div>
                         </div>
-                        <button class="btn-add-cart">
+                        <button class="btn-add-cart" id="btn-add-cart-action">
                             <i class="fa-solid fa-plus"></i> Thêm Vào Giỏ Hàng
                         </button>
                         <button class="btn-buy-now">
@@ -412,6 +412,67 @@
             document.querySelectorAll('.accordion-panel.show').forEach(panel => {
                 panel.style.maxHeight = panel.scrollHeight + "px";
             });
+
+            // Handle Add to Cart
+            const btnAddCart = document.getElementById('btn-add-cart-action');
+            if (btnAddCart) {
+                btnAddCart.addEventListener('click', async function() {
+                    const quantity = parseInt(document.getElementById('quantity-input').value);
+                    const colorId = selectedColor ? selectedColor.id : null;
+                    const sizeId = selectedSize ? selectedSize.id : null;
+
+                    // Nếu sản phẩm có phân loại màu sắc/kích cỡ thì phải bắt buộc chọn
+                    if (product.colors && product.colors.length > 0 && !colorId) {
+                        return showToast('Vui lòng chọn màu sắc', 'warning');
+                    }
+                    if (selectedColor && selectedColor.sizes && selectedColor.sizes.length > 0 && !sizeId) {
+                        return showToast('Vui lòng chọn kích cỡ', 'warning');
+                    }
+
+                    try {
+                        const response = await fetch('/cart/add', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                product_id: product.id,
+                                product_color_id: colorId,
+                                product_size_id: sizeId,
+                                quantity: quantity
+                            })
+                        });
+
+                        if (response.status === 401) {
+                            showToast('Vui lòng đăng nhập để thêm vào giỏ hàng', 'warning');
+                            return;
+                        }
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            showToast(data.message || 'Thêm vào giỏ hàng thành công!', 'success');
+                            
+                            // Cập nhật con số trên biểu tượng giỏ hàng ở thanh Menu
+                            if (data.cart_count !== undefined) {
+                                const badges = document.querySelectorAll('.cart-area .badge, .mobile-actions .badge');
+                                badges.forEach(badge => {
+                                    badge.innerText = data.cart_count > 99 ? '99+' : data.cart_count;
+                                    badge.classList.remove('d-none');
+                                    badge.classList.add('d-flex');
+                                });
+                            }
+                            
+                        } else {
+                            showToast(data.error || 'Đã có lỗi xảy ra', 'error');
+                        }
+                    } catch (error) {
+                        showToast('Lỗi kết nối máy chủ', 'error');
+                    }
+                });
+            }
         });
     </script>
 @endpush
