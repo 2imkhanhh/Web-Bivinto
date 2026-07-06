@@ -32,6 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'add']);
     Route::put('/cart/{id}', [App\Http\Controllers\CartController::class, 'update']);
     Route::delete('/cart/{id}', [App\Http\Controllers\CartController::class, 'remove']);
+    
+    Route::post('/dat-hang', [App\Http\Controllers\OrderController::class, 'store']);
+    Route::get('/thanh-toan/thanh-cong/{order_code}', [App\Http\Controllers\OrderController::class, 'success']);
 });
 
 Route::prefix('admin')->middleware('admin')->group(function () {
