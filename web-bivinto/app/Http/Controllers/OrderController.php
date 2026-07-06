@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Cart;
+use App\Mail\OrderCreatedMail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -81,6 +85,14 @@ class OrderController extends Controller
             Cart::where('user_id', $userId)->delete();
 
             DB::commit();
+
+            // Gửi mail cho Admin
+            try {
+                $adminEmail = env('ADMIN_EMAIL', 'admin@bivinto.com');
+                Mail::to($adminEmail)->send(new OrderCreatedMail($order));
+            } catch (\Exception $e) {
+                // Ignore mail sending error so order process still completes
+            }
 
             return response()->json([
                 'message' => 'Đặt hàng thành công!',
