@@ -76,9 +76,13 @@ class PageController extends Controller
 
     public function cart()
     {
-        $cartItems = \App\Models\Cart::with(['product', 'color', 'size'])
-            ->where('user_id', auth()->id())
-            ->get();
+        if (auth()->check()) {
+            $cartItems = \App\Models\Cart::with(['product', 'color', 'size'])
+                ->where('user_id', auth()->id())
+                ->get();
+        } else {
+            $cartItems = collect();
+        }
             
         return view('cart', compact('cartItems'));
     }

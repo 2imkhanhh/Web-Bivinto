@@ -16,7 +16,7 @@ Route::get('/blogs', [PageController::class, 'blogs']);
 
 Route::get('/tai-khoan', function () {
     return view('auth');
-});
+})->name('login');
 
 Route::get('/ho-so', function () {
     return view('profile');
@@ -26,8 +26,9 @@ Route::post('/register', [App\Http\Controllers\AuthController::class, 'register'
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
 Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 
+Route::get('/gio-hang', [PageController::class, 'cart']);
+
 Route::middleware('auth')->group(function () {
-    Route::get('/gio-hang', [PageController::class, 'cart']);
     Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'add']);
     Route::put('/cart/{id}', [App\Http\Controllers\CartController::class, 'update']);
     Route::delete('/cart/{id}', [App\Http\Controllers\CartController::class, 'remove']);
