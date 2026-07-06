@@ -7,178 +7,176 @@
 @endpush
 
 @section('content')
-    @php
-        $mockProducts = [
-            // Dòng 1: 4 sản phẩm bình thường
-            [
-                'image' => 'images/product1.png',
-                'col_class' => 'col-6 col-md-4 col-lg-3',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: XS - XXL',
-            ],
-            [
-                'image' => 'images/product2.png',
-                'col_class' => 'col-6 col-md-4 col-lg-3',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: M - XXL',
-            ],
-            [
-                'image' => 'images/product3.png',
-                'col_class' => 'col-6 col-md-4 col-lg-3',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: XS - XXL',
-            ],
-            [
-                'image' => 'images/product4.png',
-                'col_class' => 'col-6 col-md-4 col-lg-3',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: XS - XXL',
-            ],
-
-            // Dòng 2: 4 sản phẩm bình thường
-            [
-                'image' => 'images/product1.png',
-                'col_class' => 'col-6 col-md-4 col-lg-3',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: XS - XXL',
-            ],
-            [
-                'image' => 'images/product2.png',
-                'col_class' => 'col-6 col-md-4 col-lg-3',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: M - XXL',
-            ],
-            [
-                'image' => 'images/product3.png',
-                'col_class' => 'col-6 col-md-4 col-lg-3',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: XS - XXL',
-            ],
-            [
-                'image' => 'images/product4.png',
-                'col_class' => 'col-6 col-md-4 col-lg-3',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: XS - XXL',
-            ],
-
-            // Dòng 3: 3 sản phẩm trên 1 hàng (product5 to + 2 sản phẩm cũ nhỏ)
-            [
-                'image' => 'images/product5.png',
-                'col_class' => 'col-12 col-md-8 col-lg-6',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: XS - XXL',
-            ],
-            [
-                'image' => 'images/product2.png',
-                'col_class' => 'col-6 col-md-4 col-lg-3',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: M - XXL',
-            ],
-            [
-                'image' => 'images/product3.png',
-                'col_class' => 'col-6 col-md-4 col-lg-3',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: XS - XXL',
-            ],
-
-            // Dòng 4: 2 sản phẩm trên 1 hàng (sử dụng product6, product7)
-            [
-                'image' => 'images/product6.png',
-                'col_class' => 'col-12 col-md-6 col-lg-6',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: XS - XXL',
-            ],
-            [
-                'image' => 'images/product7.png',
-                'col_class' => 'col-12 col-md-6 col-lg-6',
-                'title' => 'Áo Sơ Mi Cộc Tay Cổ Đức',
-                'price' => '850.000đ',
-                'size' => 'Size: XS - XXL',
-            ],
-        ];
-    @endphp
-
     <div class="container-fluid px-3 px-md-4 px-xl-5 py-4 mt-3 mt-xl-4">
 
         <!-- Filter Bar -->
-        <div class="d-flex justify-content-between align-items-center filter-bar-container">
+        <div class="d-flex justify-content-between align-items-center filter-bar-container flex-wrap gap-3">
             <div class="category-links">
-                @forelse($categories as $index => $category)
-                    <a href="#" class="{{ $index === 0 ? 'active' : '' }}">{{ $category->name }}</a>
-                @empty
-                    <a href="#" class="active">CHƯA CÓ DANH MỤC</a>
-                @endforelse
+                <a href="#" class="active filter-item" data-type="category" data-val="all">Tất cả</a>
+                @foreach($categories as $category)
+                    <a href="#" class="filter-item" data-type="category" data-val="{{ $category->slug }}">{{ $category->name }}</a>
+                @endforeach
             </div>
             <div class="filter-dropdowns">
                 <button class="filter-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Kích Cỡ
+                    <span id="btn-text-size">Kích Cỡ</span>
                 </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">S</a></li>
-                    <li><a class="dropdown-item" href="#">M</a></li>
-                    <li><a class="dropdown-item" href="#">L</a></li>
-                    <li><a class="dropdown-item" href="#">XL</a></li>
-                    <li><a class="dropdown-item" href="#">XXL</a></li>
+                <ul class="dropdown-menu shadow-sm border-0">
+                    <li><a class="dropdown-item filter-item" href="#" data-type="size" data-val="all">Tất cả</a></li>
+                    @foreach($allSizes as $sz)
+                    <li><a class="dropdown-item filter-item" href="#" data-type="size" data-val="{{ $sz }}">{{ $sz }}</a></li>
+                    @endforeach
                 </ul>
 
                 <button class="filter-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Màu Sắc
+                    <span id="btn-text-color">Màu Sắc</span>
                 </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Trắng</a></li>
-                    <li><a class="dropdown-item" href="#">Đen</a></li>
-                    <li><a class="dropdown-item" href="#">Xanh</a></li>
+                <ul class="dropdown-menu shadow-sm border-0">
+                    <li><a class="dropdown-item filter-item" href="#" data-type="color" data-val="all">Tất cả</a></li>
+                    @foreach($allColors as $clr)
+                    <li><a class="dropdown-item filter-item" href="#" data-type="color" data-val="{{ $clr }}">{{ $clr }}</a></li>
+                    @endforeach
                 </ul>
 
                 <button class="filter-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Mức Giá
+                    <span id="btn-text-price">Mức Giá</span>
                 </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Dưới 500.000đ</a></li>
-                    <li><a class="dropdown-item" href="#">500.000đ - 1.000.000đ</a></li>
-                    <li><a class="dropdown-item" href="#">Trên 1.000.000đ</a></li>
+                <ul class="dropdown-menu shadow-sm border-0">
+                    <li><a class="dropdown-item filter-item" href="#" data-type="price" data-val="all">Tất cả</a></li>
+                    <li><a class="dropdown-item filter-item" href="#" data-type="price" data-val="under_500">Dưới 500.000đ</a></li>
+                    <li><a class="dropdown-item filter-item" href="#" data-type="price" data-val="500_1000">500.000đ - 1.000.000đ</a></li>
+                    <li><a class="dropdown-item filter-item" href="#" data-type="price" data-val="over_1000">Trên 1.000.000đ</a></li>
                 </ul>
             </div>
         </div>
 
         <!-- Product Grid -->
-        <div class="row gx-1 gy-5 mb-5">
-            @foreach ($mockProducts as $product)
-                <div class="{{ $product['col_class'] }}">
-                    <div class="product-card">
-                        <div class="product-img-wrapper mb-3">
-                            <img src="{{ asset($product['image']) }}" alt="{{ $product['title'] }}"
-                                class="img-fluid w-100 object-fit-cover product-img">
-                        </div>
-                        <div class="product-size">{{ $product['size'] }}</div>
-                        <h3 class="product-title text-truncate mb-1">{{ $product['title'] }}</h3>
-                        <p class="product-price fw-bold mb-3">{{ $product['price'] }}</p>
-                        <div>
-                            <a href="/chi-tiet-san-pham" class="btn btn-outline-dark rounded-pill px-3 py-1 fw-medium">Xem Chi Tiết <i
-                                    class="fa-solid fa-chevron-right ms-1 btn-icon-xs"></i></a>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
+        <div class="row gx-1 gy-5 mb-5" id="product-grid" style="transition: opacity 0.3s ease;">
+            @include('partials.product_list', ['products' => $products])
         </div>
 
         <!-- Load More Button -->
-        <div class="text-center mt-5 mb-3 pb-3 pb-lg-5">
-            <a href="#" class="btn btn-dark rounded-pill px-5 py-2 fw-medium btn-load-more">
+        <div class="text-center mt-5 mb-3 pb-3 pb-lg-5" id="load-more-container" style="{{ $products->hasMorePages() ? '' : 'display: none;' }}">
+            <button id="btn-load-more" class="btn btn-dark rounded-pill px-5 py-2 fw-medium btn-load-more">
                 <i class="fa-solid fa-plus me-2"></i> Xem Thêm
-            </a>
+            </button>
         </div>
+
     </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let currentPage = {{ $products->currentPage() }};
+    let filters = {
+        category: 'all',
+        size: 'all',
+        color: 'all',
+        price: 'all'
+    };
+
+    const productGrid = document.getElementById('product-grid');
+    const loadMoreBtn = document.getElementById('btn-load-more');
+    const loadMoreContainer = document.getElementById('load-more-container');
+
+    // Filter click
+    document.querySelectorAll('.filter-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const type = this.getAttribute('data-type');
+            const val = this.getAttribute('data-val');
+
+            // Update active state for category links
+            if (type === 'category') {
+                document.querySelectorAll('.category-links .filter-item').forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+            } else {
+                // Update dropdown text
+                let textMapping = {
+                    'size': 'Kích Cỡ',
+                    'color': 'Màu Sắc',
+                    'price': 'Mức Giá'
+                };
+                if (val !== 'all') {
+                    document.getElementById('btn-text-' + type).innerText = this.innerText;
+                } else {
+                    document.getElementById('btn-text-' + type).innerText = textMapping[type];
+                }
+            }
+
+            filters[type] = val;
+            currentPage = 1;
+            fetchProducts(true);
+        });
+    });
+
+    if(loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            currentPage++;
+            fetchProducts(false);
+        });
+    }
+
+    function fetchProducts(reset) {
+        // Build query string
+        let url = new URL(window.location.href);
+        url.searchParams.set('page', currentPage);
+        Object.keys(filters).forEach(key => {
+            if (filters[key] !== 'all') {
+                url.searchParams.set(key, filters[key]);
+            } else {
+                url.searchParams.delete(key);
+            }
+        });
+
+        // Add visual loading state
+        if (reset) {
+            productGrid.style.opacity = '0.5';
+        } else {
+            loadMoreBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Đang tải...';
+            loadMoreBtn.disabled = true;
+        }
+
+        fetch(url.toString(), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (reset) {
+                productGrid.innerHTML = data.html;
+                productGrid.style.opacity = '1';
+                // Update URL without reloading
+                window.history.pushState({}, '', url);
+            } else {
+                productGrid.insertAdjacentHTML('beforeend', data.html);
+                loadMoreBtn.innerHTML = '<i class="fa-solid fa-plus me-2"></i> Xem Thêm';
+                loadMoreBtn.disabled = false;
+            }
+
+            if (data.hasMore) {
+                loadMoreContainer.style.display = 'block';
+            } else {
+                loadMoreContainer.style.display = 'none';
+            }
+            
+            // Xử lý thông báo rỗng
+            if (reset && data.html.trim() === '') {
+                productGrid.innerHTML = '<div class="col-12 text-center py-5"><h5 class="text-muted">Không tìm thấy sản phẩm nào phù hợp.</h5></div>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching products:', error);
+            if (reset) productGrid.style.opacity = '1';
+            else {
+                loadMoreBtn.innerHTML = '<i class="fa-solid fa-plus me-2"></i> Xem Thêm';
+                loadMoreBtn.disabled = false;
+            }
+        });
+    }
+});
+</script>
+@endpush

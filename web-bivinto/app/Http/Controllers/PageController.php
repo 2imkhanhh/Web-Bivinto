@@ -31,14 +31,82 @@ class PageController extends Controller
         return view('about-us');
     }
 
-    public function products()
+    public function products(Request $request)
     {
         $categories = Category::where('status', 'active')
             ->whereNull('parent_id')
             ->orderBy('display_order', 'asc')
             ->get();
 
-        return view('products', compact('categories'));
+        $query = \App\Models\Product::with(['images', 'colors.sizes'])
+            ->where('status', 'active')
+            ->orderBy('created_at', 'desc');
+
+        if ($request->has('category') && $request->category !== 'all' && $request->category !== '') {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('slug', $request->category);
+            });
+        }
+
+        if ($request->has('size') && $request->size !== 'all' && $request->size !== '') {
+            $query->whereHas('colors.sizes', function ($q) use ($request) {
+                $q->where('size_name', $request->size);
+            });
+        }
+
+        if ($request->has('color') && $request->color !== 'all' && $request->color !== '') {
+            $query->whereHas('colors', function ($q) use ($request) {
+                $q->where('color_name', $request->color);
+            });
+        }
+
+        if ($request->has('price') && $request->price !== 'all' && $request->price !== '') {
+            $price = $request->price;
+            if ($price === 'under_500') {
+                $query->where('price', '<', 500000);
+            } elseif ($price === '500_1000') {
+                $query->whereBetween('price', [500000, 1000000]);
+            } elseif ($price === 'over_1000') {
+                $query->where('price', '>', 1000000);
+            }
+        }
+
+        $products = $query->paginate(16);
+
+        if ($request->ajax()) {
+            $html = view('partials.product_list', compact('products'))->render();
+            return response()->json([
+                'html' => $html,
+                'hasMore' => $products->hasMorePages()
+            ]);
+        }
+
+        $allSizes = \Illuminate\Support\Facades\DB::table('product_sizes')
+            ->join('product_colors', 'product_colors.id', '=', 'product_sizes.product_color_id')
+            ->join('products', 'products.id', '=', 'product_colors.product_id')
+            ->where('products.status', 'active')
+            ->select('product_sizes.size_name')
+            ->distinct()
+            ->pluck('size_name')
+            ->toArray();
+
+        $allColors = \Illuminate\Support\Facades\DB::table('product_colors')
+            ->join('products', 'products.id', '=', 'product_colors.product_id')
+            ->where('products.status', 'active')
+            ->select('product_colors.color_name')
+            ->distinct()
+            ->pluck('color_name')
+            ->toArray();
+
+        // Sắp xếp lại danh sách size nếu cần (S, M, L, XL, XXL)
+        $sizeOrder = ['XS' => 1, 'S' => 2, 'M' => 3, 'L' => 4, 'XL' => 5, 'XXL' => 6];
+        usort($allSizes, function($a, $b) use ($sizeOrder) {
+            $posA = $sizeOrder[$a] ?? 99;
+            $posB = $sizeOrder[$b] ?? 99;
+            return $posA <=> $posB;
+        });
+
+        return view('products', compact('categories', 'products', 'allSizes', 'allColors'));
     }
 
     public function productDetail($slug)

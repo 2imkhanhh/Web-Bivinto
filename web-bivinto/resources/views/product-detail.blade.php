@@ -19,8 +19,16 @@
                     </div>
 
                     <!-- Thumbnails -->
-                    <div class="thumbnail-list" id="thumbnail-list-container">
-                        <!-- Injected via JS -->
+                    <div class="position-relative">
+                        <div class="thumbnail-list" id="thumbnail-list-container" style="overflow-x: auto; scroll-behavior: smooth; white-space: nowrap; display: flex; gap: 10px; scrollbar-width: none;">
+                            <!-- Injected via JS -->
+                        </div>
+                        <button class="slider-arrow slider-arrow-left d-none" id="thumb-arrow-left" onclick="slideThumbnails(-1)" style="position: absolute; top: 50%; left: -15px; transform: translateY(-50%); z-index: 10; width: 30px; height: 30px; border-radius: 50%; border: 1px solid #ddd; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <button class="slider-arrow slider-arrow-right d-none" id="thumb-arrow-right" onclick="slideThumbnails(1)" style="position: absolute; top: 50%; right: -15px; transform: translateY(-50%); z-index: 10; width: 30px; height: 30px; border-radius: 50%; border: 1px solid #ddd; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -197,6 +205,26 @@
         const product = @json($product);
         let selectedColor = null;
         let selectedSize = null;
+        let allImages = [];
+
+        function initImages() {
+            if (product.images) {
+                allImages = [...product.images];
+            }
+            if (product.colors) {
+                product.colors.forEach(color => {
+                    if (color.images) {
+                        color.images.forEach(img => {
+                            if (!allImages.find(i => i.id === img.id)) {
+                                allImages.push(img);
+                            }
+                        });
+                    }
+                });
+            }
+            // Đưa ảnh đại diện lên đầu
+            allImages.sort((a, b) => (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0));
+        }
 
         function renderColors() {
             const container = document.getElementById('color-swatches-container');
@@ -204,14 +232,11 @@
             container.innerHTML = '';
             
             if (product.colors && product.colors.length > 0) {
-                if (!selectedColor) {
-                    selectedColor = product.colors[0];
-                }
-                label.innerText = selectedColor.color_name;
+                label.innerText = selectedColor ? selectedColor.color_name : 'Vui lòng chọn màu';
 
                 product.colors.forEach(color => {
                     const btn = document.createElement('button');
-                    btn.className = 'color-btn ' + (selectedColor.id === color.id ? 'active' : '');
+                    btn.className = 'color-btn ' + (selectedColor && selectedColor.id === color.id ? 'active' : '');
                     btn.onclick = () => selectColor(color);
                     
                     const span = document.createElement('span');
@@ -228,9 +253,26 @@
 
         function selectColor(color) {
             selectedColor = color;
+            
+            // Cố gắng giữ lại size đã chọn nếu size đó có sẵn trong màu mới
+            const oldSizeName = selectedSize ? selectedSize.size_name : null;
+            selectedSize = null;
+            if (oldSizeName && color.sizes) {
+                const match = color.sizes.find(s => s.size_name === oldSizeName && s.stock > 0);
+                if (match) {
+                    selectedSize = match;
+                }
+            }
+
             renderColors();
             renderSizes();
-            renderImages();
+            
+            // Đổi ảnh chính sang ảnh của màu vừa chọn
+            if (color.images && color.images.length > 0) {
+                const primary = color.images.find(i => i.is_primary) || color.images[0];
+                const imgUrl = '/storage/' + primary.image_path;
+                changeProductImage(imgUrl, null, true);
+            }
         }
 
         function renderSizes() {
@@ -238,44 +280,79 @@
             const label = document.getElementById('selected-size-label');
             container.innerHTML = '';
             
-            if (selectedColor && selectedColor.sizes && selectedColor.sizes.length > 0) {
-                // Filter out out-of-stock sizes
-                const availableSizes = selectedColor.sizes.filter(s => s.stock > 0);
-                
-                if (availableSizes.length > 0) {
-                    // if currently selected size is not in the new available list, select the first available
-                    if (!selectedSize || !availableSizes.find(s => s.id === selectedSize.id)) {
-                        selectedSize = availableSizes[0];
-                    }
-                    label.innerText = selectedSize.size_name;
-                    
-                    availableSizes.forEach(size => {
-                        const btn = document.createElement('button');
-                        btn.className = 'size-btn ' + (selectedSize.id === size.id ? 'active' : '');
-                        btn.innerText = size.size_name;
-                        btn.onclick = () => selectSize(size);
-                        container.appendChild(btn);
+            let availableSizes = [];
+            
+            if (selectedColor) {
+                if (selectedColor.sizes) {
+                    availableSizes = selectedColor.sizes.filter(s => s.stock > 0);
+                }
+            } else {
+                // Gom tất cả các size từ tất cả các màu
+                if (product.colors) {
+                    product.colors.forEach(color => {
+                        if (color.sizes) {
+                            color.sizes.forEach(s => {
+                                if (s.stock > 0 && !availableSizes.find(as => as.size_name === s.size_name)) {
+                                    availableSizes.push(s);
+                                }
+                            });
+                        }
                     });
+                }
+            }
+
+            // Sắp xếp size (XS -> XXL)
+            const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+            availableSizes.sort((a, b) => {
+                let posA = sizeOrder.indexOf(a.size_name);
+                let posB = sizeOrder.indexOf(b.size_name);
+                if(posA === -1) posA = 99;
+                if(posB === -1) posB = 99;
+                return posA - posB;
+            });
+            
+            if (availableSizes.length > 0) {
+                label.innerText = selectedSize ? selectedSize.size_name : 'Vui lòng chọn size';
+                
+                availableSizes.forEach(size => {
+                    const btn = document.createElement('button');
+                    btn.className = 'size-btn ' + (selectedSize && selectedSize.size_name === size.size_name ? 'active' : '');
+                    btn.innerText = size.size_name;
+                    btn.onclick = () => selectSize(size);
+                    container.appendChild(btn);
+                });
+                
+                const stockEl = document.getElementById('stock-remaining');
+                if (selectedSize) {
+                    stockEl.classList.remove('d-none');
+                    let totalStock = selectedSize.stock;
                     
-                    // Update stock display
-                    const stockEl = document.getElementById('stock-remaining');
-                    if (selectedSize) {
-                        stockEl.classList.remove('d-none');
-                        stockEl.querySelector('span').innerText = selectedSize.stock;
-                        validateQuantity(document.getElementById('quantity-input')); // Re-validate qty when size changes
-                    } else {
-                        stockEl.classList.add('d-none');
+                    if (!selectedColor && product.colors) {
+                        totalStock = 0;
+                        product.colors.forEach(c => {
+                            if (c.sizes) {
+                                c.sizes.forEach(s => {
+                                    if (s.size_name === selectedSize.size_name) totalStock += s.stock;
+                                });
+                            }
+                        });
                     }
                     
+                    stockEl.querySelector('span').innerText = totalStock;
+                    
+                    // Cập nhật giá trị max cho quantity input
+                    const input = document.getElementById('quantity-input');
+                    input.setAttribute('data-max', totalStock);
+                    if (parseInt(input.value) > totalStock) {
+                        input.value = totalStock;
+                    }
                 } else {
-                    selectedSize = null;
-                    label.innerText = 'Hết hàng';
-                    container.innerHTML = '<div class="text-danger mt-2 fw-medium"><i class="fa-solid fa-circle-exclamation"></i> Màu này hiện tại đã hết size.</div>';
-                    document.getElementById('stock-remaining').classList.add('d-none');
+                    stockEl.classList.add('d-none');
                 }
             } else {
                 selectedSize = null;
-                label.innerText = 'Không có kích cỡ';
+                label.innerText = 'Hết hàng';
+                container.innerHTML = '<div class="text-danger mt-2 fw-medium"><i class="fa-solid fa-circle-exclamation"></i> Sản phẩm này hiện tại đã hết size.</div>';
                 document.getElementById('stock-remaining').classList.add('d-none');
             }
         }
@@ -287,27 +364,19 @@
 
         function renderImages() {
             const container = document.getElementById('thumbnail-list-container');
-            const mainImg = document.getElementById('main-product-img');
             container.innerHTML = '';
-            
-            let images = [];
-            if (selectedColor && selectedColor.images && selectedColor.images.length > 0) {
-                images = selectedColor.images;
-            } else if (product.images && product.images.length > 0) {
-                images = product.images; // fallback
-            }
 
-            if (images.length > 0) {
-                // put primary first
-                images.sort((a, b) => (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0));
-                
-                const mainUrl = '/storage/' + images[0].image_path;
+            if (allImages.length > 0) {
+                const primaryImage = allImages.find(i => i.is_primary) || allImages[0];
+                const mainUrl = '/storage/' + primaryImage.image_path;
                 changeProductImage(mainUrl, null, false);
                 
-                images.forEach((img, index) => {
+                allImages.forEach((img, index) => {
                     const imgUrl = '/storage/' + img.image_path;
                     const thumb = document.createElement('div');
-                    thumb.className = 'thumbnail-item ' + (index === 0 ? 'active' : '');
+                    thumb.className = 'thumbnail-item flex-shrink-0 ' + (img.id === primaryImage.id ? 'active' : '');
+                    thumb.style.width = '80px';
+                    thumb.style.height = '100px';
                     thumb.onclick = function() {
                         changeProductImage(imgUrl, this, true);
                     };
@@ -317,12 +386,47 @@
                     imgEl.alt = 'Thumbnail';
                     imgEl.style.objectPosition = 'top';
                     imgEl.style.objectFit = 'cover';
+                    imgEl.style.width = '100%';
+                    imgEl.style.height = '100%';
                     
                     thumb.appendChild(imgEl);
                     container.appendChild(thumb);
                 });
+
+                setTimeout(checkThumbArrows, 100);
+                container.addEventListener('scroll', checkThumbArrows);
+                window.addEventListener('resize', checkThumbArrows);
             } else {
                 changeProductImage('{{ asset("images/product1.png") }}', null, false);
+            }
+        }
+
+        function slideThumbnails(direction) {
+            const container = document.getElementById('thumbnail-list-container');
+            const scrollAmount = 200;
+            container.scrollLeft += direction * scrollAmount;
+            setTimeout(checkThumbArrows, 300);
+        }
+
+        function checkThumbArrows() {
+            const container = document.getElementById('thumbnail-list-container');
+            const leftArrow = document.getElementById('thumb-arrow-left');
+            const rightArrow = document.getElementById('thumb-arrow-right');
+            
+            if (!container) return;
+
+            if (container.scrollWidth <= container.clientWidth) {
+                leftArrow.classList.add('d-none');
+                rightArrow.classList.add('d-none');
+            } else {
+                if (container.scrollLeft > 0) leftArrow.classList.remove('d-none');
+                else leftArrow.classList.add('d-none');
+                
+                if (Math.ceil(container.scrollLeft + container.clientWidth) >= container.scrollWidth - 5) {
+                    rightArrow.classList.add('d-none');
+                } else {
+                    rightArrow.classList.remove('d-none');
+                }
             }
         }
 
@@ -341,10 +445,18 @@
                 mainImg.style.opacity = '1';
             }
 
+            document.querySelectorAll('.thumbnail-item').forEach(item => {
+                item.classList.remove('active');
+                if (!el) {
+                    const thumbImg = item.querySelector('img');
+                    // Kiểm tra URL tương đối (imgUrl) có nằm trong URL tuyệt đối (thumbImg.src) hay không
+                    if (thumbImg && thumbImg.src.includes(imgUrl)) {
+                        item.classList.add('active');
+                    }
+                }
+            });
+
             if (el) {
-                document.querySelectorAll('.thumbnail-item').forEach(item => {
-                    item.classList.remove('active');
-                });
                 el.classList.add('active');
             }
         }
@@ -356,8 +468,7 @@
             if (isNaN(currentVal)) currentVal = 1;
             currentVal += amount;
             
-            // Validate limits
-            let maxStock = selectedSize ? selectedSize.stock : 1;
+            let maxStock = parseInt(input.getAttribute('data-max')) || 1;
             if (currentVal < 1) currentVal = 1;
             if (currentVal > maxStock) currentVal = maxStock;
             
@@ -367,7 +478,7 @@
         // Validate quantity input on manual entry
         function validateQuantity(input) {
             let val = parseInt(input.value);
-            let maxStock = selectedSize ? selectedSize.stock : 1;
+            let maxStock = parseInt(input.getAttribute('data-max')) || 1;
             
             if (isNaN(val) || val < 1) {
                 input.value = 1;
@@ -405,6 +516,7 @@
 
         // Set initial state on window load
         window.addEventListener('DOMContentLoaded', () => {
+            initImages();
             renderColors();
             renderSizes();
             renderImages();
@@ -478,13 +590,35 @@
             // Handle Add to Cart
             const btnAddCart = document.getElementById('btn-add-cart-action');
             if (btnAddCart) {
-                btnAddCart.addEventListener('click', () => handleAddToCart(false));
+                btnAddCart.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (!selectedColor) {
+                        alert('Vui lòng chọn màu sắc!');
+                        return;
+                    }
+                    if (!selectedSize && selectedColor.sizes && selectedColor.sizes.length > 0 && selectedColor.sizes.filter(s => s.stock > 0).length > 0) {
+                        alert('Vui lòng chọn kích cỡ!');
+                        return;
+                    }
+                    handleAddToCart(false);
+                });
             }
             
             // Handle Buy Now
             const btnBuyNow = document.getElementById('btn-buy-now-action');
             if (btnBuyNow) {
-                btnBuyNow.addEventListener('click', () => handleAddToCart(true));
+                btnBuyNow.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (!selectedColor) {
+                        alert('Vui lòng chọn màu sắc!');
+                        return;
+                    }
+                    if (!selectedSize && selectedColor.sizes && selectedColor.sizes.length > 0 && selectedColor.sizes.filter(s => s.stock > 0).length > 0) {
+                        alert('Vui lòng chọn kích cỡ!');
+                        return;
+                    }
+                    handleAddToCart(true);
+                });
             }
         });
     </script>
