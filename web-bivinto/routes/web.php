@@ -48,9 +48,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware('admin')->group(function () {
-    Route::get('/', function () {
-        return Inertia\Inertia::render('Admin/Dashboard');
-    });
+    Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index']);
+    Route::get('/dashboard/chart-data', [App\Http\Controllers\Admin\DashboardController::class, 'chartData']);
     
     Route::resource('categories', CategoryController::class);
     Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
