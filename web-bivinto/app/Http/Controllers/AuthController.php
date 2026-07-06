@@ -50,11 +50,11 @@ class AuthController extends Controller
         }
 
         $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
-        
+
         if (Auth::attempt([$fieldType => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
             $user = Auth::user();
-            
+
             return response()->json([
                 'message' => 'Đăng nhập thành công',
                 'user' => $user
@@ -75,5 +75,40 @@ class AuthController extends Controller
         }
 
         return redirect('/tai-khoan');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'phone' => ['required', 'string', 'regex:/^0[0-9]{9}$/'],
+        ], [
+            'phone.regex' => 'Số điện thoại phải bao gồm đúng 10 chữ số và bắt đầu bằng số 0.'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        if ($request->filled('current_password') || $request->filled('new_password')) {
+            if (!Hash::check($request->current_password, $user->password)) {
+                return response()->json(['error' => 'Mật khẩu hiện tại không đúng!'], 400);
+            }
+            if (strlen($request->new_password) < 6) {
+                return response()->json(['error' => 'Mật khẩu mới phải có ít nhất 6 ký tự!'], 400);
+            }
+            $user->password = Hash::make($request->new_password);
+        }
+
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Cập nhật thành công',
+            'user' => $user
+        ]);
     }
 }

@@ -71,17 +71,17 @@
         <!-- Thông tin cơ bản -->
         <div>
             <label for="profile_name">Họ tên</label>
-            <input type="text" class="form-control" id="profile_name" required>
+            <input type="text" class="form-control" id="profile_name" value="{{ auth()->user()->name }}" required>
         </div>
         
         <div class="mt-4">
             <label for="profile_email">Địa chỉ email</label>
-            <input type="email" class="form-control" id="profile_email" required disabled style="background-color: #f9f9f9;">
+            <input type="email" class="form-control" id="profile_email" value="{{ auth()->user()->email }}" required disabled style="background-color: #f9f9f9;">
         </div>
 
         <div class="mt-4">
             <label for="profile_phone">Số điện thoại</label>
-            <input type="tel" class="form-control" id="profile_phone" required>
+            <input type="tel" class="form-control" id="profile_phone" value="{{ auth()->user()->phone ?? '' }}" required>
         </div>
 
         <!-- Đổi mật khẩu -->
@@ -119,20 +119,6 @@
 @push('scripts')
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Kiểm tra đăng nhập
-        const userData = localStorage.getItem('user');
-        
-        if (!userData) {
-            window.location.href = '/tai-khoan';
-            return;
-        }
-
-        // Tải dữ liệu lên Form
-        const user = JSON.parse(userData);
-        document.getElementById('profile_name').value = user.name || '';
-        document.getElementById('profile_email').value = user.email || '';
-        document.getElementById('profile_phone').value = user.phone || '';
-
         // Xử lý Form Submit
         const profileForm = document.getElementById('profileForm');
         profileForm.addEventListener('submit', async function(e) {
@@ -160,7 +146,8 @@
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify({
                         name: name,
@@ -173,9 +160,6 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Update LocalStorage
-                    localStorage.setItem('user', JSON.stringify(data.user));
-
                     // Reset password fields
                     document.getElementById('current_password').value = '';
                     document.getElementById('new_password').value = '';

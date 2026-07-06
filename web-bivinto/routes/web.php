@@ -15,12 +15,13 @@ Route::get('/blogs', [PageController::class, 'blogs']);
 Route::get('/blogs', [PageController::class, 'blogs']);
 
 Route::get('/tai-khoan', function () {
+    if (auth()->check()) {
+        return redirect('/');
+    }
     return view('auth');
 })->name('login');
 
-Route::get('/ho-so', function () {
-    return view('profile');
-});
+
 
 Route::post('/register', [App\Http\Controllers\AuthController::class, 'register']);
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
@@ -29,6 +30,12 @@ Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 Route::get('/thanh-toan', [PageController::class, 'cart']);
 
 Route::middleware('auth')->group(function () {
+    Route::get('/ho-so', function () {
+        return view('profile');
+    });
+
+    Route::put('/api/profile', [App\Http\Controllers\AuthController::class, 'updateProfile']);
+
     Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'add']);
     Route::put('/cart/{id}', [App\Http\Controllers\CartController::class, 'update']);
     Route::delete('/cart/{id}', [App\Http\Controllers\CartController::class, 'remove']);
