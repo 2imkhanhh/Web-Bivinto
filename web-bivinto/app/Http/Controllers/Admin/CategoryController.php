@@ -38,7 +38,6 @@ class CategoryController extends Controller
 
         $slug = Str::slug($request->name);
 
-        // Ensure slug is unique if needed, but unique name mostly covers it.
         $count = Category::where('slug', $slug)->count();
         if ($count > 0) {
             $slug = $slug . '-' . time();

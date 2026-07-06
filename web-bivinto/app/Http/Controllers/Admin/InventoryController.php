@@ -23,7 +23,6 @@ class InventoryController extends Controller
             $query->where('name', 'like', "%{$search}%");
         }
 
-        // Manual total stock calculation via subquery
         $products = Product::with(['colors.sizes', 'images'])
             ->when($search, function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
@@ -32,7 +31,6 @@ class InventoryController extends Controller
             ->paginate(20)
             ->withQueryString();
 
-        // Attach total_stock to each product
         foreach ($products as $product) {
             $totalStock = 0;
             if ($product->colors) {

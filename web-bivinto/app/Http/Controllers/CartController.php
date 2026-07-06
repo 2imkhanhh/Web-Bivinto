@@ -19,7 +19,6 @@ class CartController extends Controller
 
         $userId = Auth::id();
 
-        // Check if item already in cart
         $cartItem = Cart::where('user_id', $userId)
             ->where('product_id', $request->product_id)
             ->where('product_color_id', $request->product_color_id)

@@ -40,13 +40,12 @@ class OrderController extends Controller
             $subtotal += $item->product->price * $item->quantity;
         }
 
-        $shippingFee = 0; // Mặc định 0đ như yêu cầu
+        $shippingFee = 0;
         $totalAmount = $subtotal + $shippingFee;
 
         try {
             DB::beginTransaction();
 
-            // Sinh mã đơn hàng ngẫu nhiên (VD: BVT260706ABCDE)
             $orderCode = 'BVT' . date('ymd') . strtoupper(\Illuminate\Support\Str::random(5));
 
             // Tạo Order
@@ -91,7 +90,6 @@ class OrderController extends Controller
                 $adminEmail = env('ADMIN_EMAIL', 'admin@bivinto.com');
                 Mail::to($adminEmail)->send(new OrderCreatedMail($order));
             } catch (\Exception $e) {
-                // Ignore mail sending error so order process still completes
             }
 
             return response()->json([
@@ -109,7 +107,6 @@ class OrderController extends Controller
         // Tìm đơn hàng bằng order_code
         $order = Order::where('order_code', $orderCode)->firstOrFail();
 
-        // Bảo mật cơ bản: chỉ owner mới xem được trang thành công của họ, trừ khi mua ko cần đăng nhập
         if (auth()->check() && $order->user_id !== auth()->id()) {
             abort(403);
         }

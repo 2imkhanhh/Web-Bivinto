@@ -16,13 +16,13 @@ class PageController extends Controller
             ->orderBy('display_order', 'asc')
             ->take(6)
             ->get();
-            
+
         $featuredProducts = \App\Models\Product::with(['images'])
             ->where('is_featured', true)
             ->where('status', 'active')
             ->orderBy('id', 'desc')
             ->get();
-            
+
         return view('home', compact('categories', 'featuredProducts'));
     }
 
@@ -37,7 +37,7 @@ class PageController extends Controller
             ->whereNull('parent_id')
             ->orderBy('display_order', 'asc')
             ->get();
-            
+
         return view('products', compact('categories'));
     }
 
@@ -48,7 +48,6 @@ class PageController extends Controller
             ->where('status', 'active')
             ->firstOrFail();
 
-        // Similar products from same category
         $similarProducts = \App\Models\Product::with(['images'])
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
@@ -83,7 +82,7 @@ class PageController extends Controller
         } else {
             $cartItems = collect();
         }
-            
+
         return view('cart', compact('cartItems'));
     }
 }

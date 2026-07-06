@@ -82,7 +82,7 @@ class OrderController extends Controller
                     try {
                         Mail::to($customerEmail)->send(new OrderConfirmedMail($order));
                     } catch (\Exception $e) {
-                        // Ignore mail error
+                        
                     }
                 }
             }

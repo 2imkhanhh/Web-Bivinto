@@ -49,7 +49,6 @@ class ProductController extends Controller
                 'is_featured' => $request->boolean('is_featured'),
             ]);
 
-            // Handle colors, sizes and images
             if ($request->has('colors')) {
                 foreach ($request->colors as $index => $colorData) {
                     $color = $product->colors()->create([
@@ -73,7 +72,7 @@ class ProductController extends Controller
                             $path = $file->store('products', 'public');
                             $isPrimary = ($request->primary_image_key === "new_{$index}_{$imgIndex}");
                             $color->images()->create([
-                                'product_id' => $product->id, // also link directly to product
+                                'product_id' => $product->id,
                                 'image_path' => $path,
                                 'is_primary' => $isPrimary
                             ]);
@@ -122,7 +121,6 @@ class ProductController extends Controller
                 'is_featured' => $request->boolean('is_featured'),
             ]);
 
-            // Lọc ra các ảnh cũ mà người dùng muốn giữ lại
             $keptImages = [];
             if ($request->has('colors')) {
                 foreach ($request->colors as $colorData) {
@@ -134,16 +132,13 @@ class ProductController extends Controller
                 }
             }
 
-            // Only delete images that are NOT in $keptImages
             foreach ($product->images as $image) {
                 if (!in_array($image->image_path, $keptImages)) {
                     Storage::disk('public')->delete($image->image_path);
                 }
             }
-            
-            $product->colors()->delete(); // cascade deletes sizes and images in DB
 
-            // Recreate colors, sizes and images
+            $product->colors()->delete();
             if ($request->has('colors')) {
                 foreach ($request->colors as $index => $colorData) {
                     $color = $product->colors()->create([
@@ -173,9 +168,8 @@ class ProductController extends Controller
                             ]);
                         }
                     }
-                    
+
                     if (isset($colorData['existing_images'])) {
-                        // User might send back existing image paths
                         foreach ($colorData['existing_images'] as $imgIndex => $path) {
                             $isPrimary = ($request->primary_image_key === "existing_{$index}_{$imgIndex}");
                             $color->images()->create([
