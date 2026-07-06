@@ -38,22 +38,26 @@
             <i class="bx bx-search fs-5"></i>
             <input type="text" placeholder="Tìm kiếm">
         </div>
-        @if(auth()->check() && !auth()->user()->isAdmin())
-        <div class="user-area d-flex align-items-center justify-content-center dropdown hover-dropdown">
-            <a href="#" class="text-decoration-none d-flex align-items-center justify-content-center w-100 h-100">
+        @if (auth()->check() && !auth()->user()->isAdmin())
+            <div class="user-area d-flex align-items-center justify-content-center dropdown hover-dropdown">
+                <a href="#"
+                    class="text-decoration-none d-flex align-items-center justify-content-center w-100 h-100">
+                    <i class="bx bx-user fs-5"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end rounded-0 border-0 shadow mt-2">
+                    <li><a class="dropdown-item" href="/ho-so">Tài khoản của tôi</a></li>
+                    <li><a class="dropdown-item" href="/don-hang">Đơn hàng</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item text-danger" href="#" onclick="logout(event)">Đăng xuất</a></li>
+                </ul>
+            </div>
+        @else
+            <a href="/tai-khoan"
+                class="user-area d-flex align-items-center justify-content-center text-decoration-none">
                 <i class="bx bx-user fs-5"></i>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end rounded-0 border-0 shadow mt-2">
-                <li><a class="dropdown-item" href="/ho-so">Tài khoản của tôi</a></li>
-                <li><a class="dropdown-item" href="#">Đơn mua</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="#" onclick="logout(event)">Đăng xuất</a></li>
-            </ul>
-        </div>
-        @else
-        <a href="/tai-khoan" class="user-area d-flex align-items-center justify-content-center text-decoration-none">
-            <i class="bx bx-user fs-5"></i>
-        </a>
         @endif
         <a href="/thanh-toan" class="cart-area d-flex align-items-center justify-content-center text-decoration-none">
             <div class="position-relative d-inline-flex align-items-center justify-content-center">
@@ -62,7 +66,9 @@
                     @php
                         $cartCount = \App\Models\Cart::where('user_id', auth()->id())->sum('quantity');
                     @endphp
-                    <span class="position-absolute top-0 start-100 translate-middle badge bg-danger align-items-center justify-content-center {{ $cartCount > 0 ? 'd-flex' : 'd-none' }}" style="width: 15px; height: 15px; border-radius: 50%; font-size: 0.55rem; padding: 0;">
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle badge bg-danger align-items-center justify-content-center {{ $cartCount > 0 ? 'd-flex' : 'd-none' }}"
+                        style="width: 15px; height: 15px; border-radius: 50%; font-size: 0.55rem; padding: 0;">
                         {{ $cartCount > 99 ? '99+' : $cartCount }}
                     </span>
                 @endauth
@@ -84,7 +90,9 @@
                 <div class="position-relative d-inline-flex align-items-center justify-content-center">
                     <i class="bx bx-cart fs-5"></i>
                     @auth
-                        <span class="position-absolute top-0 start-100 translate-middle badge bg-danger align-items-center justify-content-center {{ $cartCount > 0 ? 'd-flex' : 'd-none' }}" style="width: 14px; height: 14px; border-radius: 50%; font-size: 0.5rem; padding: 0;">
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle badge bg-danger align-items-center justify-content-center {{ $cartCount > 0 ? 'd-flex' : 'd-none' }}"
+                            style="width: 14px; height: 14px; border-radius: 50%; font-size: 0.5rem; padding: 0;">
                             {{ $cartCount > 99 ? '99+' : $cartCount }}
                         </span>
                     @endauth
@@ -109,9 +117,10 @@
         </div>
         <div class="offcanvas-body">
             <div class="nav flex-column font-google-sans">
-                @if(auth()->check() && !auth()->user()->isAdmin())
+                @if (auth()->check() && !auth()->user()->isAdmin())
                     <div class="d-flex align-items-center gap-3 py-3 border-bottom">
-                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px;">
                             <i class="fa-solid fa-user"></i>
                         </div>
                         <div>
@@ -120,17 +129,19 @@
                         </div>
                     </div>
                     <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/ho-so">TÀI KHOẢN CỦA TÔI</a>
-                    <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="#">ĐƠN MUA</a>
+                    <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/don-hang">ĐƠN MUA</a>
                 @else
-                    <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/tai-khoan">ĐĂNG NHẬP / ĐĂNG KÝ</a>
+                    <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/tai-khoan">ĐĂNG NHẬP / ĐĂNG
+                        KÝ</a>
                 @endif
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/ve-chung-toi">VỀ BIVINTO</a>
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/san-pham">SẢN PHẨM</a>
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/hop-tac">HỢP TÁC</a>
                 <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/chinh-sach">CHÍNH SÁCH</a>
                 <a class="nav-link text-dark py-3 fw-semibold" href="/blogs">BLOGS</a>
-                @if(auth()->check() && !auth()->user()->isAdmin())
-                    <a class="nav-link text-danger border-top py-3 fw-semibold" href="#" onclick="logout(event)">ĐĂNG XUẤT</a>
+                @if (auth()->check() && !auth()->user()->isAdmin())
+                    <a class="nav-link text-danger border-top py-3 fw-semibold" href="#"
+                        onclick="logout(event)">ĐĂNG XUẤT</a>
                 @endif
             </div>
         </div>
@@ -148,7 +159,8 @@
                 <!-- Column 1: Company Info -->
                 <div class="col-12 col-md-6 col-lg-3 d-flex flex-column gap-3 pe-lg-4">
                     <a href="/">
-                        <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo" class="footer-logo filter-white">
+                        <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo"
+                            class="footer-logo filter-white">
                     </a>
                     <div class="footer-contact d-flex flex-column gap-3">
                         <div class="d-flex align-items-start gap-3">
@@ -265,14 +277,15 @@
         // Hàm Đăng xuất
         window.logout = async function(e) {
             if (e) e.preventDefault();
-            
+
             try {
                 await fetch('/logout', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
                     }
                 });
             } catch (err) {}
@@ -281,7 +294,7 @@
             localStorage.removeItem('user');
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
-            
+
             window.location.href = '/tai-khoan';
         };
 
@@ -319,7 +332,7 @@
                     input.addEventListener('focus', () => {
                         icon.style.display = 'block';
                     });
-                    
+
                     input.addEventListener('blur', () => {
                         setTimeout(() => {
                             // If we didn't just click the icon to refocus, hide it

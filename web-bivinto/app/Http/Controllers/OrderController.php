@@ -24,7 +24,7 @@ class OrderController extends Controller
         ]);
 
         $userId = auth()->id();
-        
+
         // Lấy giỏ hàng
         $cartItems = Cart::with(['product'])->where('user_id', $userId)->get();
         if ($cartItems->isEmpty()) {
@@ -86,7 +86,6 @@ class OrderController extends Controller
                 'message' => 'Đặt hàng thành công!',
                 'redirect_url' => url('/thanh-toan/thanh-cong/' . $order->order_code)
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Đã có lỗi xảy ra khi tạo đơn hàng: ' . $e->getMessage()], 500);
@@ -97,12 +96,39 @@ class OrderController extends Controller
     {
         // Tìm đơn hàng bằng order_code
         $order = Order::where('order_code', $orderCode)->firstOrFail();
-        
+
         // Bảo mật cơ bản: chỉ owner mới xem được trang thành công của họ, trừ khi mua ko cần đăng nhập
         if (auth()->check() && $order->user_id !== auth()->id()) {
             abort(403);
         }
 
         return view('order-success', compact('order'));
+    }
+
+    public function index(Request $request)
+    {
+        $status = $request->query('status', 'all');
+
+        $query = Order::with('items.product')
+            ->where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc');
+
+        if ($status && $status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        $orders = $query->get();
+
+        return view('orders.index', compact('orders', 'status'));
+    }
+
+    public function show($orderCode)
+    {
+        $order = Order::with(['items.product', 'items.color', 'items.size'])
+            ->where('order_code', $orderCode)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        return view('orders.show', compact('order'));
     }
 }

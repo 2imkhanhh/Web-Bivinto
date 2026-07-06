@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
     
     Route::post('/dat-hang', [App\Http\Controllers\OrderController::class, 'store']);
     Route::get('/thanh-toan/thanh-cong/{order_code}', [App\Http\Controllers\OrderController::class, 'success']);
+    
+    Route::get('/don-hang', [App\Http\Controllers\OrderController::class, 'index']);
+    Route::get('/don-hang/{orderCode}', [App\Http\Controllers\OrderController::class, 'show']);
 });
 
 Route::prefix('admin')->middleware('admin')->group(function () {
