@@ -47,4 +47,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     
     Route::resource('categories', CategoryController::class);
     Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
+    
+    Route::get('/orders/{id}/print', [App\Http\Controllers\Admin\OrderController::class, 'print']);
+    Route::resource('orders', App\Http\Controllers\Admin\OrderController::class)->only(['index', 'show', 'update']);
 });

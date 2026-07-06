@@ -22,9 +22,9 @@
           </Link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/orders') }" href="/admin/orders">
             <i class="fa-solid fa-cart-shopping"></i> Đơn hàng
-          </a>
+          </Link>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">
