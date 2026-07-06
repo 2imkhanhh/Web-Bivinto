@@ -62,7 +62,7 @@
                 </div>
                 <div class="d-flex justify-content-between mb-2">
                   <span class="text-muted">Phí vận chuyển:</span>
-                  <span>{{ order.shipping_fee == 0 ? '0' : formatCurrency(order.shipping_fee) }}</span>
+                  <span>{{ order.shipping_fee == 0 ? '0đ' : formatCurrency(order.shipping_fee) }}</span>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between align-items-center">
@@ -169,10 +169,7 @@ export default {
   },
   methods: {
     formatCurrency(value) {
-      return new Intl.NumberFormat('vi-VN', {
-        style: 'currency',
-        currency: 'VND',
-      }).format(value);
+      return new Intl.NumberFormat('vi-VN').format(value) + 'đ';
     },
     getStatusText(status) {
       const statuses = {

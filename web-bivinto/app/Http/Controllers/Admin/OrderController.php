@@ -17,6 +17,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $status = $request->query('status', 'all');
+        $userId = $request->query('user_id');
 
         $query = Order::with('user')->orderBy('created_at', 'desc');
 
@@ -24,11 +25,15 @@ class OrderController extends Controller
             $query->where('status', $status);
         }
 
+        if ($userId) {
+            $query->where('user_id', $userId);
+        }
+
         $orders = $query->paginate(15)->withQueryString();
 
         return Inertia::render('Admin/Orders', [
             'orders' => $orders,
-            'filters' => ['status' => $status]
+            'filters' => ['status' => $status, 'user_id' => $userId]
         ]);
     }
 

@@ -32,9 +32,9 @@
           </Link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/customers') }" href="/admin/customers">
             <i class="fa-solid fa-users"></i> Khách hàng
-          </a>
+          </Link>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">

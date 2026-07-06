@@ -11,7 +11,13 @@
 
     <div class="card shadow-sm border-0">
       <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-        <h5 class="m-0 font-weight-bold text-dark">Danh sách Đơn hàng</h5>
+        <h5 class="m-0 font-weight-bold text-dark d-flex align-items-center gap-2">
+          Danh sách Đơn hàng
+          <span v-if="filters.user_id" class="badge bg-success fw-normal fs-6">Đã lọc theo khách hàng</span>
+          <Link v-if="filters.user_id" href="/admin/orders" class="btn btn-sm btn-outline-danger ms-2" title="Xóa bộ lọc khách hàng">
+            <i class="fa-solid fa-xmark"></i> Hủy lọc
+          </Link>
+        </h5>
         <div>
           <select class="form-select d-inline-block w-auto form-select-sm" v-model="filterStatus" @change="filterOrders">
             <option value="all">Tất cả trạng thái</option>
@@ -125,18 +131,20 @@ export default {
   },
   methods: {
     filterOrders() {
+      const params = { status: this.filterStatus };
+      if (this.filters.user_id) {
+        params.user_id = this.filters.user_id;
+      }
+      
       router.get(
         '/admin/orders',
-        { status: this.filterStatus },
+        params,
         { preserveState: true }
       );
     },
 
     formatCurrency(value) {
-      return new Intl.NumberFormat('vi-VN', {
-        style: 'currency',
-        currency: 'VND',
-      }).format(value);
+      return new Intl.NumberFormat('vi-VN').format(value) + 'đ';
     },
     formatDate(dateString) {
       const date = new Date(dateString);
