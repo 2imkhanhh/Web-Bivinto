@@ -772,3 +772,12 @@ header {
     box-shadow: none;
     border-color: #000; /* Thay vì viền xanh, đổi thành viền đen mỏng */
 }
+
+/* Blog Title Hover Effect on Home Page */
+.blog-title {
+    line-height: 1.5;
+}
+
+.blog-title a:hover {
+    color: #555 !important;
+}

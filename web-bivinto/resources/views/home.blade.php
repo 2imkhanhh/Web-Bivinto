@@ -186,49 +186,71 @@
             </div>
 
             <div class="row g-4">
-                <!-- Column 1 (Tall) -->
-                <div class="col-12 col-md-4">
-                    <div class="blog-card h-100 d-flex flex-column">
-                        <img src="{{ asset('images/product1.png') }}" alt="Behind The Suit" class="blog-img-tall">
-                        <h5 class="blog-title text-uppercase">BEHIND THE SUIT</h5>
-                        <p class="blog-desc">Meet four of the designers defining modern tailoring</p>
-                        <div class="mt-auto">
-                            <a href="#" class="blog-link">Chi Tiết</a>
+                @if($blogs->count() > 0)
+                    <!-- Column 1 (Tall) -->
+                    @if(isset($blogs[0]))
+                    <div class="col-12 col-md-4">
+                        <div class="blog-card h-100 d-flex flex-column">
+                            <img src="{{ $blogs[0]->image_path ? asset('storage/' . $blogs[0]->image_path) : asset('images/product1.png') }}" alt="{{ $blogs[0]->title }}" class="blog-img-tall object-fit-cover">
+                            <h5 class="blog-title text-uppercase">
+                                <a href="{{ route('blog.detail', $blogs[0]->slug) }}" class="text-dark text-decoration-none">{{ $blogs[0]->title }}</a>
+                            </h5>
+                            <p class="blog-desc">{{ Str::limit($blogs[0]->excerpt, 80) }}</p>
+                            <div class="mt-auto">
+                                <a href="{{ route('blog.detail', $blogs[0]->slug) }}" class="blog-link">Chi Tiết</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    @endif
 
-                <!-- Column 2 (Two Shorts) -->
-                <div class="col-12 col-md-4 d-flex flex-column gap-4">
-                    <div class="blog-card flex-grow-1 d-flex flex-column">
-                        <img src="{{ asset('images/product1.png') }}" alt="Behind The Suit" class="blog-img-short">
-                        <h5 class="blog-title text-uppercase">BEHIND THE SUIT</h5>
-                        <p class="blog-desc">Meet four of the designers defining modern tailoring</p>
-                        <div class="mt-auto">
-                            <a href="#" class="blog-link">Chi Tiết</a>
+                    <!-- Column 2 (Two Shorts) -->
+                    <div class="col-12 col-md-4 d-flex flex-column gap-4">
+                        @if(isset($blogs[1]))
+                        <div class="blog-card flex-grow-1 d-flex flex-column">
+                            <img src="{{ $blogs[1]->image_path ? asset('storage/' . $blogs[1]->image_path) : asset('images/product1.png') }}" alt="{{ $blogs[1]->title }}" class="blog-img-short object-fit-cover">
+                            <h5 class="blog-title text-uppercase">
+                                <a href="{{ route('blog.detail', $blogs[1]->slug) }}" class="text-dark text-decoration-none">{{ $blogs[1]->title }}</a>
+                            </h5>
+                            <p class="blog-desc">{{ Str::limit($blogs[1]->excerpt, 60) }}</p>
+                            <div class="mt-auto">
+                                <a href="{{ route('blog.detail', $blogs[1]->slug) }}" class="blog-link">Chi Tiết</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="blog-card flex-grow-1 d-flex flex-column">
-                        <img src="{{ asset('images/product1.png') }}" alt="Behind The Suit" class="blog-img-short">
-                        <h5 class="blog-title text-uppercase">BEHIND THE SUIT</h5>
-                        <p class="blog-desc">Meet four of the designers defining modern tailoring</p>
-                        <div class="mt-auto">
-                            <a href="#" class="blog-link">Chi Tiết</a>
+                        @endif
+                        @if(isset($blogs[2]))
+                        <div class="blog-card flex-grow-1 d-flex flex-column">
+                            <img src="{{ $blogs[2]->image_path ? asset('storage/' . $blogs[2]->image_path) : asset('images/product1.png') }}" alt="{{ $blogs[2]->title }}" class="blog-img-short object-fit-cover">
+                            <h5 class="blog-title text-uppercase">
+                                <a href="{{ route('blog.detail', $blogs[2]->slug) }}" class="text-dark text-decoration-none">{{ $blogs[2]->title }}</a>
+                            </h5>
+                            <p class="blog-desc">{{ Str::limit($blogs[2]->excerpt, 60) }}</p>
+                            <div class="mt-auto">
+                                <a href="{{ route('blog.detail', $blogs[2]->slug) }}" class="blog-link">Chi Tiết</a>
+                            </div>
                         </div>
+                        @endif
                     </div>
-                </div>
 
-                <!-- Column 3 (Tall) -->
-                <div class="col-12 col-md-4">
-                    <div class="blog-card h-100 d-flex flex-column">
-                        <img src="{{ asset('images/product1.png') }}" alt="Behind The Suit" class="blog-img-tall">
-                        <h5 class="blog-title text-uppercase">BEHIND THE SUIT</h5>
-                        <p class="blog-desc">Meet four of the designers defining modern tailoring</p>
-                        <div class="mt-auto">
-                            <a href="#" class="blog-link">Chi Tiết</a>
+                    <!-- Column 3 (Tall) -->
+                    @if(isset($blogs[3]))
+                    <div class="col-12 col-md-4">
+                        <div class="blog-card h-100 d-flex flex-column">
+                            <img src="{{ $blogs[3]->image_path ? asset('storage/' . $blogs[3]->image_path) : asset('images/product1.png') }}" alt="{{ $blogs[3]->title }}" class="blog-img-tall object-fit-cover">
+                            <h5 class="blog-title text-uppercase">
+                                <a href="{{ route('blog.detail', $blogs[3]->slug) }}" class="text-dark text-decoration-none">{{ $blogs[3]->title }}</a>
+                            </h5>
+                            <p class="blog-desc">{{ Str::limit($blogs[3]->excerpt, 80) }}</p>
+                            <div class="mt-auto">
+                                <a href="{{ route('blog.detail', $blogs[3]->slug) }}" class="blog-link">Chi Tiết</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    @endif
+                @else
+                    <div class="col-12 text-center text-muted">
+                        <p>Chưa có bài viết nào.</p>
+                    </div>
+                @endif
             </div>
         </div>
     </section>

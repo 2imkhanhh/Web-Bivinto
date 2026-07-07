@@ -12,7 +12,7 @@ Route::get('/chi-tiet-san-pham/{slug}', [PageController::class, 'productDetail']
 Route::get('/hop-tac', [PageController::class, 'collaboration']);
 Route::get('/chinh-sach', [PageController::class, 'policy']);
 Route::get('/blogs', [PageController::class, 'blogs']);
-Route::get('/blogs', [PageController::class, 'blogs']);
+Route::get('/blogs/{slug}', [PageController::class, 'blogDetail'])->name('blog.detail');
 
 Route::get('/tai-khoan', function () {
     if (auth()->check()) {
@@ -58,6 +58,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::resource('orders', App\Http\Controllers\Admin\OrderController::class)->only(['index', 'show', 'update']);
     
     Route::resource('customers', App\Http\Controllers\Admin\CustomerController::class)->only(['index', 'update', 'destroy']);
+    
+    Route::post('upload-image', [App\Http\Controllers\Admin\BlogController::class, 'uploadImage']);
+    Route::resource('blogs', App\Http\Controllers\Admin\BlogController::class);
     
     Route::get('/inventory', [App\Http\Controllers\Admin\InventoryController::class, 'index']);
     Route::get('/inventory/history/{productSizeId}', [App\Http\Controllers\Admin\InventoryController::class, 'history']);

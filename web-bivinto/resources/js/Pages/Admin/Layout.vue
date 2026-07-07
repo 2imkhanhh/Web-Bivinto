@@ -17,7 +17,8 @@
           </Link>
         </li>
         <li class="nav-item">
-          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/categories') }" href="/admin/categories">
+          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/categories') }"
+            href="/admin/categories">
             <i class="fa-solid fa-list"></i> Danh mục
           </Link>
         </li>
@@ -27,19 +28,21 @@
           </Link>
         </li>
         <li class="nav-item">
-          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/inventory') }" href="/admin/inventory">
+          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/inventory') }"
+            href="/admin/inventory">
             <i class="fa-solid fa-warehouse"></i> Kho hàng
           </Link>
         </li>
         <li class="nav-item">
-          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/customers') }" href="/admin/customers">
+          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/customers') }"
+            href="/admin/customers">
             <i class="fa-solid fa-users"></i> Khách hàng
           </Link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fa-regular fa-newspaper"></i> Bài viết (Blogs)
-          </a>
+          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/blogs') }" href="/admin/blogs">
+            <i class="fa-regular fa-newspaper"></i> Bài viết
+          </Link>
         </li>
       </ul>
     </nav>
@@ -52,10 +55,10 @@
           <h5 class="m-0 text-dark font-weight-bold">{{ title }}</h5>
         </div>
         <div class="topbar-user dropdown">
-          <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
-            id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://ui-avatars.com/api/?name=Admin&background=random" alt="Admin" width="32"
-              height="32" class="rounded-circle me-2">
+          <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://ui-avatars.com/api/?name=Admin&background=random" alt="Admin" width="32" height="32"
+              class="rounded-circle me-2">
             <strong>Quản trị viên</strong>
           </a>
           <ul class="dropdown-menu dropdown-menu-end text-small shadow-sm" aria-labelledby="dropdownUser">
@@ -82,41 +85,41 @@ import { Link, router } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
 
 defineProps({
-    title: {
-        type: String,
-        default: 'Dashboard'
-    }
+  title: {
+    type: String,
+    default: 'Dashboard'
+  }
 });
 
 const logout = () => {
-    router.post('/logout', {}, {
-        onFinish: () => {
-            // Dọn dẹp local storage cũ nếu còn sót lại
-            localStorage.removeItem('user');
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
-        }
-    });
+  router.post('/logout', {}, {
+    onFinish: () => {
+      // Dọn dẹp local storage cũ nếu còn sót lại
+      localStorage.removeItem('user');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+    }
+  });
 };
 
 // Global Toast logic
 onMounted(() => {
-    window.showToast = function(message, type = 'success') {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer);
-                toast.addEventListener('mouseleave', Swal.resumeTimer);
-            }
-        });
-        return Toast.fire({
-            icon: type,
-            title: message
-        });
-    };
+  window.showToast = function (message, type = 'success') {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
+    });
+    return Toast.fire({
+      icon: type,
+      title: message
+    });
+  };
 });
 </script>

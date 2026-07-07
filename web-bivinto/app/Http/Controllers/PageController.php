@@ -23,7 +23,12 @@ class PageController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('home', compact('categories', 'featuredProducts'));
+        $blogs = \App\Models\Blog::where('status', 'Published')
+            ->orderBy('created_at', 'desc')
+            ->take(4)
+            ->get();
+
+        return view('home', compact('categories', 'featuredProducts', 'blogs'));
     }
 
     public function aboutUs()
@@ -100,7 +105,7 @@ class PageController extends Controller
 
         // Sắp xếp lại danh sách size nếu cần (S, M, L, XL, XXL)
         $sizeOrder = ['XS' => 1, 'S' => 2, 'M' => 3, 'L' => 4, 'XL' => 5, 'XXL' => 6];
-        usort($allSizes, function($a, $b) use ($sizeOrder) {
+        usort($allSizes, function ($a, $b) use ($sizeOrder) {
             $posA = $sizeOrder[$a] ?? 99;
             $posB = $sizeOrder[$b] ?? 99;
             return $posA <=> $posB;
@@ -138,7 +143,33 @@ class PageController extends Controller
 
     public function blogs()
     {
-        return view('blogs');
+        $featuredBlogs = \App\Models\Blog::where('status', 'Published')
+            ->where('is_featured', true)
+            ->orderBy('position', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->take(6)
+            ->get();
+
+        $latestBlogs = \App\Models\Blog::where('status', 'Published')
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        return view('blogs', compact('featuredBlogs', 'latestBlogs'));
+    }
+
+    public function blogDetail($slug)
+    {
+        $blog = \App\Models\Blog::where('slug', $slug)
+            ->where('status', 'Published')
+            ->firstOrFail();
+
+        $relatedBlogs = \App\Models\Blog::where('status', 'Published')
+            ->where('id', '!=', $blog->id)
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
+
+        return view('blog-detail', compact('blog', 'relatedBlogs'));
     }
 
     public function cart()
