@@ -5,13 +5,17 @@
 @section('content')
     <!-- Hero Section -->
     <section class="hero-section position-relative overflow-hidden p-0">
-        <img src="{{ asset('images/banner.png') }}" alt="Banner" class="w-100 h-auto d-block">
+        @php
+            $bannerImg = get_setting('banner_image', '/images/banner.png');
+            $bannerSrc = str_starts_with($bannerImg, 'settings/') ? asset('storage/' . $bannerImg) : asset($bannerImg);
+        @endphp
+        <img src="{{ $bannerSrc }}" alt="Banner" class="w-100 h-auto d-block">
         <div class="hero-content w-100 z-1 px-3">
-            <h1>MẶC ĐÚNG GU<br>COOL ĐÚNG CHẤT</h1>
-            <p>Đồng hành cùng đàn ông việt trên hành trình xây dựng phong thái tự tin và chinh phục mục tiêu</p>
+            <h1>{!! get_setting('banner_title', 'MẶC ĐÚNG GU<br>COOL ĐÚNG CHẤT') !!}</h1>
+            <p>{{ get_setting('banner_subtitle', 'Đồng hành cùng đàn ông việt trên hành trình xây dựng phong thái tự tin và chinh phục mục tiêu') }}</p>
             <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
-                <a href="/san-pham" class="btn btn-black rounded-pill">Khám Phá Sản Phẩm</a>
-                <a href="/hop-tac" class="btn btn-gray rounded-pill">Liên Hệ Hợp Tác</a>
+                <a href="{{ get_setting('banner_btn1_link', '/san-pham') }}" class="btn btn-black rounded-pill">{{ get_setting('banner_btn1_text', 'Khám Phá Sản Phẩm') }}</a>
+                <a href="{{ get_setting('banner_btn2_link', '/hop-tac') }}" class="btn btn-gray rounded-pill">{{ get_setting('banner_btn2_text', 'Liên Hệ Hợp Tác') }}</a>
             </div>
         </div>
     </section>
@@ -21,13 +25,12 @@
         <div class="container">
             <div class="row gx-4 align-items-start mb-5">
                 <div class="col-md-6 mb-4 mb-md-0">
-                    <h2 class="about-title">VỀ BIVINTO</h2>
-                    <p class="about-subtitle m-0">Bivinto - Nơi Mọi Hành Trình Mạnh Mẽ Bắt Đầu</p>
+                    <h2 class="about-title">{{ get_setting('about_title', 'VỀ BIVINTO') }}</h2>
+                    <p class="about-subtitle m-0">{{ get_setting('about_subtitle', 'Bivinto - Nơi Mọi Hành Trình Mạnh Mẽ Bắt Đầu') }}</p>
                 </div>
                 <div class="col-md-6">
                     <p class="about-desc mb-4 max-w-480">
-                        Bivinto được sinh ra từ khát vọng giúp đàn ông Việt dễ dàng tiếp cận thời trang chất lượng, xây dựng
-                        phong thái tự tin và trưởng thành hơn mỗi ngày.
+                        {{ get_setting('about_description', 'Bivinto được sinh ra từ khát vọng giúp đàn ông Việt dễ dàng tiếp cận thời trang chất lượng, xây dựng phong thái tự tin và trưởng thành hơn mỗi ngày.') }}
                     </p>
                     <a href="/ve-chung-toi" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
                         Xem Thêm <i class="fa-solid fa-chevron-right ms-2 btn-icon-sm"></i>
@@ -38,12 +41,18 @@
 
         <div class="container-fluid p-0">
             <div class="d-flex flex-column flex-md-row w-100 gallery-gap">
+                @php
+                    $aboutImg1 = get_setting('about_image_1', '/images/pic1.png');
+                    $aboutSrc1 = str_starts_with($aboutImg1, 'settings/') ? asset('storage/' . $aboutImg1) : asset($aboutImg1);
+                    $aboutImg2 = get_setting('about_image_2', '/images/pic2.png');
+                    $aboutSrc2 = str_starts_with($aboutImg2, 'settings/') ? asset('storage/' . $aboutImg2) : asset($aboutImg2);
+                @endphp
                 <div class="flex-grow-1 w-100 mb-4 mb-md-0">
-                    <img src="{{ asset('images/pic1.png') }}" alt="Bivinto Fashion 1"
+                    <img src="{{ $aboutSrc1 }}" alt="Bivinto Fashion 1"
                         class="img-fluid w-100 object-fit-cover gallery-img">
                 </div>
                 <div class="flex-grow-1 w-100">
-                    <img src="{{ asset('images/pic2.png') }}" alt="Bivinto Fashion 2"
+                    <img src="{{ $aboutSrc2 }}" alt="Bivinto Fashion 2"
                         class="img-fluid w-100 object-fit-cover gallery-img">
                 </div>
             </div>
@@ -53,63 +62,40 @@
     <!-- Business Areas Section -->
     <section class="business-areas-section py-5">
         <div class="container text-center mb-5">
-            <h2 class="fw-bold mb-3 section-title">LĨNH VỰC HOẠT ĐỘNG</h2>
-            <p class="mb-0 section-subtitle">Bivinto Đồng Hành Cùng Đối Tác Và Khách Hàng</p>
+            <h2 class="fw-bold mb-3 section-title">{{ get_setting('business_title', 'LĨNH VỰC HOẠT ĐỘNG') }}</h2>
+            <p class="mb-0 section-subtitle">{{ get_setting('business_subtitle', 'Bivinto Đồng Hành Cùng Đối Tác Và Khách Hàng') }}</p>
         </div>
 
+        @php
+            $bCards = [
+                ['image' => 'business_card1_image', 'title' => 'business_card1_title', 'desc' => 'business_card1_desc', 'default_img' => '/images/pic3.png', 'default_title' => 'GIA CÔNG THỜI TRANG', 'default_desc' => 'Thiết kế, sản xuất, OEM/ ODM'],
+                ['image' => 'business_card2_image', 'title' => 'business_card2_title', 'desc' => 'business_card2_desc', 'default_img' => '/images/pic4.png', 'default_title' => 'NHẬP SỈ', 'default_desc' => 'Chính sách hấp dẫn, nguồn hàng ổn định'],
+                ['image' => 'business_card3_image', 'title' => 'business_card3_title', 'desc' => 'business_card3_desc', 'default_img' => '/images/pic5.png', 'default_title' => 'BÁN LẺ', 'default_desc' => 'Thời trang hiện đại, chất lượng cao'],
+            ];
+        @endphp
         <div class="container px-lg-5">
             <div class="row g-4">
-                <!-- Column 1 -->
-                <div class="col-12 col-md-4">
-                    <div class="card border-0 bg-transparent h-100">
-                        <img src="{{ asset('images/pic3.png') }}" alt="Gia Công Thời Trang"
-                            class="card-img-top rounded-0 object-fit-cover business-card-img">
-                        <div class="card-body px-0 pt-4 pb-0 d-flex flex-column">
-                            <h5 class="card-title text-uppercase mb-2 business-card-title">GIA CÔNG THỜI TRANG</h5>
-                            <p class="card-text small mb-4 business-card-desc">Thiết kế, sản xuất, OEM/ ODM</p>
-                            <div class="mt-auto">
-                                <a href="/hop-tac" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
-                                    Xem Thêm <i class="fa-solid fa-chevron-right ms-2 btn-icon-sm"></i>
-                                </a>
+                @foreach($bCards as $card)
+                    @php
+                        $cardImg = get_setting($card['image'], $card['default_img']);
+                        $cardSrc = str_starts_with($cardImg, 'settings/') ? asset('storage/' . $cardImg) : asset($cardImg);
+                    @endphp
+                    <div class="col-12 col-md-4">
+                        <div class="card border-0 bg-transparent h-100">
+                            <img src="{{ $cardSrc }}" alt="{{ get_setting($card['title'], $card['default_title']) }}"
+                                class="card-img-top rounded-0 object-fit-cover business-card-img">
+                            <div class="card-body px-0 pt-4 pb-0 d-flex flex-column">
+                                <h5 class="card-title text-uppercase mb-2 business-card-title">{{ get_setting($card['title'], $card['default_title']) }}</h5>
+                                <p class="card-text small mb-4 business-card-desc">{{ get_setting($card['desc'], $card['default_desc']) }}</p>
+                                <div class="mt-auto">
+                                    <a href="/hop-tac" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
+                                        Xem Thêm <i class="fa-solid fa-chevron-right ms-2 btn-icon-sm"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Column 2 -->
-                <div class="col-12 col-md-4">
-                    <div class="card border-0 bg-transparent h-100">
-                        <img src="{{ asset('images/pic4.png') }}" alt="Nhập Sỉ"
-                            class="card-img-top rounded-0 object-fit-cover business-card-img">
-                        <div class="card-body px-0 pt-4 pb-0 d-flex flex-column">
-                            <h5 class="card-title text-uppercase mb-2 business-card-title">NHẬP SỈ</h5>
-                            <p class="card-text small mb-4 business-card-desc">Chính sách hấp dẫn, nguồn hàng ổn định
-                            </p>
-                            <div class="mt-auto">
-                                <a href="/hop-tac" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
-                                    Xem Thêm <i class="fa-solid fa-chevron-right ms-2 btn-icon-sm"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Column 3 -->
-                <div class="col-12 col-md-4">
-                    <div class="card border-0 bg-transparent h-100">
-                        <img src="{{ asset('images/pic5.png') }}" alt="Bán Lẻ"
-                            class="card-img-top rounded-0 object-fit-cover business-card-img">
-                        <div class="card-body px-0 pt-4 pb-0 d-flex flex-column">
-                            <h5 class="card-title text-uppercase mb-2 business-card-title">BÁN LẺ</h5>
-                            <p class="card-text small mb-4 business-card-desc">Thời trang hiện đại, chất lượng cao</p>
-                            <div class="mt-auto">
-                                <a href="/hop-tac" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">
-                                    Xem Thêm <i class="fa-solid fa-chevron-right ms-2 btn-icon-sm"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
         </div>

@@ -165,15 +165,15 @@
                     <div class="footer-contact d-flex flex-column gap-3">
                         <div class="d-flex align-items-start gap-3">
                             <i class="fa-solid fa-location-dot mt-1"></i>
-                            <span>Số 82 Phố Dịch Vọng Hậu, Phường Cầu Giấy, Thành Phố Hà Nội, Việt Nam</span>
+                            <span>{{ get_setting('footer_address', 'Số 82 Phố Dịch Vọng Hậu, Phường Cầu Giấy, Thành Phố Hà Nội, Việt Nam') }}</span>
                         </div>
                         <div class="d-flex align-items-center gap-3">
                             <i class="fa-solid fa-phone"></i>
-                            <span>+84 345 677 395</span>
+                            <span>{{ get_setting('footer_phone', '+84 345 677 395') }}</span>
                         </div>
                         <div class="d-flex align-items-center gap-3">
                             <i class="fa-regular fa-envelope"></i>
-                            <span>bivinto@gmai.com</span>
+                            <span>{{ get_setting('footer_email', 'bivinto@gmail.com') }}</span>
                         </div>
                     </div>
                 </div>
@@ -194,10 +194,10 @@
                 <div class="col-6 col-md-3 col-lg-2">
                     <h5 class="footer-title">KẾT NỐI</h5>
                     <ul class="list-unstyled footer-links d-flex flex-column gap-2">
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Zalo</a></li>
-                        <li><a href="#">Tiktok</a></li>
-                        <li><a href="#">Shopee</a></li>
+                        <li><a href="{{ get_setting('footer_facebook', '#') }}">Facebook</a></li>
+                        <li><a href="{{ get_setting('footer_zalo', '#') }}">Zalo</a></li>
+                        <li><a href="{{ get_setting('footer_tiktok', '#') }}">Tiktok</a></li>
+                        <li><a href="{{ get_setting('footer_shopee', '#') }}">Shopee</a></li>
                     </ul>
                 </div>
 

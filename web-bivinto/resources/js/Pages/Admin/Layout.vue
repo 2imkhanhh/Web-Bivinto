@@ -44,6 +44,11 @@
             <i class="fa-regular fa-newspaper"></i> Bài viết
           </Link>
         </li>
+        <li class="nav-item">
+          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/settings') }" href="/admin/settings">
+            <i class="fa-solid fa-gear"></i> Cài đặt chung
+          </Link>
+        </li>
       </ul>
     </nav>
 

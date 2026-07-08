@@ -10,33 +10,34 @@
     <div class="collab-page">
         <!-- Title & Banner -->
         <div class="collab-header text-center">
-            <h1 class="section-title fw-bold mb-0">HỢP TÁC</h1>
+            <h1 class="section-title fw-bold mb-0">{{ get_setting('collab_title', 'HỢP TÁC') }}</h1>
         </div>
 
+        @php
+            $collabBannerImg = get_setting('collab_banner_image', '/images/banner-cooperate.png');
+            $collabBannerSrc = str_starts_with($collabBannerImg, 'settings/') ? asset('storage/' . $collabBannerImg) : asset($collabBannerImg);
+        @endphp
         <div class="collab-banner-wrapper">
-            <img src="{{ asset('images/banner-cooperate.png') }}" alt="Hợp tác Bivinto"
+            <img src="{{ $collabBannerSrc }}" alt="Hợp tác Bivinto"
                 class="img-fluid w-100 object-fit-cover collab-banner-img">
         </div>
 
         <section class="collab-section p-0 mb-5">
-            <h2 class="section-title text-center fw-bold mb-4 mt-5">LIÊN HỆ GIA CÔNG</h2>
+            <h2 class="section-title text-center fw-bold mb-4 mt-5">{{ get_setting('collab_section1_title', 'LIÊN HỆ GIA CÔNG') }}</h2>
 
             <div class="container-fluid p-0 mt-4 mt-lg-5">
                 <div class="row g-0 align-items-center">
                     <div class="col-12 col-lg-6">
-                        <img src="{{ asset('images/about1.png') }}" alt="Gia công"
+                        @php
+                            $collabImg1 = get_setting('collab_section1_image', '/images/about1.png');
+                            $collabSrc1 = str_starts_with($collabImg1, 'settings/') ? asset('storage/' . $collabImg1) : asset($collabImg1);
+                        @endphp
+                        <img src="{{ $collabSrc1 }}" alt="Gia công"
                             class="img-fluid object-fit-cover collab-section-img w-100">
                     </div>
                     <div class="col-12 col-lg-6">
                         <div class="collab-text-content">
-                            <p>Bivinto được khơi nguồn từ một thời đại mới, nơi cơ thể tiếp cận với thời trang và phong cách
-                                sống hiện đại của nhiều bạn trẻ.</p>
-                            <p>Trang phục của người có điều kiện dễ lựa chọn và xây dựng hình ảnh cá nhân, rất nhiều đàn ông
-                                trở lại gặp khó khăn trong việc tìm kiếm những trang phục phù hợp với vóc dáng, môi trường
-                                làm việc và phong cách sống của mình.</p>
-                            <p>Từ chính những trải nghiệm đó, một câu hỏi luôn xuất hiện: <strong>"Điều gì đáng quan tâm
-                                    thay việc thể hiện khí chất thật sự của họ?"</strong>. Câu hỏi ấy đã trở thành động lực
-                                cho sự ra đời của Bivinto.</p>
+                            {!! get_setting('collab_section1_content', '<p>Bivinto được khơi nguồn từ một thời đại mới, nơi cơ thể tiếp cận với thời trang và phong cách sống hiện đại của nhiều bạn trẻ.</p>') !!}
                         </div>
                     </div>
                 </div>
@@ -49,24 +50,21 @@
         </div>
 
         <section class="collab-section p-0 pb-lg-5 mb-lg-5 pb-md-3 mb-md-3 pb-0 mb-0">
-            <h2 class="section-title text-center fw-bold mb-4">LIÊN HỆ NHẬP SỈ</h2>
+            <h2 class="section-title text-center fw-bold mb-4">{{ get_setting('collab_section2_title', 'LIÊN HỆ NHẬP SỈ') }}</h2>
 
             <div class="container-fluid p-0 mt-4 mt-lg-5">
                 <div class="row g-0 align-items-center flex-column-reverse flex-lg-row">
                     <div class="col-12 col-lg-6">
                         <div class="collab-text-content">
-                            <p>Hành trình xây dựng Bivinto không bắt đầu bằng những điều vĩ đại.</p>
-                            <p>Từ việc nghiên cứu sản phẩm, tìm kiếm đối tác sản xuất, kiểm soát chất lượng, cho tới việc
-                                xây dựng những chiến dịch truyền thông, mọi bước đi đều là những thử thách lớn. Nhưng cũng
-                                giống như hành trình trưởng thành của mỗi người đàn ông, chính những khó khăn ấy đã tạo nên
-                                bản lĩnh và sự kiên định.</p>
-                            <p>Bivinto tin rằng: <strong>"Điều tạo nên sự khác biệt không phải những gì ta đang có, mà là
-                                    những gì ta làm thế nào"</strong>. Đó cũng là tâm thư mà thương hiệu muốn chuyển tải đến
-                                khách hàng thông qua từng sản phẩm và trải nghiệm.</p>
+                            {!! get_setting('collab_section2_content', '<p>Hành trình xây dựng Bivinto không bắt đầu bằng những điều vĩ đại.</p>') !!}
                         </div>
                     </div>
                     <div class="col-12 col-lg-6">
-                        <img src="{{ asset('images/about2.png') }}" alt="Nhập sỉ"
+                        @php
+                            $collabImg2 = get_setting('collab_section2_image', '/images/about2.png');
+                            $collabSrc2 = str_starts_with($collabImg2, 'settings/') ? asset('storage/' . $collabImg2) : asset($collabImg2);
+                        @endphp
+                        <img src="{{ $collabSrc2 }}" alt="Nhập sỉ"
                             class="img-fluid object-fit-cover collab-section-img w-100">
                     </div>
                 </div>
@@ -91,9 +89,8 @@
                     <!-- Right: Contact Form -->
                     <div class="col-12 col-lg-6">
                         <div class="collab-contact-wrapper">
-                            <h3 class="contact-title fw-bold mb-2">Liên Hệ Với Chúng Tôi</h3>
-                            <p class="contact-subtitle mb-4">Quý khách hàng vui lòng điền đầy đủ thông tin để đội ngũ
-                                Bivinto tư vấn</p>
+                            <h3 class="contact-title fw-bold mb-2">{{ get_setting('collab_contact_title', 'Liên Hệ Với Chúng Tôi') }}</h3>
+                            <p class="contact-subtitle mb-4">{{ get_setting('collab_contact_subtitle', 'Quý khách hàng vui lòng điền đầy đủ thông tin để đội ngũ Bivinto tư vấn') }}</p>
 
                             <form>
                                 <div class="row gx-3 mb-3">
@@ -119,9 +116,9 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="text-dark fs-6 fw-semibold">Liên Hệ Ngay</span>
                                         <div class="social-contact d-flex align-items-center gap-2">
-                                            <a href="#" class="social-icon-btn"><i
+                                            <a href="{{ get_setting('footer_facebook', '#') }}" class="social-icon-btn"><i
                                                     class="fa-brands fa-facebook-f"></i></a>
-                                            <a href="#" class="social-icon-btn fw-bold"
+                                            <a href="{{ get_setting('footer_zalo', '#') }}" class="social-icon-btn fw-bold"
                                                 style="font-size: 0.75rem;">Zalo</a>
                                             <a href="#" class="social-icon-btn"><i class="fa-solid fa-phone"></i></a>
                                         </div>

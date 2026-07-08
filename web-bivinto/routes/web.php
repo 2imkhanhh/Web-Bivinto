@@ -66,4 +66,8 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/inventory/history/{productSizeId}', [App\Http\Controllers\Admin\InventoryController::class, 'history']);
     Route::get('/inventory/{id}', [App\Http\Controllers\Admin\InventoryController::class, 'show']);
     Route::put('/inventory/update', [App\Http\Controllers\Admin\InventoryController::class, 'update']);
+
+    Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'index']);
+    Route::put('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update']);
+    Route::post('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update']);
 });

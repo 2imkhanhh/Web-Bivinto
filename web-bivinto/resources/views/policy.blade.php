@@ -10,88 +10,32 @@
 @section('content')
     <div class="policy-page pt-5">
         <div class="container text-center mb-5">
-            <h1 class="section-title fw-bold mb-0">CHÍNH SÁCH</h1>
+            <h1 class="section-title fw-bold mb-0">{{ get_setting('policy_title', 'CHÍNH SÁCH') }}</h1>
         </div>
 
         <div class="container policy-container">
             <div class="accordion policy-accordion" id="policyAccordion">
-                
-                <!-- Policy Item 1 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button collapsed fw-semibold" type="button" onclick="togglePolicyAccordion(this)">
-                            Chính Sách Thành Viên
-                        </button>
-                    </h2>
-                    <div class="policy-accordion-panel">
-                        <div class="accordion-body">
-                            <ul class="policy-list">
-                                <li>Quyền lợi và chiết khấu dành cho thành viên Bivinto.</li>
-                                <li>Điều kiện để nâng hạng thành viên và duy trì thứ hạng.</li>
-                                <li>Các chương trình khuyến mãi đặc quyền trong các dịp Lễ, Tết, Sinh nhật.</li>
-                                <li>Quy định về việc sử dụng điểm tích lũy khi mua sắm trực tiếp hoặc online.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Policy Item 2 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed fw-semibold" type="button" onclick="togglePolicyAccordion(this)">
-                            Chính Sách Giao Hàng
-                        </button>
-                    </h2>
-                    <div class="policy-accordion-panel">
-                        <div class="accordion-body">
-                            <ul class="policy-list">
-                                <li>Nhận ship COD toàn quốc, thanh toán khi nhận hàng.</li>
-                                <li>Đơn nội thành nhận trong ngày, với đơn ngoại thành nhận hàng sau 1-2 ngày. Những đơn hàng đi tỉnh tùy thuộc vào vị trí địa lý và hay gặp mà thời gian giao hàng có thể dao động từ 3-5 ngày.</li>
-                                <li>Liên hệ hotline: <strong>+84 345 677 395</strong> để biết thông tin nhanh nhất về đơn hàng.</li>
-                                <li>Miễn phí vận chuyển cho đơn hàng trên 1 triệu.</li>
-                                <li>Hỗ trợ phí vận chuyển cho đơn hàng trên 500k (tối đa 30k) - Không áp dụng đối với sản phẩm sale.</li>
-                            </ul>
+                @for($i = 1; $i <= 4; $i++)
+                    @php
+                        $pTitle = get_setting("policy{$i}_title");
+                        $pContent = get_setting("policy{$i}_content");
+                    @endphp
+                    @if($pTitle)
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-semibold" type="button" onclick="togglePolicyAccordion(this)">
+                                {{ $pTitle }}
+                            </button>
+                        </h2>
+                        <div class="policy-accordion-panel">
+                            <div class="accordion-body">
+                                {!! $pContent !!}
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Policy Item 3 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed fw-semibold" type="button" onclick="togglePolicyAccordion(this)">
-                            Quy Định Đổi Trả
-                        </button>
-                    </h2>
-                    <div class="policy-accordion-panel">
-                        <div class="accordion-body">
-                            <ul class="policy-list">
-                                <li>Hỗ trợ đổi size/sản phẩm trong vòng 7 ngày kể từ ngày nhận hàng.</li>
-                                <li>Sản phẩm đổi trả phải còn nguyên tem mác, chưa qua sử dụng và chưa giặt ủi.</li>
-                                <li>Không áp dụng đổi trả với các sản phẩm trong chương trình khuyến mãi (Sale).</li>
-                                <li>Khách hàng vui lòng chịu phí ship 2 chiều nếu đổi trả không do lỗi từ nhà sản xuất.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Policy Item 4 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingFour">
-                        <button class="accordion-button collapsed fw-semibold" type="button" onclick="togglePolicyAccordion(this)">
-                            Chính Sách Xử Lý Khiếu Nại
-                        </button>
-                    </h2>
-                    <div class="policy-accordion-panel">
-                        <div class="accordion-body">
-                            <ul class="policy-list">
-                                <li>Bivinto cam kết giải quyết mọi khiếu nại của khách hàng trong vòng 24 - 48 giờ làm việc.</li>
-                                <li>Trường hợp sản phẩm bị lỗi do nhà sản xuất (rách, bẩn, lỗi đường may), Bivinto sẽ chịu 100% phí đổi trả.</li>
-                                <li>Trường hợp giao sai mẫu/sai size, chúng tôi sẽ tiến hành đổi sản phẩm đúng yêu cầu nhanh nhất có thể.</li>
-                                <li>Mọi thắc mắc và khiếu nại vui lòng liên hệ hotline hoặc gửi tin nhắn trực tiếp qua Fanpage.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                    @endif
+                @endfor
 
             </div>
         </div>
@@ -114,9 +58,8 @@
                     <!-- Right: Contact Form -->
                     <div class="col-12 col-lg-6">
                         <div class="collab-contact-wrapper">
-                            <h3 class="contact-title fw-bold mb-2">Liên Hệ Với Chúng Tôi</h3>
-                            <p class="contact-subtitle mb-4">Quý khách hàng vui lòng điền đầy đủ thông tin để đội ngũ
-                                Bivinto tư vấn</p>
+                            <h3 class="contact-title fw-bold mb-2">{{ get_setting('collab_contact_title', 'Liên Hệ Với Chúng Tôi') }}</h3>
+                            <p class="contact-subtitle mb-4">{{ get_setting('collab_contact_subtitle', 'Quý khách hàng vui lòng điền đầy đủ thông tin để đội ngũ Bivinto tư vấn') }}</p>
 
                             <form>
                                 <div class="row gx-3 mb-3">
@@ -142,9 +85,9 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="text-dark fs-6 fw-semibold">Liên Hệ Ngay</span>
                                         <div class="social-contact d-flex align-items-center gap-2">
-                                            <a href="#" class="social-icon-btn"><i
+                                            <a href="{{ get_setting('footer_facebook', '#') }}" class="social-icon-btn"><i
                                                     class="fa-brands fa-facebook-f"></i></a>
-                                            <a href="#" class="social-icon-btn fw-bold"
+                                            <a href="{{ get_setting('footer_zalo', '#') }}" class="social-icon-btn fw-bold"
                                                 style="font-size: 0.75rem;">Zalo</a>
                                             <a href="#" class="social-icon-btn"><i class="fa-solid fa-phone"></i></a>
                                         </div>
@@ -184,5 +127,6 @@
             panel.style.maxHeight = "0px";
         }
     }
+
 </script>
 @endpush

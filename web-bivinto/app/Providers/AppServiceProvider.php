@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use App\Guards\JwtGuard;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
