@@ -99,7 +99,7 @@ const tabIcons = {
   aboutpage: 'fa-solid fa-circle-info',
   collabpage: 'fa-solid fa-handshake',
   policypage: 'fa-solid fa-shield-halved',
-  footer: 'fa-solid fa-shoe-prints',
+  footer: 'fa-solid fa-table-columns',
 };
 
 // Initialize form data from props
