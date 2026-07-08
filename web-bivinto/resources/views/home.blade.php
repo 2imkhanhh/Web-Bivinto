@@ -133,10 +133,14 @@
                     <div class="col-6 col-md-4 col-lg-3 product-item" data-category-id="{{ $product->category_id }}">
                         <div class="product-card h-100 d-flex flex-column">
                             <div class="product-img-wrapper mb-3">
-                                <img src="{{ $imageUrl }}" alt="{{ $product->name }}"
-                                    class="img-fluid w-100 object-fit-cover product-img">
+                                <a href="/chi-tiet-san-pham/{{ $product->slug }}">
+                                    <img src="{{ $imageUrl }}" alt="{{ $product->name }}"
+                                        class="img-fluid w-100 object-fit-cover product-img">
+                                </a>
                             </div>
-                            <h3 class="product-title text-truncate mb-1">{{ $product->name }}</h3>
+                            <h3 class="product-title text-truncate mb-1">
+                                <a href="/chi-tiet-san-pham/{{ $product->slug }}" class="text-dark text-decoration-none">{{ $product->name }}</a>
+                            </h3>
                             <p class="product-price fw-bold mb-3">{{ number_format($product->price, 0, ',', '.') }}đ</p>
                             <div class="mt-auto">
                                 <a href="/chi-tiet-san-pham/{{ $product->slug }}" class="btn btn-outline-dark rounded-pill px-3 py-1 fw-medium">
@@ -153,7 +157,7 @@
             </div>
 
             <!-- Load More Button -->
-            <div class="text-center mt-5">
+            <div class="text-center mt-5" id="load-more-wrapper" style="display: none;">
                 <a href="#" class="btn btn-dark rounded-pill px-5 py-2 fw-medium btn-load-more">
                     <i class="fa-solid fa-plus me-2"></i> Xem Thêm
                 </a>
@@ -247,19 +251,49 @@
     document.addEventListener('DOMContentLoaded', function () {
         const tabs = document.querySelectorAll('.category-tab');
         const products = document.querySelectorAll('.product-item');
+        const loadMoreWrapper = document.getElementById('load-more-wrapper');
+        const loadMoreBtn = document.querySelector('.btn-load-more');
         
-        function filterProducts(categoryId) {
-            let count = 0;
+        let currentCategoryId = null;
+        let visibleCount = 8;
+        
+        function filterProducts(categoryId, resetCount = true) {
+            if (resetCount) {
+                visibleCount = 8;
+                currentCategoryId = categoryId;
+            }
+
+            let totalInCategory = 0;
+            let shownCount = 0;
+
             products.forEach(product => {
                 if (product.dataset.categoryId === categoryId) {
-                    product.style.display = 'block';
-                    count++;
+                    totalInCategory++;
+                    if (shownCount < visibleCount) {
+                        product.style.display = 'block';
+                        shownCount++;
+                    } else {
+                        product.style.display = 'none';
+                    }
                 } else {
                     product.style.display = 'none';
                 }
             });
             
-            // Optional: Hide/Show a "No products" message if count === 0
+            // Hiện/ẩn nút xem thêm
+            if (totalInCategory > visibleCount) {
+                loadMoreWrapper.style.display = 'block';
+            } else {
+                loadMoreWrapper.style.display = 'none';
+            }
+        }
+
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                visibleCount += 8;
+                filterProducts(currentCategoryId, false);
+            });
         }
 
         // Initialize with the first tab
@@ -275,7 +309,7 @@
                 // Add to clicked
                 this.classList.add('active');
                 
-                filterProducts(this.dataset.id);
+                filterProducts(this.dataset.id, true);
             });
         });
     });

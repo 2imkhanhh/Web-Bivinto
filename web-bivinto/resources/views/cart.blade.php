@@ -266,10 +266,6 @@
         }
 
         async function removeCartItem(cartId) {
-            if (!await showConfirm('Xóa sản phẩm', 'Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')) {
-                return;
-            }
-
             try {
                 const response = await fetch(`/cart/${cartId}`, {
                     method: 'DELETE',
@@ -285,7 +281,6 @@
                     const row = document.querySelector(`.cart-item-row[data-id="${cartId}"]`);
                     if (row) row.remove();
                     recalculateTotals();
-                    showToast('Đã xóa sản phẩm', 'success');
 
                     // Nếu xóa hết sạch sản phẩm, tải lại trang để hiện trạng thái "Giỏ hàng trống"
                     if (document.querySelectorAll('.cart-item-row').length === 0) {

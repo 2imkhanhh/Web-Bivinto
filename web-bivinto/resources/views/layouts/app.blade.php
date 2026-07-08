@@ -28,11 +28,11 @@
             </a>
         </div>
         <div class="nav-area">
-            <a href="/ve-chung-toi">VỀ BIVINTO</a>
-            <a href="/san-pham">SẢN PHẨM</a>
-            <a href="/hop-tac">HỢP TÁC</a>
-            <a href="/chinh-sach">CHÍNH SÁCH</a>
-            <a href="/blogs">BLOGS</a>
+            <a href="/ve-chung-toi" class="{{ request()->is('ve-chung-toi*') ? 'active-nav-link' : '' }}">VỀ BIVINTO</a>
+            <a href="/san-pham" class="{{ request()->is('san-pham*') || request()->is('chi-tiet-san-pham*') ? 'active-nav-link' : '' }}">SẢN PHẨM</a>
+            <a href="/hop-tac" class="{{ request()->is('hop-tac*') ? 'active-nav-link' : '' }}">HỢP TÁC</a>
+            <a href="/chinh-sach" class="{{ request()->is('chinh-sach*') ? 'active-nav-link' : '' }}">CHÍNH SÁCH</a>
+            <a href="/blogs" class="{{ request()->is('blogs*') || request()->is('blog/*') ? 'active-nav-link' : '' }}">BLOGS</a>
         </div>
         <div class="search-area d-flex align-items-center">
             <i class="bx bx-search fs-5"></i>
@@ -145,11 +145,11 @@
                     <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/tai-khoan">ĐĂNG NHẬP / ĐĂNG
                         KÝ</a>
                 @endif
-                <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/ve-chung-toi">VỀ BIVINTO</a>
-                <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/san-pham">SẢN PHẨM</a>
-                <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/hop-tac">HỢP TÁC</a>
-                <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/chinh-sach">CHÍNH SÁCH</a>
-                <a class="nav-link text-dark py-3 fw-semibold" href="/blogs">BLOGS</a>
+                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('ve-chung-toi*') ? 'active-nav-link' : '' }}" href="/ve-chung-toi">VỀ BIVINTO</a>
+                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('san-pham*') || request()->is('chi-tiet-san-pham*') ? 'active-nav-link' : '' }}" href="/san-pham">SẢN PHẨM</a>
+                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('hop-tac*') ? 'active-nav-link' : '' }}" href="/hop-tac">HỢP TÁC</a>
+                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('chinh-sach*') ? 'active-nav-link' : '' }}" href="/chinh-sach">CHÍNH SÁCH</a>
+                <a class="nav-link text-dark py-3 fw-semibold {{ request()->is('blogs*') || request()->is('blog/*') ? 'active-nav-link' : '' }}" href="/blogs">BLOGS</a>
                 @if (auth()->check() && !auth()->user()->isAdmin())
                     <a class="nav-link text-danger border-top py-3 fw-semibold" href="#"
                         onclick="logout(event)">ĐĂNG XUẤT</a>
@@ -239,8 +239,9 @@
         // --- Cấu hình chung cho Toast ---
         const Toast = Swal.mixin({
             toast: true,
-            position: 'top-end',
+            position: 'bottom-end',
             showConfirmButton: false,
+            showCloseButton: true,
             timer: 3000,
             timerProgressBar: true,
             didOpen: (toast) => {

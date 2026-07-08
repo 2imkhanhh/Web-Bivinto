@@ -58,7 +58,12 @@ body {
 
 .nav-area a:hover {
     background-color: #f5f5f5;
-    color: #111;
+    color: #100F0F;
+}
+
+.nav-area a.active-nav-link {
+    color: #100F0F;
+    font-weight: 600;
 }
 
 .nav-area a:last-child {
@@ -323,6 +328,11 @@ header {
 
 .mobile-menu-header {
     height: 70px;
+}
+
+.mobile-menu-offcanvas .nav-link.active-nav-link {
+    color: #100F0F !important;
+    font-weight: 700 !important;
 }
 
 /* --- Featured Products Section --- */
@@ -711,11 +721,13 @@ header {
     text-decoration: none;
     font-size: 0.95rem;
     font-weight: 400;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    display: inline-block;
 }
 
 .footer-links li a:hover {
     color: #ffffff;
+    transform: translateX(6px);
 }
 
 .footer-map {
@@ -763,14 +775,18 @@ header {
 }
 
 /* Tắt hiệu ứng delay của icon SweetAlert2 (Toast) */
-.swal2-icon, .swal2-icon * {
+.swal2-icon,
+.swal2-icon * {
     animation: none !important;
 }
 
 /* Remove default bootstrap blue focus ring */
-.form-control:focus, .form-select:focus, .form-check-input:focus {
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
     box-shadow: none;
-    border-color: #000; /* Thay vì viền xanh, đổi thành viền đen mỏng */
+    border-color: #000;
+    /* Thay vì viền xanh, đổi thành viền đen mỏng */
 }
 
 /* Blog Title Hover Effect on Home Page */
