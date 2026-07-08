@@ -21,10 +21,6 @@
                     <input type="text" class="form-control py-2 custom-input" id="order_code" name="order_code" placeholder="VD: BVT260708XXXXX" required>
                 </div>
                 
-                <div class="mb-4">
-                    <label for="email" class="form-label fw-medium">Email Đặt Hàng</label>
-                    <input type="email" class="form-control py-2 custom-input" id="email" name="email" placeholder="Email bạn dùng khi thanh toán" required>
-                </div>
 
                 <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-medium" style="font-size: 1.05rem;">
                     TRA CỨU NGAY

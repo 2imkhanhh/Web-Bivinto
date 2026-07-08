@@ -196,11 +196,9 @@ class OrderController extends Controller
     {
         $request->validate([
             'order_code' => 'required|string',
-            'email' => 'required|email',
         ]);
 
         $order = Order::where('order_code', $request->order_code)
-            ->where('email', $request->email)
             ->first();
 
         if (!$order) {

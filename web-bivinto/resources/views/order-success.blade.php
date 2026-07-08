@@ -47,7 +47,7 @@
             @if(!auth()->check())
                 <div class="alert alert-info mt-4 text-start rounded-3 border-0 bg-light" role="alert" style="font-size: 0.95rem;">
                     <i class="fa-solid fa-circle-info me-2 text-primary"></i> 
-                    Để theo dõi tình trạng giao hàng, bạn có thể sử dụng <strong>Mã đơn hàng</strong> và <strong>Email</strong> tại trang <a href="{{ route('order.track.form') }}" class="fw-bold text-primary text-decoration-none">Tra Cứu Đơn Hàng</a>.
+                    Để theo dõi tình trạng giao hàng, bạn có thể sử dụng <strong>Mã đơn hàng</strong> tại trang <a href="{{ route('order.track.form') }}" class="fw-bold text-primary text-decoration-none">Tra Cứu Đơn Hàng</a>.
                 </div>
             @endif
 
