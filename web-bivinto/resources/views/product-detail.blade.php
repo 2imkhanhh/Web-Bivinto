@@ -42,7 +42,7 @@
 
                     <hr class="detail-divider">
 
-                    <div class="detail-price">{{ number_format($product->price, 0, ',', '.') }}đ</div>
+                    <div class="detail-price" id="display-price">{{ number_format($product->price, 0, ',', '.') }}đ</div>
 
                     <!-- Color Picker -->
                     <div class="picker-section" id="color-picker-section">
@@ -266,6 +266,7 @@
 
             renderColors();
             renderSizes();
+            updatePriceDisplay();
             
             // Đổi ảnh chính sang ảnh của màu vừa chọn
             if (color.images && color.images.length > 0) {
@@ -357,9 +358,18 @@
             }
         }
 
+        function updatePriceDisplay() {
+            if (selectedSize && selectedSize.price !== undefined && selectedSize.price !== null) {
+                document.getElementById('display-price').innerText = new Intl.NumberFormat('vi-VN').format(selectedSize.price) + 'đ';
+            } else {
+                document.getElementById('display-price').innerText = new Intl.NumberFormat('vi-VN').format(product.price) + 'đ';
+            }
+        }
+
         function selectSize(size) {
             selectedSize = size;
             renderSizes();
+            updatePriceDisplay();
         }
 
         function renderImages() {
@@ -517,9 +527,45 @@
         // Set initial state on window load
         window.addEventListener('DOMContentLoaded', () => {
             initImages();
+            
+            // Find lowest price variation
+            let lowestPrice = Infinity;
+            let lowestColor = null;
+            let lowestSize = null;
+
+            if (product.colors) {
+                product.colors.forEach(color => {
+                    if (color.sizes) {
+                        color.sizes.forEach(size => {
+                            if (size.stock > 0 && size.price !== undefined && size.price !== null) {
+                                const price = parseFloat(size.price);
+                                if (price < lowestPrice) {
+                                    lowestPrice = price;
+                                    lowestColor = color;
+                                    lowestSize = size;
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            if (lowestColor && lowestSize) {
+                selectedColor = lowestColor;
+                selectedSize = lowestSize;
+                
+                // Set the primary image to the lowest color's image if available
+                if (lowestColor.images && lowestColor.images.length > 0) {
+                    const primary = lowestColor.images.find(i => i.is_primary) || lowestColor.images[0];
+                    const imgUrl = '/storage/' + primary.image_path;
+                    setTimeout(() => changeProductImage(imgUrl, null, false), 100);
+                }
+            }
+
             renderColors();
             renderSizes();
             renderImages();
+            updatePriceDisplay();
             
             document.querySelectorAll('.accordion-panel.show').forEach(panel => {
                 panel.style.maxHeight = panel.scrollHeight + "px";

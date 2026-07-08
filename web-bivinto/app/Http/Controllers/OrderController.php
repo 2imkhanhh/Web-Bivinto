@@ -32,7 +32,7 @@ class OrderController extends Controller
         $guestToken = \Illuminate\Support\Facades\Cookie::get('guest_cart_token');
 
         // Lấy giỏ hàng
-        $query = Cart::with(['product']);
+        $query = Cart::with(['product', 'size']);
         if ($userId) {
             $query->where('user_id', $userId);
         } else {
@@ -49,7 +49,8 @@ class OrderController extends Controller
 
         $subtotal = 0;
         foreach ($cartItems as $item) {
-            $subtotal += $item->product->price * $item->quantity;
+            $price = $item->size ? $item->size->price : $item->product->price;
+            $subtotal += $price * $item->quantity;
         }
 
         $shippingFee = 0;
@@ -117,8 +118,8 @@ class OrderController extends Controller
                     'product_color_id' => $item->product_color_id,
                     'product_size_id' => $item->product_size_id,
                     'quantity' => $item->quantity,
-                    'price' => $item->product->price,
-                    'total' => $item->product->price * $item->quantity
+                    'price' => $item->size ? $item->size->price : $item->product->price,
+                    'total' => ($item->size ? $item->size->price : $item->product->price) * $item->quantity
                 ]);
             }
 

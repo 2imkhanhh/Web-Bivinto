@@ -28,7 +28,6 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric|min:0',
         ]);
 
         try {
@@ -39,12 +38,29 @@ class ProductController extends Controller
                 $slug = $slug . '-' . time();
             }
 
+            $minPrice = 0;
+            if ($request->has('colors')) {
+                $prices = [];
+                foreach ($request->colors as $colorData) {
+                    if (isset($colorData['sizes'])) {
+                        foreach ($colorData['sizes'] as $sizeData) {
+                            if (isset($sizeData['price']) && is_numeric($sizeData['price'])) {
+                                $prices[] = $sizeData['price'];
+                            }
+                        }
+                    }
+                }
+                if (!empty($prices)) {
+                    $minPrice = min($prices);
+                }
+            }
+
             $product = Product::create([
                 'name' => $request->name,
                 'slug' => $slug,
                 'category_id' => $request->category_id,
                 'description' => $request->description,
-                'price' => $request->price,
+                'price' => $minPrice,
                 'status' => $request->status ?? 'active',
                 'is_featured' => $request->boolean('is_featured'),
             ]);
@@ -62,6 +78,7 @@ class ProductController extends Controller
                             $color->sizes()->create([
                                 'size_name' => $sizeData['name'],
                                 'stock' => $sizeData['stock'] ?? 0,
+                                'price' => $sizeData['price'] ?? 0,
                             ]);
                         }
                     }
@@ -100,7 +117,6 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric|min:0',
         ]);
 
         try {
@@ -111,12 +127,29 @@ class ProductController extends Controller
                 $slug = $slug . '-' . time();
             }
 
+            $minPrice = 0;
+            if ($request->has('colors')) {
+                $prices = [];
+                foreach ($request->colors as $colorData) {
+                    if (isset($colorData['sizes'])) {
+                        foreach ($colorData['sizes'] as $sizeData) {
+                            if (isset($sizeData['price']) && is_numeric($sizeData['price'])) {
+                                $prices[] = $sizeData['price'];
+                            }
+                        }
+                    }
+                }
+                if (!empty($prices)) {
+                    $minPrice = min($prices);
+                }
+            }
+
             $product->update([
                 'name' => $request->name,
                 'slug' => $slug,
                 'category_id' => $request->category_id,
                 'description' => $request->description,
-                'price' => $request->price,
+                'price' => $minPrice,
                 'status' => $request->status ?? 'active',
                 'is_featured' => $request->boolean('is_featured'),
             ]);
@@ -152,6 +185,7 @@ class ProductController extends Controller
                             $color->sizes()->create([
                                 'size_name' => $sizeData['name'],
                                 'stock' => $sizeData['stock'] ?? 0,
+                                'price' => $sizeData['price'] ?? 0,
                             ]);
                         }
                     }

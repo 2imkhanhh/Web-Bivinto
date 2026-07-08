@@ -45,8 +45,10 @@
 
                         @foreach ($cartItems as $item)
                             @php
+                                // Calculate price
+                                $price = $item->size ? $item->size->price : $item->product->price;
                                 // Calculate subtotal
-                                $itemTotal = $item->product->price * $item->quantity;
+                                $itemTotal = $price * $item->quantity;
                                 $subtotal += $itemTotal;
                                 $totalItems += $item->quantity;
 
@@ -71,7 +73,7 @@
                             @endphp
                             <!-- Cart Item -->
                             <div class="d-flex align-items-center cart-item pb-4 mb-4 border-bottom cart-item-row"
-                                data-id="{{ $item->id }}" data-price="{{ $item->product->price }}">
+                                data-id="{{ $item->id }}" data-price="{{ $price }}">
                                 <input class="form-check-input custom-cart-checkbox item-checkbox m-0 me-3 flex-shrink-0"
                                     type="checkbox" checked onchange="recalculateTotals()">
 
@@ -91,7 +93,7 @@
                                                 {{ $variantText }}</p>
                                         @endif
                                         <p class="cart-item-price fw-bold mb-0" style="font-size: 0.95rem;">
-                                            {{ number_format($item->product->price, 0, ',', '.') }}đ</p>
+                                            {{ number_format($price, 0, ',', '.') }}đ</p>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-start mt-3">
                                         <div class="d-flex flex-column gap-3">

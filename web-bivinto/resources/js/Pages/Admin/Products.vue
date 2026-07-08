@@ -80,10 +80,13 @@
         </div>
         <nav aria-label="Page navigation" class="d-flex align-items-center gap-2">
           <!-- Nút Trước -->
-          <Link v-if="products.links[0].url" :href="products.links[0].url" class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
+          <Link v-if="products.links[0].url" :href="products.links[0].url"
+            class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
             <i class="fa-solid fa-chevron-left fa-xs"></i> Trước
           </Link>
-          <button v-else class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium" disabled>
+          <button v-else
+            class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium"
+            disabled>
             <i class="fa-solid fa-chevron-left fa-xs"></i> Trước
           </button>
 
@@ -92,18 +95,24 @@
             <template v-for="(link, index) in products.links.slice(1, -1)" :key="index">
               <li class="page-item" :class="{ active: link.active }">
                 <Link v-if="link.url" :href="link.url" class="page-link border-0 rounded shadow-sm px-3 fw-medium"
-                  :class="{ 'bg-dark text-white': link.active, 'bg-light text-dark': !link.active }" v-html="link.label">
+                  :class="{ 'bg-dark text-white': link.active, 'bg-light text-dark': !link.active }"
+                  v-html="link.label">
                 </Link>
-                <span v-else class="page-link border-0 rounded text-muted shadow-sm bg-light px-3 fw-medium" v-html="link.label"></span>
+                <span v-else class="page-link border-0 rounded text-muted shadow-sm bg-light px-3 fw-medium"
+                  v-html="link.label"></span>
               </li>
             </template>
           </ul>
 
           <!-- Nút Sau -->
-          <Link v-if="products.links[products.links.length - 1].url" :href="products.links[products.links.length - 1].url" class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
+          <Link v-if="products.links[products.links.length - 1].url"
+            :href="products.links[products.links.length - 1].url"
+            class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
             Sau <i class="fa-solid fa-chevron-right fa-xs"></i>
           </Link>
-          <button v-else class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium" disabled>
+          <button v-else
+            class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium"
+            disabled>
             Sau <i class="fa-solid fa-chevron-right fa-xs"></i>
           </button>
         </nav>
@@ -142,12 +151,7 @@
                       </select>
                       <div class="invalid-feedback" v-if="form.errors.category_id">{{ form.errors.category_id }}</div>
                     </div>
-                    <div class="mb-3">
-                      <label class="form-label fw-medium">Giá bán (VNĐ) <span class="text-danger">*</span></label>
-                      <input type="text" class="form-control" :class="{ 'is-invalid': form.errors.price }"
-                        v-model="displayPrice" required placeholder="0">
-                      <div class="invalid-feedback" v-if="form.errors.price">{{ form.errors.price }}</div>
-                    </div>
+
                     <div class="mb-3">
                       <label class="form-label fw-medium">Mô tả chi tiết</label>
                       <textarea class="form-control" v-model="form.description" rows="4"
@@ -183,6 +187,21 @@
                   </button>
                 </div>
 
+                <div class="mb-3 d-flex gap-2 align-items-end p-3 bg-white rounded shadow-sm flex-wrap">
+                  <div>
+                    <label class="form-label small fw-medium mb-1">Giá (VNĐ)</label>
+                    <input type="text" class="form-control form-control-sm" :value="formatInputPrice(commonPrice)"
+                      @input="commonPrice = parseInputPrice($event.target.value)" placeholder="VD: 250.000">
+                  </div>
+                  <div>
+                    <label class="form-label small fw-medium mb-1">Tồn kho</label>
+                    <input type="number" class="form-control form-control-sm" v-model="commonStock"
+                      placeholder="VD: 100" min="0">
+                  </div>
+                  <button type="button" class="btn btn-sm btn-dark" @click="applyCommonPrice">Áp dụng cho tất
+                    cả</button>
+                </div>
+
                 <div v-for="(color, cIdx) in form.colors" :key="cIdx" class="card shadow-sm border-0 mb-3 color-block">
                   <div class="card-header bg-white d-flex justify-content-between align-items-center py-2">
                     <div class="d-flex align-items-center gap-2">
@@ -199,7 +218,8 @@
                       <!-- Cột Ảnh -->
                       <div class="col-md-5 border-end pe-3">
                         <label class="form-label small text-muted fw-medium mb-1"><i
-                            class="fa-regular fa-image me-1"></i> Ảnh màu này</label>
+                            class="fa-regular fa-image me-1"></i>
+                          Ảnh màu này</label>
                         <input type="file" class="form-control form-control-sm mb-2" multiple accept="image/*"
                           @change="handleFileUpload($event, cIdx)" :key="'file-' + fileInputKey">
                         <div class="d-flex flex-wrap gap-2 mt-2">
@@ -213,7 +233,10 @@
                                 :value="`existing_${cIdx}_${eIdx}`" v-model="form.primary_image_key"
                                 title="Chọn làm ảnh chính" style="cursor: pointer;">
                             </div>
-                            <button type="button" class="btn btn-danger p-0 position-absolute top-0 end-0 rounded-circle d-flex align-items-center justify-content-center" style="width: 14px; height: 14px; transform: translate(30%, -30%);" @click="removeExistingImage(cIdx, eIdx)">
+                            <button type="button"
+                              class="btn btn-danger p-0 position-absolute top-0 end-0 rounded-circle d-flex align-items-center justify-content-center"
+                              style="width: 14px; height: 14px; transform: translate(30%, -30%);"
+                              @click="removeExistingImage(cIdx, eIdx)">
                               <i class="fa-solid fa-xmark" style="font-size: 9px;"></i>
                             </button>
                           </div>
@@ -227,7 +250,10 @@
                                 :value="`new_${cIdx}_${pIdx}`" v-model="form.primary_image_key"
                                 title="Chọn làm ảnh chính" style="cursor: pointer;">
                             </div>
-                            <button type="button" class="btn btn-danger p-0 position-absolute top-0 end-0 rounded-circle d-flex align-items-center justify-content-center" style="width: 14px; height: 14px; transform: translate(30%, -30%);" @click="removePreviewImage(cIdx, pIdx)">
+                            <button type="button"
+                              class="btn btn-danger p-0 position-absolute top-0 end-0 rounded-circle d-flex align-items-center justify-content-center"
+                              style="width: 14px; height: 14px; transform: translate(30%, -30%);"
+                              @click="removePreviewImage(cIdx, pIdx)">
                               <i class="fa-solid fa-xmark" style="font-size: 9px;"></i>
                             </button>
                           </div>
@@ -238,16 +264,26 @@
                       <div class="col-md-7 ps-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                           <label class="form-label small text-muted fw-medium mb-0"><i
-                              class="fa-solid fa-ruler me-1"></i> Kích thước & Tồn kho</label>
+                              class="fa-solid fa-ruler me-1"></i>
+                            Kích thước & Tồn kho</label>
                           <button type="button" class="btn btn-sm btn-light text-primary py-0 px-2"
                             @click="addSize(cIdx)"><i class="fa-solid fa-plus"></i> Size</button>
                         </div>
                         <div class="sizes-container">
+                          <div class="d-flex gap-2 mb-1">
+                            <div class="small fw-medium text-muted" style="flex: 1;">Tên Size</div>
+                            <div class="small fw-medium text-muted" style="flex: 1;">Giá (VNĐ)*</div>
+                            <div class="small fw-medium text-muted" style="flex: 1;">Tồn kho*</div>
+                            <div style="width: 32px;"></div>
+                          </div>
                           <div v-for="(size, sIdx) in color.sizes" :key="sIdx" class="d-flex gap-2 mb-2 size-row">
-                            <input type="text" class="form-control form-control-sm" placeholder="Tên Size"
-                              v-model="size.name" required>
-                            <input type="number" class="form-control form-control-sm" placeholder="Tồn kho"
-                              v-model="size.stock" min="0" required>
+                            <input type="text" class="form-control form-control-sm" placeholder="VD: L"
+                              v-model="size.name" required style="flex: 1;">
+                            <input type="text" class="form-control form-control-sm" placeholder="Giá"
+                              :value="formatInputPrice(size.price)"
+                              @input="size.price = parseInputPrice($event.target.value)" required style="flex: 1;">
+                            <input type="number" class="form-control form-control-sm" placeholder="VD: 100"
+                              v-model="size.stock" min="0" required style="flex: 1;">
                             <button type="button" class="btn btn-sm btn-light text-danger"
                               @click="removeSize(cIdx, sIdx)"><i class="fa-solid fa-trash-can"></i></button>
                           </div>
@@ -293,7 +329,6 @@ const fileInputKey = ref(0);
 const form = useForm({
   name: '',
   category_id: '',
-  price: 0,
   description: '',
   status: 'active',
   is_featured: 0,
@@ -307,18 +342,35 @@ onMounted(() => {
 });
 
 const formatPrice = (value) => {
+  if (!value) return 0;
   return new Intl.NumberFormat('vi-VN').format(value);
 };
 
-const displayPrice = computed({
-  get() {
-    return form.price ? formatPrice(form.price) : '';
-  },
-  set(value) {
-    const numericValue = value.toString().replace(/[^0-9]/g, '');
-    form.price = numericValue ? parseInt(numericValue, 10) : 0;
+const parseInputPrice = (value) => {
+  if (!value && value !== 0) return '';
+  const numericValue = value.toString().replace(/[^0-9]/g, '');
+  return numericValue ? parseInt(numericValue, 10) : '';
+};
+
+const formatInputPrice = (value) => {
+  if (value === '' || value === null || value === undefined) return '';
+  return new Intl.NumberFormat('vi-VN').format(value);
+};
+
+const commonPrice = ref('');
+const commonStock = ref('');
+
+const applyCommonPrice = () => {
+  if (commonPrice.value !== '' || commonStock.value !== '') {
+    form.colors.forEach(color => {
+      color.sizes.forEach(size => {
+        if (commonPrice.value !== '') size.price = commonPrice.value;
+        if (commonStock.value !== '') size.stock = commonStock.value;
+      });
+    });
+    window.showToast('Đã áp dụng thông tin cho tất cả phân loại', 'success');
   }
-});
+};
 
 const countSizes = (product) => {
   if (!product.colors) return 0;
@@ -339,10 +391,9 @@ const openCreateModal = () => {
   fileInputKey.value++;
   form.reset();
   form.clearErrors();
-  
+
   form.name = '';
   form.category_id = '';
-  form.price = 0;
   form.description = '';
   form.status = 'active';
   form.is_featured = 0;
@@ -351,6 +402,9 @@ const openCreateModal = () => {
 
   form.colors = [];
   addColor(); // Add default color
+
+  commonPrice.value = '';
+  commonStock.value = '';
 
   bootstrapModal.show();
 };
@@ -372,7 +426,6 @@ const openEditModal = async (id) => {
 
     form.name = data.name;
     form.category_id = data.category_id;
-    form.price = data.price;
     form.description = data.description || '';
     form.status = data.status;
     form.is_featured = data.is_featured;
@@ -393,9 +446,9 @@ const openEditModal = async (id) => {
 
         let sizes = [];
         if (color.sizes && color.sizes.length > 0) {
-          sizes = color.sizes.map(s => ({ name: s.size_name, stock: s.stock }));
+          sizes = color.sizes.map(s => ({ name: s.size_name, price: s.price, stock: s.stock }));
         } else {
-          sizes = [{ name: '', stock: '' }];
+          sizes = [{ name: '', price: '', stock: '' }];
         }
 
         form.colors.push({
@@ -412,6 +465,9 @@ const openEditModal = async (id) => {
     }
 
     form.primary_image_key = primaryKeyFound;
+
+    commonPrice.value = '';
+    commonStock.value = '';
 
     bootstrapModal.show();
   } catch (error) {
@@ -431,7 +487,7 @@ const addColor = () => {
     existing_images: [],
     preview_images: [],
     sizes: [
-      { name: '', stock: '' }
+      { name: '', price: '', stock: '' }
     ]
   });
 };
@@ -441,7 +497,7 @@ const removeColor = (cIdx) => {
 };
 
 const addSize = (cIdx) => {
-  form.colors[cIdx].sizes.push({ name: '', stock: '' });
+  form.colors[cIdx].sizes.push({ name: '', price: '', stock: '' });
 };
 
 const removeSize = (cIdx, sIdx) => {

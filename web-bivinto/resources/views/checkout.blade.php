@@ -27,7 +27,8 @@
                         $subtotal = 0;
                         $totalItems = 0;
                         foreach ($cartItems as $item) {
-                            $subtotal += $item->product->price * $item->quantity;
+                            $price = $item->size ? $item->size->price : $item->product->price;
+                            $subtotal += $price * $item->quantity;
                             $totalItems += $item->quantity;
                         }
                     @endphp
@@ -105,6 +106,8 @@
                                             } elseif ($item->size) {
                                                 $variantText = $item->size->size_name;
                                             }
+
+                                            $itemPrice = $item->size ? $item->size->price : $item->product->price;
                                         @endphp
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="position-relative">
@@ -114,7 +117,7 @@
                                                 <div class="fw-semibold" style="font-size: 0.9rem;">{{ $item->product->name }} <span class="text-muted fw-normal ms-1" style="font-size: 0.75rem;">x{{ $item->quantity }}</span></div>
                                                 <div class="text-muted" style="font-size: 0.8rem;">{{ $variantText }}</div>
                                             </div>
-                                            <div class="fw-bold" style="font-size: 0.9rem;">{{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}đ</div>
+                                            <div class="fw-bold" style="font-size: 0.9rem;">{{ number_format($itemPrice * $item->quantity, 0, ',', '.') }}đ</div>
                                         </div>
                                     @endforeach
                                 </div>

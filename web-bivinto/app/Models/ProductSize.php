@@ -9,7 +9,8 @@ class ProductSize extends Model
     protected $fillable = [
         'product_color_id',
         'size_name',
-        'stock'
+        'stock',
+        'price'
     ];
 
     public function color()
