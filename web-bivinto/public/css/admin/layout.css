@@ -69,3 +69,8 @@ body {
     box-shadow: none;
     border-color: #ced4da; /* Keep standard border color or use dark */
 }
+
+/* Tắt hiệu ứng delay của icon SweetAlert2 (Toast) */
+.swal2-icon, .swal2-icon * {
+    animation: none !important;
+}

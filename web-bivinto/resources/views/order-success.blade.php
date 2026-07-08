@@ -44,6 +44,13 @@
 
             <div class="order-id">Mã đơn hàng: #{{ $order->order_code }}</div>
 
+            @if(!auth()->check())
+                <div class="alert alert-info mt-4 text-start rounded-3 border-0 bg-light" role="alert" style="font-size: 0.95rem;">
+                    <i class="fa-solid fa-circle-info me-2 text-primary"></i> 
+                    Để theo dõi tình trạng giao hàng, bạn có thể sử dụng <strong>Mã đơn hàng</strong> và <strong>Email</strong> tại trang <a href="{{ route('order.track.form') }}" class="fw-bold text-primary text-decoration-none">Tra Cứu Đơn Hàng</a>.
+                </div>
+            @endif
+
             <div class="order-info-box mt-4">
                 <h5 class="fw-bold mb-3">Thông tin giao hàng</h5>
                 <p class="mb-1"><strong>Người nhận:</strong> {{ $order->name }}</p>

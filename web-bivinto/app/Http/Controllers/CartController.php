@@ -18,8 +18,21 @@ class CartController extends Controller
         ]);
 
         $userId = Auth::id();
+        $guestToken = \Illuminate\Support\Facades\Cookie::get('guest_cart_token');
 
-        $cartItem = Cart::where('user_id', $userId)
+        if (!$userId && !$guestToken) {
+            $guestToken = (string) \Illuminate\Support\Str::uuid();
+            \Illuminate\Support\Facades\Cookie::queue('guest_cart_token', $guestToken, 43200); // 30 days
+        }
+
+        $query = Cart::query();
+        if ($userId) {
+            $query->where('user_id', $userId);
+        } else {
+            $query->where('guest_cart_token', $guestToken);
+        }
+
+        $cartItem = (clone $query)
             ->where('product_id', $request->product_id)
             ->where('product_color_id', $request->product_color_id)
             ->where('product_size_id', $request->product_size_id)
@@ -31,6 +44,7 @@ class CartController extends Controller
         } else {
             Cart::create([
                 'user_id' => $userId,
+                'guest_cart_token' => $guestToken,
                 'product_id' => $request->product_id,
                 'product_color_id' => $request->product_color_id,
                 'product_size_id' => $request->product_size_id,
@@ -38,7 +52,7 @@ class CartController extends Controller
             ]);
         }
 
-        $totalItems = Cart::where('user_id', $userId)->sum('quantity');
+        $totalItems = (clone $query)->sum('quantity');
 
         return response()->json([
             'message' => 'Đã thêm vào giỏ hàng thành công',
@@ -52,7 +66,14 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1'
         ]);
 
-        $cartItem = Cart::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $query = Cart::where('id', $id);
+        if (Auth::id()) {
+            $query->where('user_id', Auth::id());
+        } else {
+            $query->where('guest_cart_token', \Illuminate\Support\Facades\Cookie::get('guest_cart_token'));
+        }
+
+        $cartItem = $query->firstOrFail();
         $cartItem->quantity = $request->quantity;
         $cartItem->save();
 
@@ -61,7 +82,14 @@ class CartController extends Controller
 
     public function remove($id)
     {
-        $cartItem = Cart::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+        $query = Cart::where('id', $id);
+        if (Auth::id()) {
+            $query->where('user_id', Auth::id());
+        } else {
+            $query->where('guest_cart_token', \Illuminate\Support\Facades\Cookie::get('guest_cart_token'));
+        }
+
+        $cartItem = $query->firstOrFail();
         $cartItem->delete();
 
         return response()->json(['message' => 'Đã xóa sản phẩm khỏi giỏ hàng']);

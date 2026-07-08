@@ -179,9 +179,35 @@ class PageController extends Controller
                 ->where('user_id', auth()->id())
                 ->get();
         } else {
-            $cartItems = collect();
+            $cartItems = \App\Models\Cart::with(['product', 'color', 'size'])
+                ->where('guest_cart_token', \Illuminate\Support\Facades\Cookie::get('guest_cart_token'))
+                ->get();
         }
 
         return view('cart', compact('cartItems'));
+    }
+
+    public function checkout(\Illuminate\Http\Request $request)
+    {
+        if (!$request->has('items') || empty($request->items)) {
+            return redirect('/gio-hang');
+        }
+
+        $itemIds = explode(',', $request->items);
+
+        $query = \App\Models\Cart::with(['product', 'color', 'size']);
+        if (auth()->check()) {
+            $query->where('user_id', auth()->id());
+        } else {
+            $query->where('guest_cart_token', \Illuminate\Support\Facades\Cookie::get('guest_cart_token'));
+        }
+
+        $cartItems = $query->whereIn('id', $itemIds)->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect('/gio-hang');
+        }
+
+        return view('checkout', compact('cartItems'));
     }
 }

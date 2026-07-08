@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CategoryController;
 
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', [PageController::class, 'home']);
 Route::get('/ve-chung-toi', [PageController::class, 'aboutUs']);
@@ -13,6 +15,10 @@ Route::get('/hop-tac', [PageController::class, 'collaboration']);
 Route::get('/chinh-sach', [PageController::class, 'policy']);
 Route::get('/blogs', [PageController::class, 'blogs']);
 Route::get('/blogs/{slug}', [PageController::class, 'blogDetail'])->name('blog.detail');
+
+Route::get('/tra-cuu', [OrderController::class, 'trackForm'])->name('order.track.form');
+Route::post('/tra-cuu', [OrderController::class, 'trackOrder'])->name('order.track.post');
+Route::get('/tra-cuu/{order_code}', [OrderController::class, 'trackShow'])->name('order.track.show');
 
 Route::get('/tai-khoan', function () {
     if (auth()->check()) {
@@ -27,7 +33,15 @@ Route::post('/register', [App\Http\Controllers\AuthController::class, 'register'
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
 Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout']);
 
-Route::get('/thanh-toan', [PageController::class, 'cart']);
+Route::get('/gio-hang', [PageController::class, 'cart']);
+Route::get('/thanh-toan', [PageController::class, 'checkout']);
+
+Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'add']);
+Route::put('/cart/{id}', [App\Http\Controllers\CartController::class, 'update']);
+Route::delete('/cart/{id}', [App\Http\Controllers\CartController::class, 'remove']);
+
+Route::post('/dat-hang', [App\Http\Controllers\OrderController::class, 'store']);
+Route::get('/thanh-toan/thanh-cong/{order_code}', [App\Http\Controllers\OrderController::class, 'success']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/ho-so', function () {
@@ -36,13 +50,7 @@ Route::middleware('auth')->group(function () {
 
     Route::put('/api/profile', [App\Http\Controllers\AuthController::class, 'updateProfile']);
 
-    Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'add']);
-    Route::put('/cart/{id}', [App\Http\Controllers\CartController::class, 'update']);
-    Route::delete('/cart/{id}', [App\Http\Controllers\CartController::class, 'remove']);
-    
-    Route::post('/dat-hang', [App\Http\Controllers\OrderController::class, 'store']);
-    Route::get('/thanh-toan/thanh-cong/{order_code}', [App\Http\Controllers\OrderController::class, 'success']);
-    
+
     Route::get('/don-hang', [App\Http\Controllers\OrderController::class, 'index']);
     Route::get('/don-hang/{orderCode}', [App\Http\Controllers\OrderController::class, 'show']);
 });

@@ -18,19 +18,31 @@ class OrderController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255',
+            'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:255',
-            'province' => 'nullable|string|max:255',
-            'district' => 'nullable|string|max:255',
-            'ward' => 'nullable|string|max:255',
+            'address' => 'required|string',
+            'province' => 'required|string',
+            'district' => 'required|string',
+            'ward' => 'required|string',
+            'items' => 'required|string',
             'note' => 'nullable|string',
         ]);
 
         $userId = auth()->id();
+        $guestToken = \Illuminate\Support\Facades\Cookie::get('guest_cart_token');
 
         // Lấy giỏ hàng
-        $cartItems = Cart::with(['product'])->where('user_id', $userId)->get();
+        $query = Cart::with(['product']);
+        if ($userId) {
+            $query->where('user_id', $userId);
+        } else {
+            $query->where('guest_cart_token', $guestToken);
+        }
+
+        $itemIds = explode(',', $request->items);
+        $query->whereIn('id', $itemIds);
+
+        $cartItems = $query->get();
         if ($cartItems->isEmpty()) {
             return response()->json(['error' => 'Giỏ hàng của bạn đang trống'], 400);
         }
@@ -42,6 +54,36 @@ class OrderController extends Controller
 
         $shippingFee = 0;
         $totalAmount = $subtotal + $shippingFee;
+
+        if (!$userId) {
+            $user = \App\Models\User::where('email', $request->email)->first();
+            if (!$user) {
+                // Generate customer code
+                $customerCode = 'KH' . date('ymd') . strtoupper(\Illuminate\Support\Str::random(4));
+                $user = \App\Models\User::create([
+                    'customer_code' => $customerCode,
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'address' => $request->address,
+                    'province' => $request->province,
+                    'district' => $request->district,
+                    'ward' => $request->ward,
+                    'password' => null,
+                ]);
+            } else {
+                // Update their delivery info
+                $user->update([
+                    'name' => $request->name,
+                    'phone' => $request->phone,
+                    'address' => $request->address,
+                    'province' => $request->province,
+                    'district' => $request->district,
+                    'ward' => $request->ward,
+                ]);
+            }
+            $userId = $user->id;
+        }
 
         try {
             DB::beginTransaction();
@@ -80,8 +122,8 @@ class OrderController extends Controller
                 ]);
             }
 
-            // Xóa giỏ hàng
-            Cart::where('user_id', $userId)->delete();
+            // Xóa giỏ hàng đã chọn
+            Cart::whereIn('id', $cartItems->pluck('id'))->delete();
 
             DB::commit();
 
@@ -91,6 +133,8 @@ class OrderController extends Controller
                 Mail::to($adminEmail)->send(new OrderCreatedMail($order));
             } catch (\Exception $e) {
             }
+
+            session(['recent_order_code' => $order->order_code]);
 
             return response()->json([
                 'message' => 'Đặt hàng thành công!',
@@ -107,8 +151,10 @@ class OrderController extends Controller
         // Tìm đơn hàng bằng order_code
         $order = Order::where('order_code', $orderCode)->firstOrFail();
 
-        if (auth()->check() && $order->user_id !== auth()->id()) {
-            abort(403);
+        if ($order->user_id && $order->user_id !== auth()->id()) {
+            if (session('recent_order_code') !== $orderCode) {
+                abort(403);
+            }
         }
 
         return view('order-success', compact('order'));
@@ -136,6 +182,44 @@ class OrderController extends Controller
         $order = Order::with(['items.product', 'items.color', 'items.size'])
             ->where('order_code', $orderCode)
             ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        return view('orders.show', compact('order'));
+    }
+
+    public function trackForm()
+    {
+        return view('orders.track');
+    }
+
+    public function trackOrder(Request $request)
+    {
+        $request->validate([
+            'order_code' => 'required|string',
+            'email' => 'required|email',
+        ]);
+
+        $order = Order::where('order_code', $request->order_code)
+            ->where('email', $request->email)
+            ->first();
+
+        if (!$order) {
+            return back()->with('error', 'Không tìm thấy đơn hàng. Vui lòng kiểm tra lại thông tin.');
+        }
+
+        session(['tracked_order' => $order->order_code]);
+
+        return redirect('/tra-cuu/' . $order->order_code);
+    }
+
+    public function trackShow($orderCode)
+    {
+        if (session('tracked_order') !== $orderCode && (!auth()->check() || !Order::where('order_code', $orderCode)->where('user_id', auth()->id())->exists())) {
+            abort(403);
+        }
+
+        $order = Order::with(['items.product', 'items.color', 'items.size'])
+            ->where('order_code', $orderCode)
             ->firstOrFail();
 
         return view('orders.show', compact('order'));

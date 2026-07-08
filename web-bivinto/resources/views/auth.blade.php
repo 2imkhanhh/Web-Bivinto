@@ -44,7 +44,7 @@
                         <p class="auth-subtitle mb-4">Chào mừng bạn quay lại với Bivinto.</p>
 
                         <div class="mb-3 w-100">
-                            <input type="email" class="form-control custom-input" id="login_email" placeholder="Email hoặc số điện thoại*" required>
+                            <input type="text" class="form-control custom-input" id="login_email" placeholder="Email hoặc số điện thoại*" required>
                         </div>
                         <div class="mb-3 w-100 position-relative">
                             <input type="password" class="form-control custom-input" id="login_password" placeholder="Mật khẩu*" required>

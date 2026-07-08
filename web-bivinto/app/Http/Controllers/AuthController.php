@@ -14,7 +14,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'phone' => ['required', 'string', 'regex:/^0[0-9]{9}$/'],
             'password' => 'required|string|min:6',
         ], [
@@ -25,12 +25,31 @@ class AuthController extends Controller
             return response()->json(['error' => $validator->errors()], 422);
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = User::where('email', $request->email)->first();
+
+        if ($user) {
+            if ($user->password !== null) {
+                // Already registered
+                return response()->json(['error' => ['email' => ['Email này đã được sử dụng.']]], 422);
+            } else {
+                // Upgrade guest to registered user
+                $user->update([
+                    'name' => $request->name,
+                    'phone' => $request->phone,
+                    'password' => Hash::make($request->password),
+                ]);
+            }
+        } else {
+            // New user
+            $customerCode = 'BVT' . date('ymd') . strtoupper(\Illuminate\Support\Str::random(4));
+            $user = User::create([
+                'customer_code' => $customerCode,
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+            ]);
+        }
 
         return response()->json([
             'message' => 'Đăng ký thành công',

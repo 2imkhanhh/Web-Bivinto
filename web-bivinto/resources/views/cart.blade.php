@@ -4,6 +4,19 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/cart.css') }}">
+    <style>
+        .custom-cart-checkbox {
+            width: 1.2rem;
+            height: 1.2rem;
+            border-color: #333;
+            cursor: pointer;
+        }
+
+        .custom-cart-checkbox:checked {
+            background-color: #100F0F;
+            border-color: #100F0F;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -15,7 +28,16 @@
 
                 <div class="row gx-5">
                     <!-- Left Column: Cart Items -->
-                    <div class="col-12 col-lg-6 mb-5 mb-lg-0">
+                    <div class="col-12 col-lg-8 mb-5 mb-lg-0">
+                        <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                            <input class="form-check-input custom-cart-checkbox m-0 me-3" type="checkbox"
+                                id="check-all-items" checked>
+                            <label class="form-check-label fw-medium cursor-pointer" for="check-all-items"
+                                style="font-size: 0.95rem; user-select: none;">
+                                Chọn tất cả (<span id="total-items-count">{{ $cartItems->count() }}</span>)
+                            </label>
+                        </div>
+
                         @php
                             $subtotal = 0;
                             $totalItems = 0;
@@ -48,8 +70,11 @@
                                 }
                             @endphp
                             <!-- Cart Item -->
-                            <div class="d-flex cart-item pb-4 mb-4 border-bottom cart-item-row" data-id="{{ $item->id }}"
-                                data-price="{{ $item->product->price }}">
+                            <div class="d-flex align-items-center cart-item pb-4 mb-4 border-bottom cart-item-row"
+                                data-id="{{ $item->id }}" data-price="{{ $item->product->price }}">
+                                <input class="form-check-input custom-cart-checkbox item-checkbox m-0 me-3 flex-shrink-0"
+                                    type="checkbox" checked onchange="recalculateTotals()">
+
                                 <div class="cart-item-img-wrap me-4 flex-shrink-0">
                                     <img src="{{ $imageUrl }}" alt="{{ $item->product->name }}"
                                         class="img-fluid object-fit-cover"
@@ -97,8 +122,8 @@
                         @endforeach
                     </div>
 
-                    <!-- Right Column: Checkout Form -->
-                    <div class="col-12 col-lg-6 ps-lg-5">
+                    <!-- Right Column: Cart Summary -->
+                    <div class="col-12 col-lg-4 ps-lg-5">
 
                         <!-- Order Info -->
                         <h3 class="checkout-title fw-bold mb-3" style="font-size: 1.05rem;">THÔNG TIN ĐƠN HÀNG</h3>
@@ -137,57 +162,10 @@
                             </div>
                         </div>
 
-                        <!-- Shipping Info -->
-                        <h3 class="checkout-title fw-bold mb-3" style="font-size: 1.05rem;">THÔNG TIN GIAO HÀNG</h3>
-                        <div class="shipping-info-box mb-5">
-                            <input type="text" id="checkout-name" class="form-control custom-input mb-3" placeholder="Họ và tên*"
-                                value="{{ auth()->user()->name ?? '' }}">
-                            <div class="row gx-3 mb-3">
-                                <div class="col-sm-6 mb-3 mb-sm-0"><input type="email" id="checkout-email" class="form-control custom-input"
-                                        placeholder="Email (không bắt buộc)" value="{{ auth()->user()->email ?? '' }}"></div>
-                                <div class="col-sm-6"><input type="text" id="checkout-phone" class="form-control custom-input"
-                                        placeholder="Số điện thoại*" value="{{ auth()->user()->phone ?? '' }}"></div>
-                            </div>
-                            <textarea id="checkout-address" class="form-control custom-input mb-3" rows="3" placeholder="Địa chỉ nhà cụ thể (Số nhà, đường...)*"></textarea>
-                            <div class="row gx-2 mb-3">
-                                <div class="col-4">
-                                    <select id="checkout-province" class="form-select custom-input text-muted">
-                                        <option value="" selected>Chọn Tỉnh/Thành</option>
-                                    </select>
-                                </div>
-                                <div class="col-4">
-                                    <select id="checkout-district" class="form-select custom-input text-muted" disabled>
-                                        <option value="" selected>Chọn Quận/Huyện</option>
-                                    </select>
-                                </div>
-                                <div class="col-4">
-                                    <select id="checkout-ward" class="form-select custom-input text-muted" disabled>
-                                        <option value="" selected>Chọn Phường/Xã</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <input type="text" id="checkout-note" class="form-control custom-input mb-3"
-                                placeholder="Ghi chú thêm: (cơ quan làm việc, giao giờ hành chính)">
-                        </div>
-
-                        <!-- Payment Method -->
-                        <h3 class="checkout-title fw-bold mb-3" style="font-size: 1.05rem;">PHƯƠNG THỨC THANH TOÁN</h3>
-                        <div class="payment-method-box mb-5">
-                            <label
-                                class="payment-box border rounded px-4 py-3 d-flex align-items-center gap-3 w-100 m-0 cursor-pointer">
-                                <input class="form-check-input mt-0 custom-radio" type="radio" name="paymentMethod"
-                                    checked style="width: 1.2rem; height: 1.2rem;">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="fa-solid fa-truck-fast fs-5"></i>
-                                    <span class="fw-medium text-dark" style="font-size: 0.95rem;">Thanh toán khi nhận hàng
-                                        (COD)</span>
-                                </div>
-                            </label>
-                        </div>
-
                         <!-- Checkout Button -->
-                        <button type="button" id="btn-checkout" class="btn btn-dark w-100 rounded-pill py-3 fw-medium" style="font-size: 1.05rem;">Đặt
-                            Hàng</button>
+                        <button type="button" id="btn-proceed-checkout"
+                            class="btn btn-dark w-100 rounded-pill py-3 fw-medium" style="font-size: 1.05rem;">Thanh
+                            Toán</button>
                     </div>
                 </div>
             @else
@@ -246,17 +224,30 @@
         function recalculateTotals() {
             let totalItems = 0;
             let subtotal = 0;
-            document.querySelectorAll('.cart-item-row').forEach(row => {
+            let checkedCount = 0;
+            const rows = document.querySelectorAll('.cart-item-row');
+
+            rows.forEach(row => {
                 const price = parseFloat(row.getAttribute('data-price'));
                 const qty = parseInt(row.querySelector('.item-qty').innerText);
+                const isChecked = row.querySelector('.item-checkbox').checked;
 
                 // update item total
                 const itemTotal = price * qty;
                 row.querySelector('.item-total-price').innerText = new Intl.NumberFormat('vi-VN').format(itemTotal);
 
-                totalItems += qty;
-                subtotal += itemTotal;
+                if (isChecked) {
+                    totalItems += qty;
+                    subtotal += itemTotal;
+                    checkedCount++;
+                }
             });
+
+            // Handle "Select All" state
+            const checkAll = document.getElementById('check-all-items');
+            if (checkAll) {
+                checkAll.checked = (checkedCount === rows.length && rows.length > 0);
+            }
 
             // update summary
             const summarySubtotal = document.getElementById('summary-subtotal');
@@ -308,137 +299,33 @@
             }
         }
 
-        // ==========================================
-        // KHU VỰC: XỬ LÝ ĐẶT HÀNG VÀ API TỈNH THÀNH
-        // ==========================================
-        let provincesData = [];
 
-        async function loadProvinces() {
-            try {
-                const response = await fetch('https://provinces.open-api.vn/api/?depth=3');
-                provincesData = await response.json();
-                
-                const provinceSelect = document.getElementById('checkout-province');
-                provincesData.forEach(p => {
-                    const opt = document.createElement('option');
-                    opt.value = p.name;
-                    opt.dataset.code = p.code;
-                    opt.innerText = p.name;
-                    provinceSelect.appendChild(opt);
-                });
-            } catch (error) {
-                console.error("Lỗi lấy danh sách tỉnh thành", error);
-            }
-        }
-
-        document.getElementById('checkout-province')?.addEventListener('change', function() {
-            const districtSelect = document.getElementById('checkout-district');
-            const wardSelect = document.getElementById('checkout-ward');
-            
-            districtSelect.innerHTML = '<option value="" selected>Chọn Quận/Huyện</option>';
-            wardSelect.innerHTML = '<option value="" selected>Chọn Phường/Xã</option>';
-            wardSelect.disabled = true;
-
-            const selectedOpt = this.options[this.selectedIndex];
-            if (!selectedOpt.value) {
-                districtSelect.disabled = true;
-                return;
-            }
-
-            const code = selectedOpt.dataset.code;
-            const province = provincesData.find(p => p.code == code);
-            
-            if (province && province.districts) {
-                province.districts.forEach(d => {
-                    const opt = document.createElement('option');
-                    opt.value = d.name;
-                    opt.dataset.code = d.code;
-                    opt.innerText = d.name;
-                    districtSelect.appendChild(opt);
-                });
-                districtSelect.disabled = false;
-            }
-        });
-
-        document.getElementById('checkout-district')?.addEventListener('change', function() {
-            const wardSelect = document.getElementById('checkout-ward');
-            wardSelect.innerHTML = '<option value="" selected>Chọn Phường/Xã</option>';
-
-            const selectedOpt = this.options[this.selectedIndex];
-            if (!selectedOpt.value) {
-                wardSelect.disabled = true;
-                return;
-            }
-
-            const provinceCode = document.getElementById('checkout-province').options[document.getElementById('checkout-province').selectedIndex].dataset.code;
-            const province = provincesData.find(p => p.code == provinceCode);
-            const district = province.districts.find(d => d.code == selectedOpt.dataset.code);
-            
-            if (district && district.wards) {
-                district.wards.forEach(w => {
-                    const opt = document.createElement('option');
-                    opt.value = w.name;
-                    opt.innerText = w.name;
-                    wardSelect.appendChild(opt);
-                });
-                wardSelect.disabled = false;
-            }
-        });
-
-        document.getElementById('btn-checkout')?.addEventListener('click', async function() {
-            const name = document.getElementById('checkout-name').value.trim();
-            const email = document.getElementById('checkout-email').value.trim();
-            const phone = document.getElementById('checkout-phone').value.trim();
-            const address = document.getElementById('checkout-address').value.trim();
-            const province = document.getElementById('checkout-province').value;
-            const district = document.getElementById('checkout-district').value;
-            const ward = document.getElementById('checkout-ward').value;
-            const note = document.getElementById('checkout-note').value.trim();
-
-            if (!name) return showToast('Vui lòng nhập Họ và tên', 'warning');
-            if (!phone) return showToast('Vui lòng nhập Số điện thoại', 'warning');
-            if (!address) return showToast('Vui lòng nhập Địa chỉ nhà', 'warning');
-            if (!province) return showToast('Vui lòng chọn Tỉnh/Thành phố', 'warning');
-            if (!district) return showToast('Vui lòng chọn Quận/Huyện', 'warning');
-            if (!ward) return showToast('Vui lòng chọn Phường/Xã', 'warning');
-
-            const btn = this;
-            const originalText = btn.innerText;
-            btn.innerText = 'Đang xử lý...';
-            btn.disabled = true;
-
-            try {
-                const response = await fetch('/dat-hang', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        name, email, phone, address, province, district, ward, note
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    window.location.href = data.redirect_url;
-                } else {
-                    showToast(data.error || 'Đã có lỗi xảy ra', 'error');
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                }
-            } catch (error) {
-                showToast('Lỗi kết nối máy chủ', 'error');
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }
-        });
-
-        // Tải danh sách tỉnh thành ngay khi load xong script
+        // Event listeners
         window.addEventListener('DOMContentLoaded', () => {
-            loadProvinces();
+            document.getElementById('check-all-items')?.addEventListener('change', function() {
+                const isChecked = this.checked;
+                document.querySelectorAll('.item-checkbox').forEach(cb => cb.checked = isChecked);
+                recalculateTotals();
+            });
+
+            document.getElementById('btn-proceed-checkout')?.addEventListener('click', function() {
+                const checkedIds = [];
+                document.querySelectorAll('.cart-item-row').forEach(row => {
+                    if (row.querySelector('.item-checkbox').checked) {
+                        checkedIds.push(row.getAttribute('data-id'));
+                    }
+                });
+
+                if (checkedIds.length === 0) {
+                    showToast('Vui lòng chọn ít nhất 1 sản phẩm để thanh toán', 'warning');
+                    return;
+                }
+
+                window.location.href = '/thanh-toan?items=' + checkedIds.join(',');
+            });
+
+            // Initial calculation
+            recalculateTotals();
         });
     </script>
 @endpush

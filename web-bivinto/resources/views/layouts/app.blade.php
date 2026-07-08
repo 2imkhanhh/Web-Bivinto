@@ -55,23 +55,33 @@
             </div>
         @else
             <a href="/tai-khoan"
-                class="user-area d-flex align-items-center justify-content-center text-decoration-none">
+                class="user-area d-flex align-items-center justify-content-center text-decoration-none" title="Tài khoản">
                 <i class="bx bx-user fs-5"></i>
             </a>
+            <a href="/tra-cuu"
+                class="user-area d-flex align-items-center justify-content-center text-decoration-none" title="Tra cứu đơn hàng">
+                <i class="bx bx-package fs-5"></i>
+            </a>
         @endif
-        <a href="/thanh-toan" class="cart-area d-flex align-items-center justify-content-center text-decoration-none">
+        <a href="/gio-hang" class="cart-area d-flex align-items-center justify-content-center text-decoration-none">
             <div class="position-relative d-inline-flex align-items-center justify-content-center">
                 <i class="bx bx-cart fs-5"></i>
-                @auth
-                    @php
-                        $cartCount = \App\Models\Cart::where('user_id', auth()->id())->sum('quantity');
-                    @endphp
-                    <span
-                        class="position-absolute top-0 start-100 translate-middle badge bg-danger align-items-center justify-content-center {{ $cartCount > 0 ? 'd-flex' : 'd-none' }}"
-                        style="width: 15px; height: 15px; border-radius: 50%; font-size: 0.55rem; padding: 0;">
-                        {{ $cartCount > 99 ? '99+' : $cartCount }}
-                    </span>
-                @endauth
+                @php
+                    $userId = auth()->id();
+                    $guestToken = \Illuminate\Support\Facades\Cookie::get('guest_cart_token');
+                    $query = \App\Models\Cart::query();
+                    if ($userId) {
+                        $query->where('user_id', $userId);
+                    } else {
+                        $query->where('guest_cart_token', $guestToken);
+                    }
+                    $cartCount = $query->sum('quantity');
+                @endphp
+                <span
+                    class="position-absolute top-0 start-100 translate-middle badge bg-danger align-items-center justify-content-center {{ $cartCount > 0 ? 'd-flex' : 'd-none' }}"
+                    style="width: 15px; height: 15px; border-radius: 50%; font-size: 0.55rem; padding: 0;">
+                    {{ $cartCount > 99 ? '99+' : $cartCount }}
+                </span>
             </div>
         </a>
     </header>
@@ -86,16 +96,17 @@
         </div>
         <div class="mobile-actions d-flex align-items-center gap-2">
             <a href="#" class="text-dark p-2"><i class="bx bx-search fs-5"></i></a>
-            <a href="/thanh-toan" class="text-dark p-2">
+            @if(!auth()->check())
+                <a href="/tra-cuu" class="text-dark p-2" title="Tra cứu đơn hàng"><i class="bx bx-package fs-5"></i></a>
+            @endif
+            <a href="/gio-hang" class="text-dark p-2">
                 <div class="position-relative d-inline-flex align-items-center justify-content-center">
                     <i class="bx bx-cart fs-5"></i>
-                    @auth
-                        <span
-                            class="position-absolute top-0 start-100 translate-middle badge bg-danger align-items-center justify-content-center {{ $cartCount > 0 ? 'd-flex' : 'd-none' }}"
-                            style="width: 14px; height: 14px; border-radius: 50%; font-size: 0.5rem; padding: 0;">
-                            {{ $cartCount > 99 ? '99+' : $cartCount }}
-                        </span>
-                    @endauth
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle badge bg-danger align-items-center justify-content-center {{ $cartCount > 0 ? 'd-flex' : 'd-none' }}"
+                        style="width: 14px; height: 14px; border-radius: 50%; font-size: 0.5rem; padding: 0;">
+                        {{ $cartCount > 99 ? '99+' : $cartCount }}
+                    </span>
                 </div>
             </a>
             <button class="btn border-0 p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">

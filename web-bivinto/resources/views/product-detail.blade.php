@@ -593,11 +593,11 @@
                 btnAddCart.addEventListener('click', function(e) {
                     e.preventDefault();
                     if (!selectedColor) {
-                        alert('Vui lòng chọn màu sắc!');
+                        showToast('Vui lòng chọn màu sắc!', 'warning');
                         return;
                     }
                     if (!selectedSize && selectedColor.sizes && selectedColor.sizes.length > 0 && selectedColor.sizes.filter(s => s.stock > 0).length > 0) {
-                        alert('Vui lòng chọn kích cỡ!');
+                        showToast('Vui lòng chọn kích cỡ!', 'warning');
                         return;
                     }
                     handleAddToCart(false);
@@ -610,11 +610,11 @@
                 btnBuyNow.addEventListener('click', function(e) {
                     e.preventDefault();
                     if (!selectedColor) {
-                        alert('Vui lòng chọn màu sắc!');
+                        showToast('Vui lòng chọn màu sắc!', 'warning');
                         return;
                     }
                     if (!selectedSize && selectedColor.sizes && selectedColor.sizes.length > 0 && selectedColor.sizes.filter(s => s.stock > 0).length > 0) {
-                        alert('Vui lòng chọn kích cỡ!');
+                        showToast('Vui lòng chọn kích cỡ!', 'warning');
                         return;
                     }
                     handleAddToCart(true);
