@@ -53,6 +53,10 @@ class PageController extends Controller
             });
         }
 
+        if ($request->has('q') && $request->q !== '') {
+            $query->where('name', 'like', '%' . $request->q . '%');
+        }
+
         if ($request->has('size') && $request->size !== 'all' && $request->size !== '') {
             $query->whereHas('colors.sizes', function ($q) use ($request) {
                 $q->where('size_name', $request->size);

@@ -8,6 +8,12 @@
 
 @section('content')
     <div class="container-fluid px-3 px-md-4 px-xl-5 py-4 mt-3 mt-xl-4">
+        
+        @if(request('q'))
+            <div class="mb-4 text-center text-md-start">
+                <h6 class="fw-medium mb-0" style="font-size: 1.1rem; color: #616161;">Kết quả tìm kiếm cho: <span style="color: #100F0F;">"{{ request('q') }}"</span></h6>
+            </div>
+        @endif
 
         <!-- Filter Bar -->
         <div class="d-flex justify-content-between align-items-center filter-bar-container flex-wrap gap-3">

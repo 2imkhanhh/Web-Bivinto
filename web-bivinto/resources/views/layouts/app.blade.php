@@ -34,10 +34,10 @@
             <a href="/chinh-sach" class="{{ request()->is('chinh-sach*') ? 'active-nav-link' : '' }}">CHÍNH SÁCH</a>
             <a href="/blogs" class="{{ request()->is('blogs*') || request()->is('blog/*') ? 'active-nav-link' : '' }}">BLOGS</a>
         </div>
-        <div class="search-area d-flex align-items-center">
-            <i class="bx bx-search fs-5"></i>
-            <input type="text" placeholder="Tìm kiếm">
-        </div>
+        <form action="/san-pham" method="GET" class="search-area d-flex align-items-center mb-0">
+            <button type="submit" class="btn p-0 border-0 bg-transparent" style="box-shadow: none;"><i class="bx bx-search fs-5"></i></button>
+            <input type="text" name="q" placeholder="Tìm kiếm" value="{{ request('q') }}">
+        </form>
         @if (auth()->check() && !auth()->user()->isAdmin())
             <div class="user-area d-flex align-items-center justify-content-center dropdown hover-dropdown">
                 <a href="#"
@@ -95,7 +95,7 @@
             </a>
         </div>
         <div class="mobile-actions d-flex align-items-center gap-2">
-            <a href="#" class="text-dark p-2"><i class="bx bx-search fs-5"></i></a>
+            <a href="#" class="text-dark p-2" data-bs-toggle="collapse" data-bs-target="#mobileSearchCollapse"><i class="bx bx-search fs-5"></i></a>
             @if(!auth()->check())
                 <a href="/tra-cuu" class="text-dark p-2" title="Tra cứu đơn hàng"><i class="bx bx-package fs-5"></i></a>
             @endif
@@ -112,6 +112,16 @@
             <button class="btn border-0 p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
                 <i class="bx bx-menu fs-4 text-dark"></i>
             </button>
+        </div>
+
+        <!-- Mobile Search Collapse -->
+        <div class="collapse position-absolute w-100 bg-white border-bottom shadow-sm" id="mobileSearchCollapse" style="top: 100%; left: 0; z-index: 1020;">
+            <div class="p-3">
+                <form action="/san-pham" method="GET" class="d-flex align-items-center m-0">
+                    <input type="text" name="q" class="form-control rounded-pill me-2" placeholder="Tìm kiếm sản phẩm..." value="{{ request('q') }}">
+                    <button type="submit" class="btn btn-dark rounded-pill px-4">Tìm</button>
+                </form>
+            </div>
         </div>
     </header>
 
