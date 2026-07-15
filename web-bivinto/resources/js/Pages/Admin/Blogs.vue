@@ -27,8 +27,8 @@
             </thead>
             <tbody>
               <tr v-for="(blog, index) in blogs.data" :key="blog.id">
-                <td class="px-4 text-muted fw-bold">
-                  {{ blog.position > 0 ? blog.position : '--' }}
+                <td class="px-4 text-muted">
+                  {{ (blogs.current_page - 1) * blogs.per_page + index + 1 }}
                 </td>
                 <td class="fw-medium text-dark">
                   <div class="text-truncate" style="max-width: 250px;" :title="blog.title">{{ blog.title }}</div>
@@ -78,17 +78,21 @@
           </table>
         </div>
       </div>
-      <div class="card-footer bg-white border-0 py-3 d-flex flex-column flex-sm-row justify-content-between align-items-center"
+      <div
+        class="card-footer bg-white border-0 py-3 d-flex flex-column flex-sm-row justify-content-between align-items-center"
         v-if="blogs.total > 0">
         <div class="text-muted small mb-2 mb-sm-0">
           Hiển thị từ {{ blogs.from }} đến {{ blogs.to }} trong tổng số {{ blogs.total }} bài viết.
         </div>
         <nav aria-label="Page navigation" class="d-flex align-items-center gap-2">
           <!-- Nút Trước -->
-          <Link v-if="blogs.links[0].url" :href="blogs.links[0].url" class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
+          <Link v-if="blogs.links[0].url" :href="blogs.links[0].url"
+            class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
             <i class="fa-solid fa-chevron-left fa-xs"></i> Trước
           </Link>
-          <button v-else class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium" disabled>
+          <button v-else
+            class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium"
+            disabled>
             <i class="fa-solid fa-chevron-left fa-xs"></i> Trước
           </button>
 
@@ -97,18 +101,23 @@
             <template v-for="(link, index) in blogs.links.slice(1, -1)" :key="index">
               <li class="page-item" :class="{ active: link.active }">
                 <Link v-if="link.url" :href="link.url" class="page-link border-0 rounded shadow-sm px-3 fw-medium"
-                  :class="{ 'bg-dark text-white': link.active, 'bg-light text-dark': !link.active }" v-html="link.label">
+                  :class="{ 'bg-dark text-white': link.active, 'bg-light text-dark': !link.active }"
+                  v-html="link.label">
                 </Link>
-                <span v-else class="page-link border-0 rounded text-muted shadow-sm bg-light px-3 fw-medium" v-html="link.label"></span>
+                <span v-else class="page-link border-0 rounded text-muted shadow-sm bg-light px-3 fw-medium"
+                  v-html="link.label"></span>
               </li>
             </template>
           </ul>
 
           <!-- Nút Sau -->
-          <Link v-if="blogs.links[blogs.links.length - 1].url" :href="blogs.links[blogs.links.length - 1].url" class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
+          <Link v-if="blogs.links[blogs.links.length - 1].url" :href="blogs.links[blogs.links.length - 1].url"
+            class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-2 fw-medium">
             Sau <i class="fa-solid fa-chevron-right fa-xs"></i>
           </Link>
-          <button v-else class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium" disabled>
+          <button v-else
+            class="btn btn-sm btn-light border-0 rounded-pill px-3 shadow-sm text-muted d-flex align-items-center gap-2 fw-medium"
+            disabled>
             Sau <i class="fa-solid fa-chevron-right fa-xs"></i>
           </button>
         </nav>

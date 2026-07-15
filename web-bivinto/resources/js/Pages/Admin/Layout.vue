@@ -45,6 +45,11 @@
           </Link>
         </li>
         <li class="nav-item">
+          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/contacts') }" href="/admin/contacts">
+            <i class="fa-solid fa-envelope"></i> Liên hệ
+          </Link>
+        </li>
+        <li class="nav-item">
           <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/settings') }" href="/admin/settings">
             <i class="fa-solid fa-pen-to-square"></i> Nội dung
           </Link>

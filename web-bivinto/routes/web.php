@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', [PageController::class, 'home']);
 Route::get('/ve-chung-toi', [PageController::class, 'aboutUs']);
@@ -13,6 +14,7 @@ Route::get('/san-pham', [PageController::class, 'products']);
 Route::get('/chi-tiet-san-pham/{slug}', [PageController::class, 'productDetail']);
 Route::get('/hop-tac', [PageController::class, 'collaboration']);
 Route::get('/chinh-sach', [PageController::class, 'policy']);
+Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/blogs', [PageController::class, 'blogs']);
 Route::get('/blogs/{slug}', [PageController::class, 'blogDetail'])->name('blog.detail');
 
@@ -78,4 +80,6 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'index']);
     Route::put('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update']);
     Route::post('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update']);
+
+    Route::resource('contacts', App\Http\Controllers\Admin\ContactController::class)->only(['index', 'update', 'destroy']);
 });

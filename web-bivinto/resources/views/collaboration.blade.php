@@ -92,25 +92,26 @@
                             <h3 class="contact-title fw-bold mb-2">{{ get_setting('collab_contact_title', 'Liên Hệ Với Chúng Tôi') }}</h3>
                             <p class="contact-subtitle mb-4">{{ get_setting('collab_contact_subtitle', 'Quý khách hàng vui lòng điền đầy đủ thông tin để đội ngũ Bivinto tư vấn') }}</p>
 
-                            <form>
+                            <form id="contactForm">
+                                @csrf
                                 <div class="row gx-3 mb-3">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control collab-input" placeholder="Họ và tên*">
+                                        <input type="text" name="name" class="form-control collab-input" placeholder="Họ và tên*" required>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control collab-input"
-                                            placeholder="Số điện thoại*">
+                                        <input type="text" name="phone" class="form-control collab-input"
+                                            placeholder="Số điện thoại*" required>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <input type="email" class="form-control collab-input" placeholder="Email*">
+                                    <input type="email" name="email" class="form-control collab-input" placeholder="Email*">
                                 </div>
                                 <div class="mb-4">
-                                    <textarea class="form-control collab-input" rows="4" placeholder="Message*"></textarea>
+                                    <textarea name="message" class="form-control collab-input" rows="4" placeholder="Message*" required></textarea>
                                 </div>
 
                                 <div class="mt-4">
-                                    <button type="submit"
+                                    <button type="submit" id="btnSubmitContact"
                                         class="btn btn-dark px-5 py-2 rounded-pill collab-submit-btn mb-4">Gửi</button>
 
                                     <div class="d-flex justify-content-between align-items-center">
@@ -133,3 +134,42 @@
 
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.getElementById('contactForm')?.addEventListener('submit', function (e) {
+        e.preventDefault();
+        
+        let formData = new FormData(this);
+        let btnSubmit = document.getElementById('btnSubmitContact');
+        let originalText = btnSubmit.innerHTML;
+        
+        btnSubmit.innerHTML = 'Đang gửi...';
+        btnSubmit.disabled = true;
+
+        fetch('{{ route("contact.store") }}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.showToast(data.message, 'success');
+                document.getElementById('contactForm').reset();
+            } else {
+                window.showToast(data.message || 'Có lỗi xảy ra, vui lòng thử lại sau.', 'error');
+            }
+        })
+        .catch(error => {
+            window.showToast('Có lỗi xảy ra, vui lòng kiểm tra kết nối mạng.', 'error');
+        })
+        .finally(() => {
+            btnSubmit.innerHTML = originalText;
+            btnSubmit.disabled = false;
+        });
+    });
+</script>
+@endpush
