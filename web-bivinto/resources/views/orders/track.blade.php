@@ -22,7 +22,7 @@
                 </div>
                 
 
-                <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-medium" style="font-size: 1.05rem;">
+                <button type="submit" class="btn btn-dark w-100 py-2 rounded-pill fw-medium" style="font-size: 0.95rem;">
                     TRA CỨU NGAY
                 </button>
             </form>
