@@ -36,6 +36,11 @@ body {
     justify-content: center;
 }
 
+.logo-area img {
+    width: 140px;
+    height: auto;
+}
+
 .nav-area {
     flex-grow: 1;
     display: flex;
@@ -132,6 +137,11 @@ body {
     background-color: #FFFDF8;
     transition: all 0.3s ease-in-out;
     z-index: 1020;
+}
+
+.logo-area-mobile img {
+    width: 110px;
+    height: auto;
 }
 
 /* --- Scrolled Header Effect --- */

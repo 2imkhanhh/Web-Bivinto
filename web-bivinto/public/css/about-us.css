@@ -12,7 +12,7 @@
     font-size: 56px;
     color: #100F0F;
     margin-bottom: 1.2rem;
-    line-height: 106%;
+    line-height: 120%;
     letter-spacing: 0;
     text-transform: uppercase;
 }
@@ -36,7 +36,7 @@
 }
 
 .story-header-left {
-    padding: 3rem 5rem 2rem 5%;
+    padding: 4rem 5rem 2rem 5%;
 }
 
 .story-header-right {
@@ -51,8 +51,14 @@
 }
 
 .story-text-box {
-    padding: 6rem 10%;
+    padding: 6rem 4%;
     background-color: #FFFDF8;
+}
+
+.story-text-box .about-desc {
+    font-size: 1.18rem;
+    line-height: 1.8;
+    text-align: justify;
 }
 
 .story-grid-img {
@@ -78,7 +84,7 @@
 }
 
 .meaning-content {
-    max-width: 800px;
+    max-width: 1200px;
 }
 
 .meaning-subtitle {
@@ -144,7 +150,11 @@
     }
 
     .story-text-box {
-        padding: 4rem 5%;
+        padding: 4rem 3%;
+    }
+
+    .story-text-box .about-desc {
+        font-size: 1.1rem;
     }
 }
 
@@ -183,6 +193,10 @@
 
     .story-text-box {
         padding: 1.5rem 15px;
+    }
+
+    .story-text-box .about-desc {
+        font-size: 1rem;
     }
 
     .meaning-subtitle {

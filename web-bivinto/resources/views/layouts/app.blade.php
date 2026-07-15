@@ -29,13 +29,17 @@
         </div>
         <div class="nav-area">
             <a href="/ve-chung-toi" class="{{ request()->is('ve-chung-toi*') ? 'active-nav-link' : '' }}">VỀ BIVINTO</a>
-            <a href="/san-pham" class="{{ request()->is('san-pham*') || request()->is('chi-tiet-san-pham*') ? 'active-nav-link' : '' }}">SẢN PHẨM</a>
+            <a href="/san-pham"
+                class="{{ request()->is('san-pham*') || request()->is('chi-tiet-san-pham*') ? 'active-nav-link' : '' }}">SẢN
+                PHẨM</a>
             <a href="/hop-tac" class="{{ request()->is('hop-tac*') ? 'active-nav-link' : '' }}">HỢP TÁC</a>
             <a href="/chinh-sach" class="{{ request()->is('chinh-sach*') ? 'active-nav-link' : '' }}">CHÍNH SÁCH</a>
-            <a href="/blogs" class="{{ request()->is('blogs*') || request()->is('blog/*') ? 'active-nav-link' : '' }}">BLOGS</a>
+            <a href="/blogs"
+                class="{{ request()->is('blogs*') || request()->is('blog/*') ? 'active-nav-link' : '' }}">BLOGS</a>
         </div>
         <form action="/san-pham" method="GET" class="search-area d-flex align-items-center mb-0">
-            <button type="submit" class="btn p-0 border-0 bg-transparent" style="box-shadow: none;"><i class="bx bx-search fs-5"></i></button>
+            <button type="submit" class="btn p-0 border-0 bg-transparent" style="box-shadow: none;"><i
+                    class="bx bx-search fs-5"></i></button>
             <input type="text" name="q" placeholder="Tìm kiếm" value="{{ request('q') }}">
         </form>
         @if (auth()->check() && !auth()->user()->isAdmin())
@@ -54,12 +58,12 @@
                 </ul>
             </div>
         @else
-            <a href="/tai-khoan"
-                class="user-area d-flex align-items-center justify-content-center text-decoration-none" title="Tài khoản">
+            <a href="/tai-khoan" class="user-area d-flex align-items-center justify-content-center text-decoration-none"
+                title="Tài khoản">
                 <i class="bx bx-user fs-5"></i>
             </a>
-            <a href="/tra-cuu"
-                class="user-area d-flex align-items-center justify-content-center text-decoration-none" title="Tra cứu đơn hàng">
+            <a href="/tra-cuu" class="user-area d-flex align-items-center justify-content-center text-decoration-none"
+                title="Tra cứu đơn hàng">
                 <i class="bx bx-package fs-5"></i>
             </a>
         @endif
@@ -95,8 +99,9 @@
             </a>
         </div>
         <div class="mobile-actions d-flex align-items-center gap-2">
-            <a href="#" class="text-dark p-2" data-bs-toggle="collapse" data-bs-target="#mobileSearchCollapse"><i class="bx bx-search fs-5"></i></a>
-            @if(!auth()->check())
+            <a href="#" class="text-dark p-2" data-bs-toggle="collapse" data-bs-target="#mobileSearchCollapse"><i
+                    class="bx bx-search fs-5"></i></a>
+            @if (!auth()->check())
                 <a href="/tra-cuu" class="text-dark p-2" title="Tra cứu đơn hàng"><i class="bx bx-package fs-5"></i></a>
             @endif
             <a href="/gio-hang" class="text-dark p-2">
@@ -115,10 +120,12 @@
         </div>
 
         <!-- Mobile Search Collapse -->
-        <div class="collapse position-absolute w-100 bg-white border-bottom shadow-sm" id="mobileSearchCollapse" style="top: 100%; left: 0; z-index: 1020;">
+        <div class="collapse position-absolute w-100 bg-white border-bottom shadow-sm" id="mobileSearchCollapse"
+            style="top: 100%; left: 0; z-index: 1020;">
             <div class="p-3">
                 <form action="/san-pham" method="GET" class="d-flex align-items-center m-0">
-                    <input type="text" name="q" class="form-control rounded-pill me-2" placeholder="Tìm kiếm sản phẩm..." value="{{ request('q') }}">
+                    <input type="text" name="q" class="form-control rounded-pill me-2"
+                        placeholder="Tìm kiếm sản phẩm..." value="{{ request('q') }}">
                     <button type="submit" class="btn btn-dark rounded-pill px-4">Tìm</button>
                 </form>
             </div>
@@ -155,11 +162,16 @@
                     <a class="nav-link text-dark border-bottom py-3 fw-semibold" href="/tai-khoan">ĐĂNG NHẬP / ĐĂNG
                         KÝ</a>
                 @endif
-                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('ve-chung-toi*') ? 'active-nav-link' : '' }}" href="/ve-chung-toi">VỀ BIVINTO</a>
-                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('san-pham*') || request()->is('chi-tiet-san-pham*') ? 'active-nav-link' : '' }}" href="/san-pham">SẢN PHẨM</a>
-                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('hop-tac*') ? 'active-nav-link' : '' }}" href="/hop-tac">HỢP TÁC</a>
-                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('chinh-sach*') ? 'active-nav-link' : '' }}" href="/chinh-sach">CHÍNH SÁCH</a>
-                <a class="nav-link text-dark py-3 fw-semibold {{ request()->is('blogs*') || request()->is('blog/*') ? 'active-nav-link' : '' }}" href="/blogs">BLOGS</a>
+                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('ve-chung-toi*') ? 'active-nav-link' : '' }}"
+                    href="/ve-chung-toi">VỀ BIVINTO</a>
+                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('san-pham*') || request()->is('chi-tiet-san-pham*') ? 'active-nav-link' : '' }}"
+                    href="/san-pham">SẢN PHẨM</a>
+                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('hop-tac*') ? 'active-nav-link' : '' }}"
+                    href="/hop-tac">HỢP TÁC</a>
+                <a class="nav-link text-dark border-bottom py-3 fw-semibold {{ request()->is('chinh-sach*') ? 'active-nav-link' : '' }}"
+                    href="/chinh-sach">CHÍNH SÁCH</a>
+                <a class="nav-link text-dark py-3 fw-semibold {{ request()->is('blogs*') || request()->is('blog/*') ? 'active-nav-link' : '' }}"
+                    href="/blogs">BLOGS</a>
                 @if (auth()->check() && !auth()->user()->isAdmin())
                     <a class="nav-link text-danger border-top py-3 fw-semibold" href="#"
                         onclick="logout(event)">ĐĂNG XUẤT</a>
@@ -180,8 +192,7 @@
                 <!-- Column 1: Company Info -->
                 <div class="col-12 col-md-6 col-lg-3 d-flex flex-column gap-3 pe-lg-4">
                     <a href="/">
-                        <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo"
-                            class="footer-logo filter-white">
+                        <img src="{{ asset('images/logo2.png') }}" alt="Bivinto Logo" class="footer-logo">
                     </a>
                     <div class="footer-contact d-flex flex-column gap-3">
                         <div class="d-flex align-items-start gap-3">
