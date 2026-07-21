@@ -23,9 +23,11 @@
           </Link>
         </li>
         <li class="nav-item">
-          <Link class="nav-link d-flex justify-content-between align-items-center" :class="{ 'active': $page.url.startsWith('/admin/orders') }" href="/admin/orders">
+          <Link class="nav-link d-flex justify-content-between align-items-center"
+            :class="{ 'active': $page.url.startsWith('/admin/orders') }" href="/admin/orders">
             <span><i class="fa-solid fa-cart-shopping me-2"></i> Đơn hàng</span>
-            <span v-if="$page.props.pending_orders_count > 0" class="badge bg-danger rounded-pill">{{ $page.props.pending_orders_count }}</span>
+            <span v-if="$page.props.pending_orders_count > 0" class="badge bg-danger rounded-pill">{{
+              $page.props.pending_orders_count }}</span>
           </Link>
         </li>
         <li class="nav-item">
@@ -53,6 +55,12 @@
         <li class="nav-item">
           <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/settings') }" href="/admin/settings">
             <i class="fa-solid fa-pen-to-square"></i> Nội dung
+          </Link>
+        </li>
+        <li class="nav-item">
+          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/mail-settings') }"
+            href="/admin/mail-settings">
+            <i class="fa-solid fa-envelope-open-text"></i> Email
           </Link>
         </li>
       </ul>

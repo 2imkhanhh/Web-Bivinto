@@ -81,5 +81,8 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::put('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update']);
     Route::post('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update']);
 
+    Route::get('/mail-settings', [App\Http\Controllers\Admin\MailSettingController::class, 'index']);
+    Route::put('/mail-settings', [App\Http\Controllers\Admin\MailSettingController::class, 'update']);
+
     Route::resource('contacts', App\Http\Controllers\Admin\ContactController::class)->only(['index', 'update', 'destroy']);
 });
