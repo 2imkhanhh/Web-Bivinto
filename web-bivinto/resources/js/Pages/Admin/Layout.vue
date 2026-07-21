@@ -23,8 +23,9 @@
           </Link>
         </li>
         <li class="nav-item">
-          <Link class="nav-link" :class="{ 'active': $page.url.startsWith('/admin/orders') }" href="/admin/orders">
-            <i class="fa-solid fa-cart-shopping"></i> Đơn hàng
+          <Link class="nav-link d-flex justify-content-between align-items-center" :class="{ 'active': $page.url.startsWith('/admin/orders') }" href="/admin/orders">
+            <span><i class="fa-solid fa-cart-shopping me-2"></i> Đơn hàng</span>
+            <span v-if="$page.props.pending_orders_count > 0" class="badge bg-danger rounded-pill">{{ $page.props.pending_orders_count }}</span>
           </Link>
         </li>
         <li class="nav-item">

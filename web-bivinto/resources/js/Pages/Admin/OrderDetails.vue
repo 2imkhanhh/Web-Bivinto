@@ -162,6 +162,16 @@ export default {
     const updateStatus = () => {
       form.put(`/admin/orders/${props.order.id}`, {
         preserveScroll: true,
+        onSuccess: () => {
+          if (window.showToast) {
+            window.showToast('Cập nhật trạng thái đơn hàng thành công!');
+          }
+        },
+        onError: () => {
+          if (window.showToast) {
+            window.showToast('Có lỗi xảy ra khi cập nhật!', 'error');
+          }
+        }
       });
     };
 
