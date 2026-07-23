@@ -14,8 +14,8 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = Blog::orderByRaw('position = 0, position ASC')
-                     ->orderBy('created_at', 'desc')
-                     ->paginate(10);
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
         return Inertia::render('Admin/Blogs', [
             'blogs' => $blogs
         ]);
@@ -40,7 +40,7 @@ class BlogController extends Controller
 
         $data = $request->except('image');
         $data['slug'] = Str::slug($request->title);
-        
+
         // Ensure slug is unique
         $originalSlug = $data['slug'];
         $count = 1;
@@ -78,7 +78,7 @@ class BlogController extends Controller
         ]);
 
         $data = $request->except('image');
-        
+
         if ($request->title !== $blog->title) {
             $data['slug'] = Str::slug($request->title);
             $originalSlug = $data['slug'];
@@ -106,7 +106,7 @@ class BlogController extends Controller
         if ($blog->image_path && Storage::disk('public')->exists($blog->image_path)) {
             Storage::disk('public')->delete($blog->image_path);
         }
-        
+
         $blog->delete();
 
         return redirect()->route('blogs.index')->with('success', 'Đã xóa bài viết.');
@@ -121,7 +121,7 @@ class BlogController extends Controller
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('blogs/content', 'public');
             return response()->json([
-                'url' => asset('storage/' . $path)
+                'url' => '/storage/' . $path
             ]);
         }
 
