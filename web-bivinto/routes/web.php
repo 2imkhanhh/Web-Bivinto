@@ -61,6 +61,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index']);
     Route::get('/dashboard/chart-data', [App\Http\Controllers\Admin\DashboardController::class, 'chartData']);
     
+    Route::get('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'index']);
+    Route::put('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'update']);
+    
     Route::resource('categories', CategoryController::class);
     Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
     

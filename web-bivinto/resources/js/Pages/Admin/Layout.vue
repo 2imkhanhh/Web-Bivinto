@@ -77,15 +77,16 @@
           <div class="admin-avatar-btn" @click="toggleUserMenu" id="adminUserBtn">
             <img src="https://ui-avatars.com/api/?name=Admin&background=1a1a2e&color=fff" alt="Admin" width="36"
               height="36" class="rounded-circle">
-            <span class="admin-name">Quản trị viên</span>
+            <span class="admin-name">{{ $page.props.auth?.user?.name || 'Quản trị viên' }}</span>
             <i class="fa-solid fa-chevron-down admin-chevron" :class="{ 'rotated': userMenuOpen }"></i>
           </div>
           <div class="admin-user-dropdown" v-show="userMenuOpen" @click.stop>
+
             <div class="admin-dropdown-divider"></div>
-            <a href="#" class="admin-dropdown-item">
+            <Link href="/admin/profile" class="admin-dropdown-item">
               <i class="fa-regular fa-user"></i>
               <span>Hồ sơ</span>
-            </a>
+            </Link>
             <div class="admin-dropdown-divider"></div>
             <a href="#" class="admin-dropdown-item admin-dropdown-logout" @click.prevent="logout">
               <i class="fa-solid fa-arrow-right-from-bracket"></i>

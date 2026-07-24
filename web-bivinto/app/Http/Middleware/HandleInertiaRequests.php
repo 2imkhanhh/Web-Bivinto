@@ -38,6 +38,9 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'pending_orders_count' => \App\Models\Order::where('status', 'pending')->count(),
+            'auth' => [
+                'user' => $request->user(),
+            ],
         ]);
     }
 }
