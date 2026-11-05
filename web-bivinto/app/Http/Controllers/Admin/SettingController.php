@@ -10,12 +10,8 @@ use Inertia\Inertia;
 
 class SettingController extends Controller
 {
-    /**
-     * Hiển thị trang cài đặt.
-     */
     public function index()
     {
-        // Các nhóm DB gộp vào tab nào
         $tabs = [
             'homepage' => [
                 'label' => 'Trang Chủ',
@@ -39,7 +35,6 @@ class SettingController extends Controller
             ],
         ];
 
-        // Map tên nhóm DB sang label hiển thị
         $sectionLabels = [
             'banner' => 'Banner',
             'about' => 'Về Bivinto',
@@ -96,27 +91,20 @@ class SettingController extends Controller
             'settings' => $settings,
         ]);
     }
-
-    /**
-     * Cập nhật settings.
-     */
     public function update(Request $request)
     {
         $data = $request->except('_token');
 
         foreach ($data as $key => $value) {
-            // Bỏ qua các trường không phải setting key
             if ($key === '_method') continue;
 
             $setting = Setting::where('key', $key)->first();
             if (!$setting) continue;
 
             if ($setting->type === 'image') {
-                // Nếu value là file upload
                 if ($request->hasFile($key)) {
                     $file = $request->file($key);
-                    
-                    // Xóa ảnh cũ nếu nằm trong storage
+
                     if ($setting->value && str_starts_with($setting->value, 'settings/')) {
                         Storage::disk('public')->delete($setting->value);
                     }
@@ -125,7 +113,6 @@ class SettingController extends Controller
                     $setting->value = $path;
                     $setting->save();
                 }
-                // Nếu không upload file mới thì giữ nguyên
             } else {
                 $setting->value = $value;
                 $setting->save();

@@ -29,10 +29,8 @@ class AuthController extends Controller
 
         if ($user) {
             if ($user->password !== null) {
-                // Already registered
                 return response()->json(['error' => ['email' => ['Email này đã được sử dụng.']]], 422);
             } else {
-                // Upgrade guest to registered user
                 $user->update([
                     'name' => $request->name,
                     'phone' => $request->phone,
@@ -40,7 +38,6 @@ class AuthController extends Controller
                 ]);
             }
         } else {
-            // New user
             $customerCode = 'BVT' . date('ymd') . strtoupper(\Illuminate\Support\Str::random(4));
             $user = User::create([
                 'customer_code' => $customerCode,

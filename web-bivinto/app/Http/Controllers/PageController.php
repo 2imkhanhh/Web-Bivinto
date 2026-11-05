@@ -107,7 +107,6 @@ class PageController extends Controller
             ->pluck('color_name')
             ->toArray();
 
-        // Sắp xếp lại danh sách size nếu cần (S, M, L, XL, XXL)
         $sizeOrder = ['XS' => 1, 'S' => 2, 'M' => 3, 'L' => 4, 'XL' => 5, 'XXL' => 6];
         usort($allSizes, function ($a, $b) use ($sizeOrder) {
             $posA = $sizeOrder[$a] ?? 99;

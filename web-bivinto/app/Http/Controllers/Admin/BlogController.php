@@ -41,7 +41,6 @@ class BlogController extends Controller
         $data = $request->except('image');
         $data['slug'] = Str::slug($request->title);
 
-        // Ensure slug is unique
         $originalSlug = $data['slug'];
         $count = 1;
         while (Blog::where('slug', $data['slug'])->exists()) {

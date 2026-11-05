@@ -18,8 +18,8 @@ class CustomerController extends Controller
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%")
-                      ->orWhere('phone', 'like', "%{$search}%");
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%");
                 });
             })
             ->orderBy('id', 'desc')
@@ -55,7 +55,6 @@ class CustomerController extends Controller
             return redirect()->back()->withErrors(['error' => 'Không thể xoá tài khoản Quản trị viên.']);
         }
 
-        // Kiểm tra xem khách hàng có đơn hàng nào chưa hoàn thành/hủy không
         $activeOrders = Order::where('user_id', $customer->id)
             ->whereNotIn('status', ['completed', 'cancelled'])
             ->count();
@@ -64,7 +63,6 @@ class CustomerController extends Controller
             return redirect()->back()->withErrors(['error' => 'Không thể xóa khách hàng đang có đơn hàng chưa hoàn tất.']);
         }
 
-        // Xoá khách hàng
         $customer->delete();
 
         return redirect()->back()->with('success', 'Đã xóa khách hàng thành công!');

@@ -5,27 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Bivinto')</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/logo-tab.png') }}">
-    <!-- Bootstrap CSS -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo-tab.svg') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <!-- Custom CSS -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js', 'public/css/style.css'])
     @stack('styles')
 </head>
 
 <body>
-
-    <!-- Desktop Header -->
     <header class="custom-header d-none d-xl-flex sticky-top">
         <div class="logo-area">
-            <!-- Placeholder logo, replace with actual logo -->
             <a href="/">
-                <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo" class="img-fluid">
+                <img src="{{ asset('images/logo.svg') }}" alt="Bivinto Logo" class="img-fluid">
             </a>
         </div>
         <div class="nav-area">
@@ -96,7 +89,7 @@
         class="mobile-header d-flex d-xl-none justify-content-between align-items-center px-3 border-bottom flex-shrink-0 sticky-top">
         <div class="logo-area-mobile">
             <a href="/">
-                <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo" class="img-fluid d-block">
+                <img src="{{ asset('images/logo.svg') }}" alt="Bivinto Logo" class="img-fluid d-block">
             </a>
         </div>
         <div class="mobile-actions d-flex align-items-center gap-2">
@@ -139,7 +132,7 @@
             class="d-flex justify-content-between align-items-center px-3 border-bottom flex-shrink-0 mobile-menu-header">
             <div class="logo-area-mobile">
                 <a href="/">
-                    <img src="{{ asset('images/logo.png') }}" alt="Bivinto Logo" class="img-fluid d-block">
+                    <img src="{{ asset('images/logo.svg') }}" alt="Bivinto Logo" class="img-fluid d-block">
                 </a>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -193,7 +186,7 @@
                 <!-- Column 1: Company Info -->
                 <div class="col-12 col-md-6 col-lg-3 d-flex flex-column gap-3 pe-lg-4">
                     <a href="/">
-                        <img src="{{ asset('images/logo2.png') }}" alt="Bivinto Logo" class="footer-logo">
+                        <img src="{{ asset('images/logo2.svg') }}" alt="Bivinto Logo" class="footer-logo">
                     </a>
                     <div class="footer-contact d-flex flex-column gap-3">
                         <div class="d-flex align-items-start gap-3">
@@ -258,7 +251,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // --- Cấu hình chung cho Toast ---
         const Toast = Swal.mixin({
             toast: true,
             position: 'bottom-end',
@@ -272,15 +264,12 @@
             }
         });
 
-        // Hàm hiển thị Toast (Tự ẩn)
         window.showToast = function(message, type = 'success') {
             return Toast.fire({
                 icon: type,
                 title: message
             });
         };
-
-        // Hàm hiển thị Dialog Xác Nhận (Có nút Đồng ý / Hủy)
         window.showConfirm = function(title, text = '', confirmButtonText = 'Đồng ý', cancelButtonText = 'Hủy') {
             return Swal.fire({
                 title: title,
@@ -296,8 +285,6 @@
                 return result.isConfirmed;
             });
         };
-
-        // Hàm hiển thị Dialog Thông Báo (Chỉ có nút OK)
         window.showAlert = function(title, text = '', icon = 'info') {
             return Swal.fire({
                 title: title,
@@ -307,8 +294,6 @@
                 confirmButtonText: 'OK'
             });
         };
-
-        // Hàm Đăng xuất
         window.logout = async function(e) {
             if (e) e.preventDefault();
 
@@ -323,8 +308,6 @@
                     }
                 });
             } catch (err) {}
-
-            // Dọn dẹp local storage nếu còn
             localStorage.removeItem('user');
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
@@ -340,14 +323,12 @@
             window.addEventListener("scroll", function() {
                 const currentScrollY = window.scrollY;
 
-                // Add shadow if not at the top
                 if (currentScrollY > 10) {
                     headers.forEach(header => header.classList.add("header-shadow"));
                 } else {
                     headers.forEach(header => header.classList.remove("header-shadow"));
                 }
 
-                // Hide on scroll down, show on scroll up
                 if (currentScrollY > lastScrollY && currentScrollY > 100) {
                     headers.forEach(header => header.classList.add("header-hidden"));
                 } else {
@@ -357,10 +338,9 @@
                 lastScrollY = currentScrollY;
             });
 
-            // Global Password Toggle
             const toggleIcons = document.querySelectorAll('.toggle-password');
             toggleIcons.forEach(icon => {
-                icon.style.display = 'none'; // Hide by default
+                icon.style.display = 'none';
                 const input = icon.previousElementSibling;
                 if (input && input.tagName === 'INPUT') {
                     input.addEventListener('focus', () => {
@@ -369,7 +349,6 @@
 
                     input.addEventListener('blur', () => {
                         setTimeout(() => {
-                            // If we didn't just click the icon to refocus, hide it
                             if (document.activeElement !== input) {
                                 icon.style.display = 'none';
                             }
@@ -377,7 +356,7 @@
                     });
 
                     icon.addEventListener('click', function(e) {
-                        e.preventDefault(); // Prevent focus loss if possible
+                        e.preventDefault();
                         if (input.type === 'password') {
                             input.type = 'text';
                             icon.classList.remove('fa-eye');
@@ -387,7 +366,7 @@
                             icon.classList.remove('fa-eye-slash');
                             icon.classList.add('fa-eye');
                         }
-                        input.focus(); // Keep focus on input
+                        input.focus();
                     });
                 }
             });

@@ -72,7 +72,6 @@ class ProductController extends Controller
                         'color_code' => $colorData['code'] ?? null,
                     ]);
 
-                    // Sizes
                     if (isset($colorData['sizes'])) {
                         foreach ($colorData['sizes'] as $sizeData) {
                             $color->sizes()->create([
@@ -83,7 +82,6 @@ class ProductController extends Controller
                         }
                     }
 
-                    // Images
                     if ($request->hasFile("colors.{$index}.images")) {
                         foreach ($request->file("colors.{$index}.images") as $imgIndex => $file) {
                             $path = $file->store('products', 'public');
@@ -179,7 +177,6 @@ class ProductController extends Controller
                         'color_code' => $colorData['code'] ?? null,
                     ]);
 
-                    // Sizes
                     if (isset($colorData['sizes'])) {
                         foreach ($colorData['sizes'] as $sizeData) {
                             $color->sizes()->create([
@@ -190,7 +187,6 @@ class ProductController extends Controller
                         }
                     }
 
-                    // Images
                     if ($request->hasFile("colors.{$index}.images")) {
                         foreach ($request->file("colors.{$index}.images") as $imgIndex => $file) {
                             $path = $file->store('products', 'public');

@@ -58,7 +58,6 @@ class OrderController extends Controller
         $oldStatus = $order->status;
         $newStatus = $request->status;
 
-        // Không thay đổi gì nếu trạng thái giống nhau
         if ($oldStatus === $newStatus) {
             return redirect()->back()->with('success', 'Trạng thái không thay đổi.');
         }
@@ -68,26 +67,21 @@ class OrderController extends Controller
             $order->status = $newStatus;
             $order->save();
 
-            // Trừ kho khi xác nhận đơn hàng
             if ($oldStatus === 'pending' && $newStatus === 'confirmed') {
                 $this->deductStock($order);
             }
-
-            // Hoàn kho khi hủy đơn (từ confirmed hoặc shipping)
             if ($newStatus === 'cancelled' && in_array($oldStatus, ['confirmed', 'shipping'])) {
                 $this->restoreStock($order);
             }
 
             DB::commit();
 
-            // Gửi mail cho khách hàng nếu trạng thái đổi sang confirmed
             if ($oldStatus !== 'confirmed' && $newStatus === 'confirmed') {
                 $customerEmail = $order->email ?? ($order->user ? $order->user->email : null);
                 if ($customerEmail) {
                     try {
                         Mail::to($customerEmail)->send(new OrderConfirmedMail($order));
                     } catch (\Exception $e) {
-                        
                     }
                 }
             }
@@ -99,9 +93,6 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Trừ kho khi xác nhận đơn hàng.
-     */
     private function deductStock(Order $order)
     {
         foreach ($order->items as $item) {
@@ -128,9 +119,6 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Hoàn kho khi hủy đơn hàng.
-     */
     private function restoreStock(Order $order)
     {
         foreach ($order->items as $item) {

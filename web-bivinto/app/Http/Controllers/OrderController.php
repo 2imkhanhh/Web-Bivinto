@@ -59,7 +59,6 @@ class OrderController extends Controller
         if (!$userId) {
             $user = \App\Models\User::where('email', $request->email)->first();
             if (!$user) {
-                // Generate customer code
                 $customerCode = 'KH' . date('ymd') . strtoupper(\Illuminate\Support\Str::random(4));
                 $user = \App\Models\User::create([
                     'customer_code' => $customerCode,
@@ -73,7 +72,6 @@ class OrderController extends Controller
                     'password' => null,
                 ]);
             } else {
-                // Update their delivery info
                 $user->update([
                     'name' => $request->name,
                     'phone' => $request->phone,
@@ -123,12 +121,9 @@ class OrderController extends Controller
                 ]);
             }
 
-            // Xóa giỏ hàng đã chọn
             Cart::whereIn('id', $cartItems->pluck('id'))->delete();
 
             DB::commit();
-
-            // Gửi mail cho Admin
             try {
                 $adminEmail = env('ADMIN_EMAIL', 'admin@bivinto.com');
                 Mail::to($adminEmail)->send(new OrderCreatedMail($order));
@@ -149,7 +144,6 @@ class OrderController extends Controller
 
     public function success($orderCode)
     {
-        // Tìm đơn hàng bằng order_code
         $order = Order::where('order_code', $orderCode)->firstOrFail();
 
         if ($order->user_id && $order->user_id !== auth()->id()) {
