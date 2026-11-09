@@ -59,7 +59,7 @@
     }
 
     .btn-save:hover {
-        background-color: #333;
+        background-color: #402021;
         color: #ffffff;
     }
 </style>

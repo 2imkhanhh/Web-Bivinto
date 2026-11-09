@@ -31,7 +31,7 @@ body {
 }
 
 .category-links a:hover {
-    color: #100F0F;
+    color: #402021;
 }
 
 .filter-dropdowns {
@@ -80,8 +80,8 @@ body {
 
 .filter-dropdowns .dropdown-item:hover,
 .filter-dropdowns .dropdown-item:focus {
-    background-color: rgba(0, 0, 0, 0.04);
-    color: #100F0F;
+    background-color: rgba(64, 32, 33, 0.08);
+    color: #402021;
 }
 
 /* Product Card */

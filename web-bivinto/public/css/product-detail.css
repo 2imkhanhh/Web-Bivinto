@@ -201,7 +201,7 @@ body {
 }
 
 .size-btn:hover {
-    border-color: #100F0F;
+    border-color: #402021;
 }
 
 .size-btn.active {
@@ -313,7 +313,8 @@ body {
 }
 
 .btn-add-cart:hover {
-    background-color: #100F0F;
+    background-color: #402021;
+    border-color: #402021;
     color: #FFFFFF;
 }
 
@@ -334,8 +335,8 @@ body {
 
 .btn-buy-now:hover {
     background-color: #FFFDF8;
-    color: #100F0F;
-    border-color: #100F0F;
+    color: #402021;
+    border-color: #402021;
 }
 
 .policy-box {
@@ -502,7 +503,7 @@ body {
 
 .slider-arrow:hover {
     background-color: #f8f8f8;
-    color: #100F0F;
+    color: #402021;
 }
 
 .slider-arrow i {

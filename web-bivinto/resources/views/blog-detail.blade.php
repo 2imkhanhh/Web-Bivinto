@@ -23,7 +23,7 @@
         }
         
         .breadcrumb-custom a:hover {
-            color: #000;
+            color: #402021;
         }
 
         .blog-header {
